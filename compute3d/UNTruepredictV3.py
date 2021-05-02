@@ -451,10 +451,11 @@ def makeclouds(scanfolder, count):
 
 ####################################################################################################################
 
-Hmodel = load_H_model()
+#Hmodel = load_H_model()
 
 def nnprocess_input(folder):
     #Lmodel = load_L_model()
+    Hmodel = load_H_model()
 
   
     mask(folder)

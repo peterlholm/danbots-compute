@@ -48,6 +48,6 @@ def test_process_input(folder):
     """ Process a incoming folder with a pictureset """
     print("Test Processeing", folder)
     print ("calling nnprocess_input")
-    nnprocess_input(folder)
+    #nnprocess_input(folder)
 
     print ("processing finish")
