@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 #from compute.settings import DATA_PATH
 
-from compute3d.receive import start_scan, receive_pic_set, stop_scan
+from compute3d.receive import start_scan, receive_pic_set, stop_scan, test_nn
 
 from .forms import Form3dScan
 #from .scan3d import receive_pic_set, stop_scan
@@ -27,6 +27,10 @@ def start3d(request):
 
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
 
+@csrf_exempt
+def test3d(request):
+    test_nn()
+    return JsonResponse({'result':"OK"})
 
 @csrf_exempt
 def scan3d(request):

@@ -1,7 +1,8 @@
-from time import sleep
-from pathlib import Path
+#from time import sleep
+#from pathlib import Path
 import threading
 from PIL import Image, ImageOps
+from compute3d.UNTruepredictV3 import nnprocess_input
 
 COLOR_PICTURE = 'image8.jpg'
 DIAS_PICTURE = 'image0.jpg'
@@ -38,6 +39,8 @@ def process_input(folder):
     convert_picture(folder / NOLIGHT_PICTURE, folder /'image9.png')
     convert_blackwhite(folder / COLOR_PICTURE, folder / 'grey.png')
 
-    sleep (3)
+    print ("calling nnprocess_input")
+    #nnprocess_input(folder)
+
 
     print ("processing finish")

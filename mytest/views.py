@@ -1,7 +1,7 @@
 from django.http import FileResponse
 from django.shortcuts import render, HttpResponse
-
-from api.send2api import send_picture, send_ply_picture
+from send2live.send2live import send_file
+#from api.send2api import send_picture, send_ply_picture
 
 from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
 

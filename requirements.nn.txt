@@ -1,0 +1,14 @@
+numpy
+
+#cv2
+#opencv-phython
+#opencv-contrib-python
+
+# server
+opencv-python-headless
+# opencv-contrib-python-headless
+#pygraphviz
+
+pandas
+matplotlib
+tensorflow

@@ -54,3 +54,9 @@ def receive_pic_set(device, set_number, color_picture, french_picture, noligt_pi
 
 def stop_scan(device):
     print('Scan Stop device:', device)
+
+def test_nn():
+    folder = DATA_PATH / 'test/1'
+
+    process_input(folder)
+    
