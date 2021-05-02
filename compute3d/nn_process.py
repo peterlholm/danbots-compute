@@ -40,7 +40,14 @@ def process_input(folder):
     convert_blackwhite(folder / COLOR_PICTURE, folder / 'grey.png')
 
     print ("calling nnprocess_input")
-    #nnprocess_input(folder)
+    nnprocess_input(folder)
 
+    print ("processing finish")
+
+def test_process_input(folder):
+    """ Process a incoming folder with a pictureset """
+    print("Test Processeing", folder)
+    print ("calling nnprocess_input")
+    nnprocess_input(folder)
 
     print ("processing finish")

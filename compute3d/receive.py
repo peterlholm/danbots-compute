@@ -7,7 +7,7 @@ import datetime
 import shutil
 from compute.settings import DATA_PATH #, TEMP_PATH
 from send2live.send2live import send_picture #, send_ply_picture
-from compute3d.nn_process import process_input
+from compute3d.nn_process import process_input, test_process_input
 
 COLOR_PICTURE = 'image8.jpg'
 DIAS_PICTURE = 'image0.jpg'
@@ -56,7 +56,6 @@ def stop_scan(device):
     print('Scan Stop device:', device)
 
 def test_nn():
-    folder = DATA_PATH / 'test/1'
-
-    process_input(folder)
+    folder = DATA_PATH / 'test/2'
+    test_process_input(folder)
     

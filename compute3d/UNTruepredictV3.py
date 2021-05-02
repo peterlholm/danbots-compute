@@ -27,9 +27,13 @@ import argparse
 import sys
 # import myglobals
 
+from compute.settings import DATA_PATH
 
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
-
+MODEL_PATH = DATA_PATH / 'nnmodels/'
+#H_MODELFILE = 'UN30-400-WUN-100-V2.h5'
+H_MODELFILE = 'UN15-680-mat-b8-Wrap-100-V2.h5'
 
 PI = np.pi
 
@@ -69,11 +73,13 @@ def normalize_image(img):
     img = img/np.max(img)
     return img
 
-MODEL_PATH = '/var/www/danbots/compute/data/nnmodels/'
+
 
 def load_H_model():
     # model = tensorflow.keras.models.load_model('/home/samir/dblive/cnnpredict/models/UNmodels/UNet02-224-fringe-wrapdata'+'-200-adam-noBN.h5')
-    model = tensorflow.keras.models.load_model(MODEL_PATH + 'UN30-400-WUN-100-V2.h5')
+    print ("Path", MODEL_PATH / H_MODELFILE)
+    model = tensorflow.keras.models.load_model(MODEL_PATH / H_MODELFILE)
+
     return(model)
 # /home/samir/dblive/cnnpredict/models/cnnres01-220-modelwrap1'+'-200-adam-noBN.h5
 
@@ -90,24 +96,24 @@ def makemonohigh(folder):
 
 
 def mask(folder):
-    color = folder + 'image8.png'
+    color = folder / 'image8.png'
     print('color:', color)
     img1 = np.zeros((H, W), dtype=np.float)
-    img1 = cv2.imread(color, 1).astype(np.float32)
+    img1 = cv2.imread(str(color), 1).astype(np.float32)
     gray = make_grayscale(img1)
 
 
-    black = folder + 'image9.png'
+    black = folder / 'image9.png'
     img2 = np.zeros((H, W), dtype=np.float)
-    img2 = cv2.imread(black, 0).astype(np.float32)
+    img2 = cv2.imread(str(black), 0).astype(np.float32)
     diff1 = np.subtract(gray, .5*img2)
     mask =  np.zeros((H, W), dtype=np.float)
     for i in range(H):
         for j in range(W):
             if (diff1[i,j]<50):
                 mask[i,j]= True
-    np.save( folder+ 'mask.npy', mask, allow_pickle=False)
-    cv2.imwrite( folder+ 'mask.png', 128*mask)
+    np.save( folder / 'mask.npy', mask, allow_pickle=False)
+    cv2.imwrite( str(folder / 'mask.png'), 128*mask)
     return(mask)
 
 
@@ -121,8 +127,8 @@ def DB_predict( model, x):
 
 
 def nnHprocess(folder):
-    high = folder + 'image0.png' #'blenderimage0.png' or 'image0.png'
-    image1 = cv2.imread(high, 1).astype(np.float32)
+    high = folder / 'image0.png' #'blenderimage0.png' or 'image0.png'
+    image1 = cv2.imread(str(high), 1).astype(np.float32)
     # black = folder + 'image9.png' #'' blenderblack.png or 'image9.png'
     # image2 = cv2.imread(black,1).astype(np.float32)
     image = image1 #- image2
@@ -140,8 +146,8 @@ def nnHprocess(folder):
     # mask = np.load(folder+'mask.npy')
     # wrapH = np.multiply(np.logical_not(mask), predicted_img)
     # wrapH = resize(wrapH, W, H)
-    np.save(folder + 'unwrap1.npy', predicted_img, allow_pickle=False)
-    cv2.imwrite( folder + 'unwrap1.png',255*predicted_img)
+    np.save(folder / 'unwrap1.npy', predicted_img, allow_pickle=False)
+    cv2.imwrite( str(folder / 'unwrap1.png'),255*predicted_img)
     return  #(predicted_img[0], predicted_img[1])
 
 def nnLprocess(folder):
@@ -445,12 +451,15 @@ def makeclouds(scanfolder, count):
 
 ####################################################################################################################
 
-def nnprocess_input(folder):
-    Lmodel = load_L_model()
-    Hmodel = load_H_model()   
+Hmodel = load_H_model()
 
+def nnprocess_input(folder):
+    #Lmodel = load_L_model()
+
+  
     mask(folder)
     nnHprocess(folder)
+    return
     nnLprocess(folder)
     newDepth(folder, 200)
     nngenerate_pointcloud(folder+'/'+ 'image8.png', folder+'/'+ 'mask.png', folder+'/' + 'nndepth.npy', folder+'/' +'pointcl-nndepth.ply')
