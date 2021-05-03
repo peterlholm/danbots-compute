@@ -77,9 +77,8 @@ def normalize_image(img):
 
 def load_H_model():
     # model = tensorflow.keras.models.load_model('/home/samir/dblive/cnnpredict/models/UNmodels/UNet02-224-fringe-wrapdata'+'-200-adam-noBN.h5')
-    print ("Path", MODEL_PATH / H_MODELFILE)
+    #print ("Path", MODEL_PATH / H_MODELFILE)
     model = tensorflow.keras.models.load_model(MODEL_PATH / H_MODELFILE)
-
     return(model)
 # /home/samir/dblive/cnnpredict/models/cnnres01-220-modelwrap1'+'-200-adam-noBN.h5
 
@@ -455,12 +454,11 @@ Hmodel = load_H_model()
 
 def nnprocess_input(folder):
     #Lmodel = load_L_model()
-    Hmodel = load_H_model()
-
-  
+    #Hmodel = load_H_model()
     mask(folder)
     nnHprocess(folder)
     return
+
     nnLprocess(folder)
     newDepth(folder, 200)
     nngenerate_pointcloud(folder+'/'+ 'image8.png', folder+'/'+ 'mask.png', folder+'/' + 'nndepth.npy', folder+'/' +'pointcl-nndepth.ply')

@@ -1,4 +1,5 @@
 #from time import sleep
+from datetime import datetime
 #from pathlib import Path
 import threading
 from PIL import Image, ImageOps
@@ -39,7 +40,7 @@ def process_input(folder):
     convert_picture(folder / NOLIGHT_PICTURE, folder /'image9.png')
     convert_blackwhite(folder / COLOR_PICTURE, folder / 'grey.png')
 
-    print ("calling nnprocess_input")
+    print (datetime.now().isoformat(),"calling nnprocess_input")
     nnprocess_input(folder)
 
     print ("processing finish")
