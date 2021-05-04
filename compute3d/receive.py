@@ -56,6 +56,6 @@ def stop_scan(device):
     print('Scan Stop device:', device)
 
 def test_nn():
-    folder = DATA_PATH / 'test/2'
+    folder = DATA_PATH / 'test/1'
     test_process_input(folder)
     

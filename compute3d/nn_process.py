@@ -1,13 +1,17 @@
+#import os
 #from time import sleep
 from datetime import datetime
 #from pathlib import Path
 import threading
 from PIL import Image, ImageOps
-from compute3d.UNTruepredictV3 import nnprocess_input
+#from compute3d.UNTruepredictV3 import nnprocess_input
+from compute3d.h_model import nnprocess_input
 
 COLOR_PICTURE = 'image8.jpg'
 DIAS_PICTURE = 'image0.jpg'
 NOLIGHT_PICTURE = 'image9.jpg'
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 def background(myfunction):
     '''
