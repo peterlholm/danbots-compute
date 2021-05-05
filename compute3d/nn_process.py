@@ -5,10 +5,11 @@ from datetime import datetime
 import threading
 from PIL import Image, ImageOps
 #from compute3d.UNTruepredictV3 import nnprocess_input
-from compute3d.h_model import nnprocess_input
+from compute3d.h_model import h_process_input
+from compute3d.l_model import l_process_input
 
 COLOR_PICTURE = 'image8.jpg'
-DIAS_PICTURE = 'image0.jpg'
+DIAS_PICTURE = 'image0.jpg'     # in b/w
 NOLIGHT_PICTURE = 'image9.jpg'
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -40,12 +41,12 @@ def process_input(folder):
     print("Processeing", folder)
 
     convert_picture(folder / COLOR_PICTURE, folder /'image8.png')
-    convert_picture(folder / DIAS_PICTURE, folder /'image0.png')
+    convert_picture(folder / DIAS_PICTURE, folder /'image0C.png')
     convert_picture(folder / NOLIGHT_PICTURE, folder /'image9.png')
-    convert_blackwhite(folder / COLOR_PICTURE, folder / 'grey.png')
+    convert_blackwhite(folder / COLOR_PICTURE, folder / 'image0.png')
 
     print (datetime.now().isoformat(),"calling nnprocess_input")
-    nnprocess_input(folder)
+    h_process_input(folder)
 
     print ("processing finish")
 
@@ -53,6 +54,9 @@ def test_process_input(folder):
     """ Process a incoming folder with a pictureset """
     print("Test Processeing", folder)
     print ("calling nnprocess_input")
-    nnprocess_input(folder)
+    h_result = h_process_input(folder)
+    print("H_result", h_result)
+    #l_process_input(folder)
 
     print ("processing finish")
+    return h_result

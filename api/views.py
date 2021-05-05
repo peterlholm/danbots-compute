@@ -30,8 +30,8 @@ def start3d(request):
 @csrf_exempt
 def test3d(request):
     print("test3d request - calling test_nn")
-    test_nn()
-    return JsonResponse({'result':"OK"})
+    result = test_nn()
+    return JsonResponse({ **result, 'result':"OK"})
 
 @csrf_exempt
 def scan3d(request):
