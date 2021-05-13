@@ -56,7 +56,8 @@ def test_process_input(folder):
     print ("calling nnprocess_input")
     h_result = h_process_input(folder)
     print("H_result", h_result)
-    #l_process_input(folder)
+    l_result = l_process_input(folder)
+    print("L_result", h_result)
 
     print ("processing finish")
-    return h_result
+    return { **h_result, **l_result }

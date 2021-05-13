@@ -90,8 +90,8 @@ def new_ddddepth(folder, basecount):
     print('nndepthrange=', np.ptp(depth), np.max(depth), np.min(depth) )
 
     im_depth = depth# np.max(unwrapdata)*255)
-    cv2.imwrite(folder + '/nndepth.png', im_depth)
-    np.save(folder+'/nndepth.npy' ,im_depth , allow_pickle=False)
+    cv2.imwrite(str(folder / 'nndepth.png'), im_depth)
+    np.save(str(folder / 'nndepth.npy') ,im_depth , allow_pickle=False)
 
 def nngenerate_pointcloud(rgb_file, mask_file,depth_file,ply_file):
     """
@@ -165,6 +165,9 @@ end_header
 Lmodel = load_l_model()
 
 def l_process_input(folder):
+    start = time.time()
     nn_llprocess(folder)
     new_ddddepth(folder, 200)
-    nngenerate_pointcloud(folder+'/'+ 'image8.png', folder+'/'+ 'mask.png', folder+'/' + 'nndepth.npy', folder+'/' +'pointcl-nndepth.ply')
+    nngenerate_pointcloud(str(folder / 'image8.png'), str(folder / 'mask.png'), str(folder / 'nndepth.npy'), str(folder / 'pointcl-nndepth.ply'))
+    end = time.time()
+    return {'l_process_time': end-start}
