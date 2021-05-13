@@ -4,12 +4,13 @@ from datetime import datetime
 #from pathlib import Path
 import threading
 from PIL import Image, ImageOps
+#from compute.settings import NN_ENABLE
 #from compute3d.UNTruepredictV3 import nnprocess_input
 
-NN=True
-if NN:
-    from compute3d.h_model import h_process_input
-    from compute3d.l_model import l_process_input
+
+
+from compute3d.h_model import h_process_input
+from compute3d.l_model import l_process_input
 
 COLOR_PICTURE = 'image8.jpg'
 DIAS_PICTURE = 'image0.jpg'     # in b/w
@@ -41,7 +42,7 @@ def convert_blackwhite(filepath, outfilepath):
 #@background
 def process_input(folder):
     """ Process a incoming folder with a pictureset """
-    
+
     # converting pictures
     print("Processeing pictures", folder)
     convert_picture(folder / COLOR_PICTURE, folder /'image8.png')
@@ -49,11 +50,11 @@ def process_input(folder):
     convert_picture(folder / NOLIGHT_PICTURE, folder /'image9.png')
     convert_blackwhite(folder / COLOR_PICTURE, folder / 'image0.png')
 
-    if NN :
-        print (datetime.now().isoformat(),"calling h_process_input")
-        h_process_input(folder)
-        print (datetime.now().isoformat(),"calling l_process_input")
-        l_process_input(folder)
+
+    print (datetime.now().isoformat(),"calling h_process_input")
+    h_process_input(folder)
+    print (datetime.now().isoformat(),"calling l_process_input")
+    l_process_input(folder)
     print ("processing finish")
 
 def test_process_input(folder):

@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -137,3 +136,6 @@ INTERNAL_IPS = ['127.0.0.1', '10.1.1.100', '62.116.221.102' ]
 DATA_PATH = BASE_DIR / 'data'
 TEMP_PATH = '/tmp'
 API_SERVER = 'http://api.danbots.com/api/'
+
+# enable NeuralNet processing
+NN_ENABLE = True
