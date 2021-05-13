@@ -6,7 +6,7 @@ import threading
 import datetime
 import shutil
 from compute.settings import DATA_PATH #, TEMP_PATH
-from send2live.send2live import send_picture #, send_ply_picture
+from send2live.send2live import send_picture, send_ply_picture
 from compute3d.nn_process import process_input, test_process_input
 
 COLOR_PICTURE = 'image8.jpg'
@@ -50,6 +50,9 @@ def receive_pic_set(device, set_number, color_picture, french_picture, noligt_pi
     result = send_picture(device, folder / COLOR_PICTURE )
     if not result:
         print("Send picture failed")
+    result = send_ply_picture(device, folder / 'pointcl-nndepth.ply' )
+    if not result:
+        print("Send ply picture failed")
     return True
 
 def stop_scan(device):

@@ -54,17 +54,13 @@ def process_input(folder):
         h_process_input(folder)
         print (datetime.now().isoformat(),"calling l_process_input")
         l_process_input(folder)
-
     print ("processing finish")
 
 def test_process_input(folder):
     """ Process a incoming folder with a pictureset """
     print("Test Processeing", folder)
-    print ("calling nnprocess_input")
     h_result = h_process_input(folder)
     print("H_result", h_result)
     l_result = l_process_input(folder)
     print("L_result", h_result)
-
-    print ("processing finish")
     return { **h_result, **l_result }
