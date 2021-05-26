@@ -1,30 +1,30 @@
-#import os
+import os
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-#from compute.settings import DATA_PATH
-
+from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from compute3d.receive import start_scan, receive_pic_set, stop_scan, test_nn
-
 from .forms import Form3dScan
-#from .scan3d import receive_pic_set, stop_scan
+
+DEVICE_PATH = DATA_PATH / 'device'
 
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
         for chunk in handle.chunks():
             destination.write(chunk)
 
+def device_folder(request):
+    deviceid = request.POST['deviceid']
+    device_path = DEVICE_PATH / deviceid
+    os.makedirs(device_path, exist_ok=True)
+    return device_path
+
 @csrf_exempt
 def start3d(request):
-    if request.method == 'POST':
-        deviceid = request.POST['deviceid']
-        start_scan(deviceid)
+    if request.method in ['GET','POST']:
+        devicefolder = device_folder(request)
+        start_scan(devicefolder)
         return JsonResponse({'result':"OK"})
-    if request.method == 'GET':
-        deviceid = request.GET['deviceid']
-        start_scan(deviceid)
-        return JsonResponse({'result':"OK"})
-
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
 
 @csrf_exempt
@@ -42,11 +42,9 @@ def scan3d(request):
     if request.method == 'POST':
         picform = Form3dScan(request.POST, request.FILES)
         if picform.is_valid():
-            deviceid = request.POST['deviceid']
+            devicefolder = device_folder(request)
             set_number = request.POST['pictureno']
-            #data_folder = DATA_PATH
-            #os.makedirs(data_folder, exist_ok=True)
-            receive_pic_set(deviceid, set_number, request.FILES['color_picture'], request.FILES['french_picture'],request.FILES['noLight_picture'])
+            receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['french_picture'],request.FILES['noLight_picture'])
             return JsonResponse({'result':"OK"})
         print ("Form not valid", picform.errors)
     return render(request, 'send3dscan.html', mycontext)
@@ -54,7 +52,7 @@ def scan3d(request):
 @csrf_exempt
 def stop3d(request):
     if request.method == 'POST':
-        deviceid = request.POST['deviceid']
-        stop_scan(deviceid)
+        devicefolder = device_folder(request)
+        stop_scan(devicefolder)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
