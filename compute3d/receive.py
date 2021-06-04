@@ -36,6 +36,7 @@ def save_uploaded_file(handle, filepath):
 def start_scan(device_path):
     print('Scan Start device:', device_path)
     infolder = device_path / INPUT_FOLDER
+    os.makedirs(infolder, exist_ok=True)
     if ARCHIVE_DATA:
         if os.path.exists(infolder):
             datestr = datetime.datetime.now().strftime('%y%m%d-%H%M')
