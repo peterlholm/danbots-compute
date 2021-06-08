@@ -159,3 +159,4 @@ dmypy.json
 /static
 /data
 
+compute/settings_local.py

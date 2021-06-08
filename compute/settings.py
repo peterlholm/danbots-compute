@@ -139,3 +139,9 @@ API_SERVER = 'http://api.danbots.com/api/'
 
 # enable NeuralNet processing
 NN_ENABLE = True
+
+try:
+    from .settings_local import *
+except:
+    print('No local settings')
+    pass
