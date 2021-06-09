@@ -1,3 +1,5 @@
+import subprocess
+from pathlib import Path
 from django.http import FileResponse
 from django.shortcuts import render, HttpResponse
 from send2live.send2live import send_file
@@ -23,3 +25,11 @@ def sendpicture(request):
 
 def errorlog(request):
     return FileResponse(open('/var/log/apache2/danbots/compute.err.log','rb'))
+
+def upgrade(request):
+    root = Path(__file__).resolve().parent.parent
+    script = root / 'setup' / 'git_update.sh'
+    print(script)
+    result = subprocess.run(script, cwd=root)
+    output = str(result)
+    return HttpResponse(output)

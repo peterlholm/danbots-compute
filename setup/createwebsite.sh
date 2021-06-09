@@ -14,3 +14,4 @@ sudo mkdir /var/log/apache2/danbots
 sudo mkdir /var/www/danbots/compute/data /var/www/danbots/compute/site
 
 sudo chown www-data /var/www/danbots/compute/data
+sudo chgrp -R www-data /var/www/danbots/compute
