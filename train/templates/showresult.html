@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    img {
+        margin: 4px;
+        border: black solid 1px;
+        height:  300px;
+        width:  300px;
+    }
+    .pic {
+        border: red solid 1px;
+        height:  300px;
+        width:  300px;
+    }
+</style>
+<h2>Results</h2>
+Path: {{path}}
+<br>
+<a href="?next=-1&index={{index}}">Prev</a>
+<a href="?next=1&index={{index}}">Next</a>
+<br>
+<img class="pic" src="{{pic1}}" alt="pic1" height="400">
+<img src="{{pic2}}" alt="pic2">
+<img src="{{pic3}}" alt="pic3">
+<img src="{{pic4}}" alt="pic4">
+<img src="{{pic5}}" alt="pic5">
+<img src="{{pic6}}" alt="pic6">
+<img src="{{pic7}}" alt="pic7">
+<img src="{{pic8}}" alt="pic8">
+
+<div class="row justify-content-center">
+    <div class="col-6">
+
+    </div>
+</div>
+{% endblock %}

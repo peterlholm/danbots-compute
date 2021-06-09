@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'api',
-    'mytest'
+    'mytest',
+    'train'
 ]
 
 MIDDLEWARE = [
@@ -141,7 +142,6 @@ API_SERVER = 'http://api.danbots.com/api/'
 NN_ENABLE = True
 
 try:
-    from .settings_local import *
+    from .settings_local import *   # pylint: disable=wildcard-import
 except:
     print('No local settings')
-    pass
