@@ -2,6 +2,7 @@
 # this module send results to API/Live server
 #
 from sys import platform
+import os.path
 import requests
 from compute.settings import API_SERVER #, DATA_PATH,TEMP_PATH
 
@@ -16,7 +17,10 @@ def send_file(url, params, file_path):
     else:
         path=str(file_path)
     try:
-        req = requests.post(url, timeout=HTTP_TIMEOUT, files={"picture": path}, data=params)
+        #req = requests.post(url, timeout=HTTP_TIMEOUT, files={"picture": path}, data=params)
+        filename = os.path.basename(file_path)
+        req = requests.post(url, timeout=HTTP_TIMEOUT, files={"picture": (filename, open(path,'rb'))}, data=params)
+        #req = requests.post(url, timeout=HTTP_TIMEOUT, files={"picture":  path}, data=params)
     except requests.exceptions.RequestException as ex:
         print(ex)
         return False

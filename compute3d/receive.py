@@ -2,6 +2,7 @@
 # this module start the processing of the picture received from devices
 #
 import os
+from pathlib import Path
 import threading
 import datetime
 import shutil
@@ -61,7 +62,9 @@ def receive_pic_set(device, set_number, color_picture, french_picture, noligt_pi
     result = send_picture(device, folder / COLOR_PICTURE )
     if not result:
         print("Send picture failed")
-    result = send_ply_picture(device, folder / 'pointcl-nndepth.ply' )
+    plyfile = Path(__file__).resolve().parent / 'test.ply' 
+    #print("plyfile", plyfile)
+    result = send_ply_picture(device, plyfile )
     if not result:
         print("Send ply picture failed")
     return True
