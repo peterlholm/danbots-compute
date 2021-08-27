@@ -47,6 +47,20 @@ def start_scan(device_path):
     shutil.rmtree(infolder)
     os.makedirs(infolder, exist_ok=True)
 
+def receive_pictures(device, set_number, color_picture, french_picture, noligt_picture):
+    print("Picture received device:", device, set_number)
+    folder = DATA_PATH / device / 'input' 
+    os.makedirs(folder, exist_ok=True)
+ 
+    number = "_{0:03d}".format(int(set_number)) 
+    color_pic = "color" + number + ".jpg"
+    dias_pic = "dias" + number + ".jpg"
+    nolight_pic = "nolight" + number + ".jpg"
+    save_uploaded_file(color_picture, folder / color_pic )
+    save_uploaded_file(french_picture, folder / dias_pic )
+    save_uploaded_file(noligt_picture, folder / nolight_pic )
+    return True
+
 #@background
 def receive_pic_set(device, set_number, color_picture, french_picture, noligt_picture):
     print("Picture received device:", device, set_number)
