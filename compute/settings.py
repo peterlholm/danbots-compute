@@ -139,9 +139,9 @@ TEMP_PATH = '/tmp'
 API_SERVER = 'http://api.danbots.com/api/'
 
 # enable NeuralNet processing
-NN_ENABLE = False
+NN_ENABLE = True
 
 try:
     from .settings_local import *   # pylint: disable=wildcard-import
-except:
-    print('No local settings')
+except ModuleNotFoundError:
+    pass
