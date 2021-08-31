@@ -59,7 +59,7 @@ def scan3d(request):
         if picform.is_valid():
             devicefolder = device_folder(request)
             set_number = request.POST['pictureno']
-            receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['french_picture'],request.FILES['noLight_picture'])
+            receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
             return JsonResponse({'result':"OK"})
         print ("Form not valid", picform.errors)
     return render(request, 'send3dscan.html', mycontext)

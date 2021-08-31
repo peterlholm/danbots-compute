@@ -65,9 +65,9 @@ def receive_pic_set(device, set_number, color_picture, dias_picture, noligt_pict
         print("Send picture failed")
     plyfile = Path(__file__).resolve().parent / 'test.ply'
     #print("plyfile", plyfile)
-    result = send_ply_picture(device, plyfile )
-    if not result:
-        print("Send ply picture failed")
+    # result = send_ply_picture(device, plyfile )
+    # if not result:
+    #     print("Send ply picture failed")
     return True
 
 def stop_scan(device_path):
