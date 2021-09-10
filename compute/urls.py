@@ -21,10 +21,9 @@ from compute import settings
 
 urlpatterns = [
     path("api/", include('api.urls')),
+    path("nn/", include('nn.urls')),
     path("test/", include('mytest.urls')),
     path("train/", include('train.urls')),
     path("", views.home),
-    re_path(r'^data/(?P<path>.*)$', serve,{'document_root': settings.DATA_PATH}), 
-
-    #path('admin/', admin.site.urls),
+    re_path(r'^data/(?P<path>.*)$', serve,{'document_root': settings.DATA_PATH}),
 ]
