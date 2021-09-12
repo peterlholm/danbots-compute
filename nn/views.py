@@ -4,7 +4,7 @@ from django.shortcuts import render, HttpResponse
 from nn.inference.process import process_blender_folder
 from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
 
-TESTDATAPATH = "testdata/render0"
+TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata/render0"
 
 def index(request):
     return render (request, 'nn_index.html')
