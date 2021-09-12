@@ -1,3 +1,10 @@
 {
-    "python.linting.pylintEnabled": true
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+
+    "python.linting.pylintArgs": [
+        "--init-hook",
+        "import sys; sys.path.append(\"E:\\\\Arbejde\\\\DanBots\\\\DanWand\\\\danbots-webserv\\\\webservice\");"
+    ],
+    "python.linting.pylintCategorySeverity.refactor": "Information",
 }

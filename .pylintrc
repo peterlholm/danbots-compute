@@ -4,6 +4,8 @@ load-plugins=pylint_django
 django-settings-module=compute.settings
 
 [MESSAGES CONTROL]
+enable=R,
+        missing-function-docstring
 
 disable=missing-function-docstring,
         missing-module-docstring,

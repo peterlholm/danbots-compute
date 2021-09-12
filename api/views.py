@@ -20,6 +20,53 @@ def device_folder(request):
     os.makedirs(device_path, exist_ok=True)
     return device_path
 
+def get_device_folder(deviceid):
+    device_path = DEVICE_PATH / deviceid
+    os.makedirs(device_path, exist_ok=True)
+    return device_path
+
+def check_device(request):
+    deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
+    return deviceid
+
+# 2D
+@csrf_exempt
+def start2d(request):
+    if not request.method in ['GET','POST']:
+        return JsonResponse({'result':"False", "reason": "illegal method"})
+    deviceid = check_device(request)
+    if not deviceid:
+        return HttpResponse('start2d must include deviceid')
+    devicefolder = get_device_folder(deviceid)
+    print("start2d received: ", devicefolder)
+    return JsonResponse({'result':"OK"})
+
+@csrf_exempt
+def save2d(request):
+    if not request.method in ['POST']:
+        return JsonResponse({'result':"False", "reason": "illegal method"})
+    deviceid = check_device(request)
+    if not deviceid:
+        return HttpResponse('save2d must include deviceid')
+    devicefolder = get_device_folder(deviceid)
+    file = request.FILES['picture']
+    print(file)
+    print(file.content_type)
+    print("save2d received: ")
+    return JsonResponse({'result':"OK"})
+
+@csrf_exempt
+def stop2d(request):
+    if not request.method in ['GET','POST']:
+        return JsonResponse({'result':"False", "reason": "illegal method"})
+    deviceid = check_device(request)
+    if not deviceid:
+        return HttpResponse('stop2d must include deviceid')
+    devicefolder = get_device_folder(deviceid)
+    print("stop2d received: ", devicefolder)
+    return JsonResponse({'result':"OK"})
+
+# 3D
 @csrf_exempt
 def start3d(request):
     if request.method =="GET":

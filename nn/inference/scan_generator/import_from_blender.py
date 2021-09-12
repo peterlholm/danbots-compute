@@ -12,7 +12,9 @@ OUTCOLOR = "color.png"
 OUTDIAS = "dias.png"
 OUTNOLIGHT = "nolight.png"
 
-def convert_from_blender(infolder, outfolder):
+def convert_from_blender(infolder, outfolder=None):
+    if not outfolder:
+        outfolder = infolder
     pic = Image.open(infolder / COLORPICTURE)
     pic.save(Path(outfolder) / OUTCOLOR)
     pic = Image.open(infolder / DIASPICTURE)

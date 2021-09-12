@@ -29,9 +29,9 @@ def get_stats(picture):
     print("Var", stats.var)
     print("Stddev", stats.stddev)
 
-fil = "../tmp/dias.png"
+FIL = "../tmp/dias.png"
 
 # j = get_brightness(fil)
 # print ("Brightness", j)
 
-get_stats(fil)
+get_stats(FIL)
