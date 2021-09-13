@@ -1,11 +1,13 @@
-numpy==1.19.2
+# this include modules for neral network processing
+
+#numpy==1.19.2
 
 #cv2
 #opencv-phython
 #opencv-contrib-python
 
 # server
-opencv-python-headless
+#opencv-python-headless
 # opencv-contrib-python-headless
 #pygraphviz
 

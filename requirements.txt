@@ -3,8 +3,8 @@ django-crispy-forms
 pillow
 requests
 
-opencv-phython
-#opencv-python-headless
+#opencv-phython
+opencv-python-headless
 
 pylint
 pylint-django
