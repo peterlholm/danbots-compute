@@ -11,6 +11,6 @@
 # opencv-contrib-python-headless
 #pygraphviz
 
-pandas
-matplotlib
+#pandas
+#matplotlib
 tensorflow

@@ -33,9 +33,9 @@ def showresult(request):
         'pic2': picpath + "dias.png",
         'pic3': picpath + "nolight.png",
         'pic4': picpath + "mask.png",
-        # 'pic5': picpath + "nndepth.png",
-        # 'pic6': picpath + "nnkdata.png",
-        # 'pic7': picpath + "nnkunwrap.png",
+        'pic5': picpath + "nnwrap1.png",
+        'pic6': picpath + "nnunwrap.png",
+        'pic7': picpath + "nndepth.png",
         # 'pic8': picpath + "unwrap1.png"
         #'pic8': picpath + "../testdata/"
     }
