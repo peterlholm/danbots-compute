@@ -4,8 +4,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
+from api.device_config import read_config, save_config
 from compute3d.receive import start_scan, receive_pic_set, stop_scan, test_nn
 from .forms import Form3dScan
+from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 
 DEVICE_PATH = DATA_PATH / 'device'
 
@@ -15,7 +17,7 @@ def save_uploaded_file(handle, filepath):
             destination.write(chunk)
 
 def device_folder(request):
-    deviceid = request.POST.get('deviceid', "1234")
+    deviceid = request.POST.get('deviceid', "nodevice")
     device_path = DEVICE_PATH / deviceid
     os.makedirs(device_path, exist_ok=True)
     return device_path
@@ -48,7 +50,7 @@ def save2d(request):
     deviceid = check_device(request)
     if not deviceid:
         return HttpResponse('save2d must include deviceid')
-    devicefolder = get_device_folder(deviceid)
+    #devicefolder = get_device_folder(deviceid)
     file = request.FILES['picture']
     print(file)
     print(file.content_type)
@@ -117,6 +119,35 @@ def stop3d(request):
         devicefolder = device_folder(request)
         stop_scan(devicefolder)
         return JsonResponse({'result':"OK"})
+    return JsonResponse({'result':"False", "reason": "Missing deviceid"})
+
+# sendfiles
+
+@csrf_exempt
+def sendfiles(request):
+    if request.method in ['POST']:
+        devicefolder = device_folder(request)
+        cmd = request.POST['cmd']
+        if cmd == "calibrate":
+            print("Calibrate")
+            datafolder = devicefolder / 'calibrate'
+            os.makedirs(datafolder, exist_ok=True)
+            for i in request.FILES:
+                flist = request.FILES.getlist(i)
+                for j in flist:
+                    filepath = datafolder / j.name
+                    save_uploaded_file(j, filepath)
+            cal_picture = datafolder / 'color.png'
+            #slope = get_img_slope(cal_picture)
+            #freq = get_img_freq(cal_picture)
+            #print(slope,freq)
+            config = read_config(devicefolder)
+            config['calibrate'] = {'calibrate': True }
+            save_config(config, devicefolder )
+        else:
+            print("unknown cmd: ", cmd)
+            return HttpResponse("Unknown command")
+        return JsonResponse({'result':"OK", "slope": 0})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
 
 @csrf_exempt

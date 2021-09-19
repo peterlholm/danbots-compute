@@ -5,6 +5,7 @@ requests
 
 #opencv-phython
 opencv-python-headless
+scikit-learn
 
 pylint
 pylint-django

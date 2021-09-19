@@ -7,9 +7,10 @@ urlpatterns = [
     path('scan3d', views.scan3d),
     path('stop3d', views.stop3d),
     path('test3d', views.test3d),
+    
+    path('sendfiles', views.sendfiles),
 
     path('start2d', views.start2d),
     path('save2d', views.save2d),
     path('stop2d', views.stop3d),
-
 ]

@@ -1,8 +1,9 @@
 from pathlib import Path
 from shutil import rmtree
 from django.shortcuts import render, HttpResponse
-from nn.inference.process import process_blender_folder
-from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
+from compute.settings import DATA_PATH, NN_ENABLE  #, API_SERVER, TEMP_PATH
+if NN_ENABLE:
+    from nn.inference.process import process_blender_folder
 
 TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata/render0"
 
@@ -15,7 +16,8 @@ def process(request):
         rmtree(data_path)
     Path.mkdir(data_path)
     infolder = Path(TESTDATAPATH)
-    process_blender_folder(infolder, data_path)
+    if NN_ENABLE:
+        process_blender_folder(infolder, data_path)
     return HttpResponse("Processing...")
 
 def showresult(request):
@@ -27,8 +29,17 @@ def showresult(request):
     #picpath = '/data/device//b827eb841738/input/' + str(next_index) + '/'
     #picpath = '/data/device//b827eb05abc2/input/' + str(next_index) + '/'
     picpath = '/data/testdata/'
+    piclist = [picpath + "color.png",
+        picpath + "dias.png",
+        picpath + "nolight.png",
+        picpath + "mask.png",
+        picpath + "nnwrap1.png",
+        picpath + "nnunwrap.png",
+        picpath + "nndepth.png",
+      ]
     mycontext = {
         'path': picpath,
+        'pictures': piclist,
         'pic1': picpath + "color.png",
         'pic2': picpath + "dias.png",
         'pic3': picpath + "nolight.png",
