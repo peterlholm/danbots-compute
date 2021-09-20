@@ -138,12 +138,13 @@ def sendfiles(request):
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             cal_picture = datafolder / 'color.png'
-            #slope = get_img_slope(cal_picture)
-            #freq = get_img_freq(cal_picture)
-            #print(slope,freq)
+            slope = get_img_slope(cal_picture)
+            freq = get_img_freq(cal_picture)
+            print(slope,freq)
             config = read_config(devicefolder)
-            config['calibrate'] = {'calibrate': True }
+            config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
             save_config(config, devicefolder )
+            return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
         else:
             print("unknown cmd: ", cmd)
             return HttpResponse("Unknown command")

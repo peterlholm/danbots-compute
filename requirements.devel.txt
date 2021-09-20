@@ -1,3 +1,4 @@
 # this include extra module for devellopment
-opencv-phython
+#opencv-phython
 #matplotlib
+#opencv-contrib-python

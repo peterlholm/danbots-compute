@@ -1,11 +1,13 @@
-django>=3.2.1
+django
 django-crispy-forms
-pillow
 requests
+pillow
+numpy
+scikit-learn
 
 #opencv-phython
-opencv-python-headless
-scikit-learn
+#opencv-python-headless
+
 
 pylint
 pylint-django
