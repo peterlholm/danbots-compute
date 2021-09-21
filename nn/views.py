@@ -5,7 +5,7 @@ from compute.settings import DATA_PATH, NN_ENABLE  #, API_SERVER, TEMP_PATH
 if NN_ENABLE:
     from nn.inference.process import process_blender_folder
 
-TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata/render0"
+TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata/render12"
 
 def index(request):
     return render (request, 'nn_index.html')
@@ -21,13 +21,6 @@ def process(request):
     return HttpResponse("Processing...")
 
 def showresult(request):
-    #folder_index = int(request.GET.get('index',1))
-    #next_val = int(request.GET.get('next',0))
-    #next_index = folder_index + next_val
-    #print ("Index: ", index, " Next: ", next)
-    #picpath = '/data/device//dca6320b6bd5/input/' + str(next_index) + '/'
-    #picpath = '/data/device//b827eb841738/input/' + str(next_index) + '/'
-    #picpath = '/data/device//b827eb05abc2/input/' + str(next_index) + '/'
     picpath = '/data/testdata/'
     piclist = [picpath + "color.png",
         picpath + "dias.png",
@@ -36,6 +29,7 @@ def showresult(request):
         picpath + "nnwrap1.png",
         picpath + "nnunwrap.png",
         picpath + "nndepth.png",
+        picpath + "nndepth2.png",
       ]
     mycontext = {
         'path': picpath,

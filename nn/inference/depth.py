@@ -46,3 +46,9 @@ def newDepth(folder, basecount):
     cv2.imwrite(str (folder / 'nndepth.png'), im_depth)
     np.save(str(folder/'nndepth.npy') ,im_depth , allow_pickle=False)
 
+    # call addWeighted function. use beta = 0 to effectively only operate one one image
+    brightness = 1
+    contrast = 5
+    out = cv2.addWeighted( im_depth, contrast, im_depth, 0, brightness)
+    cv2.imwrite(str (folder / 'nndepth2.png'), out)
+    
