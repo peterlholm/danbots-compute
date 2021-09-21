@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
 from api.device_config import read_config, save_config
-from compute3d.receive import start_scan, receive_pic_set, stop_scan, test_nn
+from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
+from nn.receive import receive_pic_set
 from .forms import Form3dScan
 from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 

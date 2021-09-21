@@ -4,12 +4,12 @@ import numpy as np
 import tensorflow.keras
 from compute.settings import DATA_PATH
 from nn.inference.nn_util import normalize_image255, make_grayscale, db_predict
-from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
+from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
 
 MODEL_PATH = DATA_PATH / 'nnmodels/'
 H_MODELFILE = 'im0wr40.h5'
 
-COLOR_IMAGE = 'color.png'
+#COLOR_IMAGE = 'color.png'
 PI = np.pi
 
 def load_h_model():
@@ -20,7 +20,7 @@ def load_h_model():
 Hmodel = load_h_model()
 
 def nnHprocess(folder):
-    high = folder / COLOR_IMAGE #'blenderimage0.png'
+    high = folder / FRINGE_FILENAME #'blenderimage0.png'
     image1 = cv2.imread(str(high), 1).astype(np.float32)
     #black = folder + 'image9.png' #'' blenderblack.png
     #image2 = cv2.imread(black,1).astype(np.float32)

@@ -1,7 +1,7 @@
 #
 # filenames
 COLOR_FILENAME = "color.png"
-DIAS_FILENAME = "dias.png"
+FRINGE_FILENAME = "fringe.png"
 NOLIGHT_FILENAME = "nolight.png"
 MASK_FILENAME = "mask.png"
 

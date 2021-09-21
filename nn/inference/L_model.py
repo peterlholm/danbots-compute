@@ -6,7 +6,7 @@ from nn.inference.nn_util import normalize_image255, make_grayscale, db_predict
 from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
 
 MODEL_PATH = DATA_PATH / 'nnmodels/'
-L_MODELFILE = 'wr1uw-50.h5'
+L_MODELFILE = 'wr1uwr.h5'
 
 COLOR_IMAGE = 'color.png'
 

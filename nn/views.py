@@ -2,6 +2,7 @@ from pathlib import Path
 from shutil import rmtree
 from django.shortcuts import render, HttpResponse
 from compute.settings import DATA_PATH, NN_ENABLE  #, API_SERVER, TEMP_PATH
+from nn.inference.config import *
 if NN_ENABLE:
     from nn.inference.process import process_blender_folder
 
@@ -22,10 +23,10 @@ def process(request):
 
 def showresult(request):
     picpath = '/data/testdata/'
-    piclist = [picpath + "color.png",
-        picpath + "dias.png",
-        picpath + "nolight.png",
-        picpath + "mask.png",
+    piclist = [picpath + COLOR_FILENAME,
+        picpath + FRINGE_FILENAME,
+        picpath + NOLIGHT_FILENAME,
+        picpath + MASK_FILENAME,
         picpath + "nnwrap1.png",
         picpath + "nnunwrap.png",
         picpath + "nndepth.png",

@@ -4,25 +4,22 @@ from shutil import copytree, rmtree
 from pathlib import Path
 from nn.inference.prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
-from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
+from nn.inference.config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME
 from nn.inference.create_mask import create_mask
 from nn.inference.H_model import Hmodel, nnHprocess
 from nn.inference.L_model import nnLprocess
 from nn.inference.depth import newDepth
 from nn.inference.pointcloud import nngenerate_pointcloud
 
-def process_blender_folder(infolder, outfolder):
-    # receive a folder from blender, convert to standard files
-    # pass standard files through wrap_net and k_net
-
-    print("processing folder: ", infolder)
-    if not Path.exists(infolder):
-        raise Exception("Input directory does not exist", infolder)
+def process_input_folder(folder):
+    print("processing folder: ", folder)
+    if not Path.exists(folder):
+        raise Exception("Input directory does not exist", folder)
         return False
 
-    prepare_blender_input(infolder, outfolder)
+    #prepare_blender_input(infolder, outfolder)
     
-    folder = outfolder
+    #folder = outfolder
     create_mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
 
     #print(Hmodel)
@@ -30,7 +27,7 @@ def process_blender_folder(infolder, outfolder):
     nnLprocess(folder)
     newDepth(folder, 300)
 
-    nngenerate_pointcloud(folder / COLOR_FILENAME, folder /'mask.png', folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
+    nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 
     print ("Processing endet")
     return
