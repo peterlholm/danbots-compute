@@ -3,6 +3,7 @@ from nn import views
 
 urlpatterns = [
     path('', views.index),
-    path('process', views.process),
+    path('process_testdata', views.process_testdata),
     path('showresult', views.showresult),
 ]
+ 

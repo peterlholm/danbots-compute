@@ -11,7 +11,7 @@ TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata/render12"
 def index(request):
     return render (request, 'nn_index.html')
 
-def process(request):
+def process_testdata(request):
     data_path = DATA_PATH / 'testdata'
     if Path.exists(data_path):
         rmtree(data_path)

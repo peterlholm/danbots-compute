@@ -5,9 +5,8 @@ pillow
 numpy
 scikit-learn
 
+opencv-python-headless
 #opencv-phython
-#opencv-python-headless
-
 
 pylint
 pylint-django
