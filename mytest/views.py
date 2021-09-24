@@ -1,3 +1,8 @@
+"""
+mytest views.py
+test funtion til servere
+"""
+
 import subprocess
 from os import name
 from pathlib import Path
@@ -7,6 +12,7 @@ from django.shortcuts import render, HttpResponse
 from send2live.send2live import send_picture, send_ply_picture
 
 from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
+from calibrate.flash import flash_led_test
 
 def home(request):
     return render (request, 'home.html')
@@ -36,3 +42,7 @@ def upgrade(request):
     result = subprocess.run(script, cwd=root, check=True)
     output = str(result)
     return HttpResponse(output)
+
+def flash_led(request):
+    flash_led_test()
+    return HttpResponse("OK")

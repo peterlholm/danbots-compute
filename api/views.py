@@ -154,6 +154,7 @@ def sendfiles(request):
                 print(i)
                 flist = request.FILES.getlist(i)
                 for j in flist:
+                    print(j)
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             return JsonResponse({'result':"OK"})
