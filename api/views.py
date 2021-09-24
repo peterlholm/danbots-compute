@@ -146,6 +146,17 @@ def sendfiles(request):
             config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
             save_config(config, devicefolder )
             return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
+        elif cmd == "calflash":
+            print("Calibrate flash")
+            datafolder = devicefolder / 'calibrate' / 'calflash'
+            os.makedirs(datafolder, exist_ok=True)
+            for i in request.FILES:
+                print(i)
+                flist = request.FILES.getlist(i)
+                for j in flist:
+                    filepath = datafolder / j.name
+                    save_uploaded_file(j, filepath)
+            return JsonResponse({'result':"OK"})
         else:
             print("unknown cmd: ", cmd)
             return HttpResponse("Unknown command")
