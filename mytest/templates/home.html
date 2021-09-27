@@ -4,30 +4,33 @@
 <div class="row justify-content-center">
     <div class="col-6">
         <p>Compute API</p>
-        <h3><a href="/api/start3d">/api/start3d</a></h3>
-        <h3><a href="/api/scan3d">/api/scan3d</a></h3>
-        Post 3 files/pictures
         <ul>
-            <li>deviceid: tekstreng der er unic for scanneren</li>
-            <li>color_picture: billed</li>
-            <li>blackWhite_picture: billede</li>
-            <li>noLight_picture: billed</li>
+            <li><a href="/api/start3d">/api/start3d</a></li>
+            <li><a href="/api/scan3d">/api/scan3d</a></li>
+            Post 3 files/pictures
+            <ul>
+                <li>deviceid: tekstreng der er unic for scanneren</li>
+                <li>color_picture: billed</li>
+                <li>blackWhite_picture: billede</li>
+                <li>noLight_picture: billed</li>
+            </ul>
+            <li><a href="/api/save3d">/api/save3d</a></li>
+            <li><a href="/api/stop3d">/api/stop3d</a></li>
+            <br>
+            <li><a href="/api/test3d">/api/test3d</a></li>
+            <br>
+            <li><a href="/nn/">/nn nn processing</a></li>
+            <br>
+            <li><a href="/test/sendply">/test/sendply</a></li>
+            <li><a href="/test/sendpicture">/test/sendpicture</a></li>
+            <li><a href="/test/errorlog">/test/errorlog</a></li>
+            <li><a href="/test/upgrade">/test/upgrade</a></li>
+            <li><a href="/test/flash_led">/test/flash_led</a></li>
+            <br>
+            <li><a href="/train/">/train - Home for training</a></li>
+            <li><a href="/train/showresult">/train/showresult</a></li>
+            <br>
+            <li><a href="/data/">/data - Show data folders</a></li>
         </ul>
-        <h3><a href="/api/save3d">/api/save3d</a></h3>
-        <h3><a href="/api/stop3d">/api/stop3d</a></h3>
-        <br>
-        <h3><a href="/api/test3d">/api/test3d</a></h3>
-        <br>
-        <h3><a href="/nn/">/nn nn processing</a></h3>
-        <br>
-        <h3><a href="/test/sendply">/test/sendply</a></h3>
-        <h3><a href="/test/sendpicture">/test/sendpicture</a></h3>
-        <h3><a href="/test/upgrade">/test/upgrade</a></h3>
-        <!-- <h3><a href="/test/errorlog">/test/errorlog</a></h3> -->
-        <br>
-        <h3><a href="/train/">/train - Home for training</a></h3>
-        <h3><a href="/train/showresult">/train/showresult</a></h3>
-        <br>
-        <h3><a href="/data/">/data - Show data folders</a></h3>
-     </div>
-{% endblock %}
+    </div>
+    {% endblock %}

@@ -136,6 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = ['127.0.0.1', '10.1.1.100', '62.116.221.102' ]
 
 DATA_PATH = BASE_DIR / 'data'
+DEVICE_PATH = DATA_PATH / 'device'
 TEMP_PATH = '/tmp'
 API_SERVER = 'http://api.danbots.com/api/'
 
