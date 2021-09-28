@@ -7,6 +7,7 @@ from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
 
 MODEL_PATH = DATA_PATH / 'nnmodels/'
 L_MODELFILE = 'wr1uwr.h5'
+L_MODELFILE = 'L_model.h5'
 
 COLOR_IMAGE = 'color.png'
 

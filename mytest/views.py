@@ -28,6 +28,9 @@ def start_scan(request):
 def home(request):
     return render (request, 'home.html')
 
+def install_models(request):
+    return render (request, 'install_models.html')
+
 def test(request):
     return HttpResponse("Hello, Django!")
 
