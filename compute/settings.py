@@ -142,7 +142,7 @@ API_SERVER = 'http://api.danbots.com/api/'
 
 # enable NeuralNet processing
 NN_ENABLE = True
-
+MYDEVICE = "b827eb05abc2"
 try:
     from .settings_local import *   # pylint: disable=wildcard-import
 except ModuleNotFoundError:

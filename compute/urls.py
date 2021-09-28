@@ -24,6 +24,6 @@ urlpatterns = [
     path("nn/", include('nn.urls')),
     path("test/", include('mytest.urls')),
     path("train/", include('train.urls')),
-    path("", views.home),
+    path("", views.index),
     re_path(r'^data/(?P<path>.*)$', serve,{'document_root': settings.DATA_PATH}),
 ]

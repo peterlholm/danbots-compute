@@ -8,6 +8,7 @@ from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAM
 
 MODEL_PATH = DATA_PATH / 'nnmodels/'
 H_MODELFILE = 'im0wr40.h5'
+H_MODELFILE = 'H_model.h5'
 
 #COLOR_IMAGE = 'color.png'
 PI = np.pi

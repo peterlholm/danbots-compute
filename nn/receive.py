@@ -2,8 +2,8 @@ import os
 from compute.settings import DATA_PATH, NN_ENABLE
 from api.utils import save_uploaded_file
 from api.device_config import read_config
-if NN_ENABLE:
-    from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
+from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
+if NN_ENABLE:    
     from nn.inference.process_input import process_input_folder
 
 def receive_pic_set(device, set_number, color_picture, dias_picture, noligt_picture):
