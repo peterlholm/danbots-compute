@@ -22,7 +22,9 @@ def process_testdata(request):
     return HttpResponse("Processing...")
 
 def showresult(request):
-    picpath = '/data/testdata/'
+    path = '/data/testdata/'
+    picpath = request.GET.get('folder', path)
+
     piclist = [picpath + COLOR_FILENAME,
         picpath + FRINGE_FILENAME,
         picpath + NOLIGHT_FILENAME,
