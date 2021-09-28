@@ -44,5 +44,6 @@ def upgrade(request):
     return HttpResponse(output)
 
 def flash_led(request):
-    flash_led_test()
+    device = "b827eb05abc2"
+    flash_led_test(device)
     return HttpResponse("OK")

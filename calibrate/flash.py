@@ -4,13 +4,14 @@ flash test
 from os import makedirs
 from pathlib import Path
 from datetime import datetime
-from PIL import Image, ImageDraw, ImageStat, ImageFilter # ImageEnhance,
+from PIL import Image, ImageDraw, ImageStat, ImageFilter, ImageEnhance
 #from configparser import ConfigParser
 #from api.views import device_folder
 from compute.settings import DEVICE_PATH
 from api.device_config import read_device_config, save_device_config
 
 FOLDER = "calibrate/testdata/"
+FOLDER = "data/device/b827eb05abc2/calibrate"
 FILE_NAME = "flash01.jpg"
 CALIBRATE_SECTION = 'calibrate'
 LED_LIGHT_CORR = 'led_corr.png'
@@ -39,45 +40,66 @@ def save_config(config):
 
 def create_mask(img):
     if img.mode != "L":
-        grey = img.convert('L')
+        grey = img.convert('L', )
     else:
         grey = img
-
+    # enhancer = ImageEnhance.Contrast(grey)
+    # enh = enhancer.enhance(3)
+    # enh.show()   
+    # korr = grey.filter(ImageFilter.MedianFilter(size=31))
+    # korr.show()
     mask = Image.new('L', grey.size, color=255)
-    for x in range(0, img.width):
-        for y in range(0, img.height):
-            if img.getpixel((x,y)) <50:
+    for x in range(0, grey.width):
+        for y in range(0, grey.height):
+            if (x >grey.width * 0.90) or (y >grey.height*0.85):
                 mask.putpixel((x,y), 0)
-    grey.show()
-    mask.show()
+            # if korr.getpixel((x,y))[0] < 20:
+            #     mask.putpixel((x,y), 0)
+    # grey.show()
+    # korr7 = grey.filter(ImageFilter.MedianFilter(size=31))
+    # korr7.show()
+    # mask.show()
     return mask
     
 def flash_led_test(device="123"):
     print ("start", datetime.now())
-    device_folder = DEVICE_PATH / device
+    device_folder = DEVICE_PATH / device / "calibrate/calflash"
     makedirs(device_folder, exist_ok=True)
     config = read_config_section(device)
-    img = Image.open(file)
+    img = Image.open(device_folder / FILE_NAME)
     if _DEBUG:
         print("Input:", img.size, img.mode)
-    #img.show()
-    # reduse resolution
-    rimg = img.resize((160,120))   #
-    #rimg.show()
-    grey = rimg.convert('L')
-    #grey.show()
-
-
-    #grey.show()
-    width = grey.width
-    height = grey.height
-    # calculate mean from center area
-    reduce = 0.30
-    rect = (width*reduce/2, height*reduce/2, width*(1-reduce/2), height*(1-reduce/2))
-    mask = Image.new('L', grey.size, color=0)
-    draw = ImageDraw.Draw(mask)
-    draw.rectangle(rect,fill=255)
+        img.show()
+    grey = img.convert('L')
+    mask = create_mask(grey)
     grey.putalpha(mask)
+    grey.show()
+
+    #  # reduse resolution
+    # rimg = img.resize((160,120))   #
+    # #rimg.show()
+    # grey = rimg.convert('L')
+    # #grey.show()
+
+
+    #grey.show()
+    # width = grey.width
+    # height = grey.height
+
+    # # calculate mean from center area
+    # reduce = 0.30
+    # rect = (width*reduce/2, height*reduce/2, width*(1-reduce/2), height*(1-reduce/2))
+    # mask2 = Image.new('L', grey.size, color=0)
+    # draw = ImageDraw.Draw(mask)
+    # draw.rectangle(rect,fill=255)
+
+    mean = int(ImageStat.Stat(grey).mean[0])
+    print("mean", mean)
+    
+    return
+    grey.putalpha(mask2)
+    grey.show()
+    return
     mean = int(ImageStat.Stat(grey).mean[0])
     print("mean", mean)
 
