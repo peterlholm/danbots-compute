@@ -9,8 +9,8 @@ import shutil
 from compute.settings import DATA_PATH, NN_ENABLE #, TEMP_PATH
 from api.utils import save_uploaded_file
 from send2live.send2live import send_picture, send_ply_picture
-if NN_ENABLE:
-    from compute3d.nn_process import process_input, test_process_input
+
+#from compute3d.nn_process import process_input, test_process_input
 
 INPUT_FOLDER = 'input'
 ARCHIVE_FOLDER = 'archive'
@@ -57,7 +57,7 @@ def receive_pic_set(device, set_number, color_picture, dias_picture, noligt_pict
     save_uploaded_file(dias_picture, folder / DIAS_PICTURE )
     save_uploaded_file(noligt_picture, folder / NOLIGHT_PICTURE )
 
-    if NN_ENABLE:
+    if False:
         process_input(folder)
 
     result = send_picture(device, folder / COLOR_PICTURE )
@@ -76,6 +76,6 @@ def stop_scan(device_path):
 def test_nn():
     folder = DATA_PATH / 'test/1'
     if NN_ENABLE:
-        result = test_process_input(folder)
+        #result = test_process_input(folder)
         return result
     return {'NeuralNet': False}
