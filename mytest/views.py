@@ -12,14 +12,14 @@ from django.shortcuts import render, HttpResponse, redirect
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
 
-from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
+from compute.settings import DATA_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
 
 def index(request):
     return render (request, 'index.html')
 
 def start_scan(request):
-    device_path = "/data/device/" + "b827eb05abc2" + "/input/1/"
+    device_path = "/data/device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:
         return redirect("/nn/showresult?folder="+device_path)
