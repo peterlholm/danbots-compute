@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from shutil import copytree, rmtree
 from pathlib import Path
-from nn.inference.prepare_input import prepare_blender_input, COLORPICTURE
+from nn.prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
 from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
 from nn.inference.create_mask import create_mask
@@ -34,6 +34,19 @@ def process_blender_folder(infolder, outfolder):
 
     print ("Processing endet")
     return
+
+def process_nn_folder(folder):
+    create_mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
+
+    nnHprocess(folder)
+    nnLprocess(folder)
+    newDepth(folder, 300)
+
+    nngenerate_pointcloud(folder / COLOR_FILENAME, folder /'mask.png', folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
+
+    print ("Processing endet")
+
+
 
 def process_nn():
     return

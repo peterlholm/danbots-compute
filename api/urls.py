@@ -6,6 +6,7 @@ from django.urls import path
 from api import views
 
 urlpatterns = [
+    path('', views.index),
     path('start2d', views.start2d),
     path('save2d', views.save2d),
     path('stop2d', views.stop3d),

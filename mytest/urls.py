@@ -6,7 +6,7 @@ from django.urls import path
 from mytest import views
 
 urlpatterns = [
-    path("", views.test),
+    path("", views.debug),
     path("debug", views.debug),
     path("sendply/", views.sendply),
     path("start_scan/", views.start_scan),

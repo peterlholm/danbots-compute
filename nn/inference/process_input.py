@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from shutil import copytree, rmtree
 from pathlib import Path
-from nn.inference.prepare_input import prepare_blender_input, COLORPICTURE
+from nn.prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
 from nn.inference.config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME
 from nn.inference.create_mask import create_mask

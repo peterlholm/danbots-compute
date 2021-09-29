@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <p>Compute API</p>
+        <ul>
+            <li><a href="/api/start3d">/api/start3d</a></li>
+            <li><a href="/api/scan3d">/api/scan3d</a></li>
+            Post 3 files/pictures
+            <ul>
+                <li>deviceid: tekstreng der er unic for scanneren</li>
+                <li>color_picture: billed</li>
+                <li>blackWhite_picture: billede</li>
+                <li>noLight_picture: billed</li>
+            </ul>
+            <li><a href="/api/save3d">/api/save3d</a></li>
+            <li><a href="/api/stop3d">/api/stop3d</a></li>
+            <br>
+            <li><a href="/api/start2d">/api/start2d</a></li>
+            <li><a href="/api/save2d">/api/save2d</a></li>
+            <li><a href="/api/stop2d">/api/stop2d</a></li>
+            <br>
+            <li><a href="/api/sendfiles">/api/sendfiles</a></li>
+        </ul>
+    </div>
+    {% endblock %}
+    

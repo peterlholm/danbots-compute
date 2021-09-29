@@ -8,10 +8,8 @@ from os import name
 from pathlib import Path
 from django.http import FileResponse
 from django.shortcuts import render, HttpResponse, redirect
-#from send2live.send2live import send_file
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
-
 from compute.settings import DATA_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
 

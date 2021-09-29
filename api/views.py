@@ -16,6 +16,9 @@ from .forms import Form3dScan
 
 DEVICE_PATH = DATA_PATH / 'device'
 
+def index(request):
+    return render(request, 'index.html')
+
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
         for chunk in handle.chunks():

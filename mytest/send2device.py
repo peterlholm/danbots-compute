@@ -1,10 +1,10 @@
-#
+"""
 # this module send results to API/Live server
-#
-from sys import platform
-import os.path
+"""
+#from sys import platform
+#import os.path
 import requests
-from compute.settings import API_SERVER #, DATA_PATH,TEMP_PATH
+#from compute.settings import API_SERVER #, DATA_PATH,TEMP_PATH
 
 PIC2D_FUNC = 'sendpicture'
 PIC3D_FUNC = "sendply"
@@ -18,9 +18,8 @@ def send_request(url, params=None):
         return False
     if req.status_code == requests.codes.ok:  #pylint: disable=no-member
         return True
-    else:
-        print('Noget gik galt: ', req.status_code)
-        print(req.text)
+    print('Noget gik galt: ', req.status_code)
+    print(req.text)
     return False
 
 def send_start_scan(deviceurl="http://danwand.local:8080/"):
