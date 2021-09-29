@@ -43,7 +43,7 @@ def start_scan(device_path):
         if os.path.exists(infolder):
             datestr = datetime.datetime.now().strftime('%y%m%d-%H%M')
             outfolder = device_path / ARCHIVE_FOLDER / datestr
-            shutil.copytree(infolder, outfolder)
+            shutil.copytree(infolder, outfolder, dirs_exist_ok=True)
     # clean folder
     shutil.rmtree(infolder)
     os.makedirs(infolder, exist_ok=True)

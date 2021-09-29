@@ -1,9 +1,6 @@
 from django.shortcuts import render #, HttpResponse
 #from compute.settings import DATA_PATH  #, API_SERVER, TEMP_PATH
 
-def index(request):
-    return render (request, 'home.html')
-
 def showresult(request):
     folder_index = int(request.GET.get('index',1))
     next_val = int(request.GET.get('next',0))

@@ -16,7 +16,10 @@ from compute.settings import DATA_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
 
 def index(request):
-    return render (request, 'index.html')
+    return render (request, 'index.html', context={ 'device': MYDEVICE })
+
+def debug(request):
+    return render (request, 'debug.html')
 
 def start_scan(request):
     device_path = "/data/device/" + MYDEVICE + "/input/1/"
@@ -25,8 +28,6 @@ def start_scan(request):
         return redirect("/nn/showresult?folder="+device_path)
     return HttpResponse("Scan start gik galt", res)
 
-def home(request):
-    return render (request, 'home.html')
 
 def install_models(request):
     return render (request, 'install_models.html')

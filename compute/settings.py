@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'api',
     'nn',
     'mytest',
-    'train'
+    #'train'
 ]
 
 MIDDLEWARE = [

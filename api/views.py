@@ -1,3 +1,6 @@
+"""
+api views
+"""
 import os
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
@@ -5,10 +8,11 @@ from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
 from api.device_config import read_config, save_config
-from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
+#from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
+from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
 from nn.receive import receive_pic_set
-from .forms import Form3dScan
 from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
+from .forms import Form3dScan
 
 DEVICE_PATH = DATA_PATH / 'device'
 
@@ -146,7 +150,7 @@ def sendfiles(request):
             config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
             save_config(config, devicefolder )
             return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
-        elif cmd == "calflash":
+        if cmd == "calflash":
             print("Calibrate flash")
             datafolder = devicefolder / 'calibrate' / 'calflash'
             os.makedirs(datafolder, exist_ok=True)
@@ -158,14 +162,7 @@ def sendfiles(request):
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             return JsonResponse({'result':"OK"})
-        else:
-            print("unknown cmd: ", cmd)
-            return HttpResponse("Unknown command")
-        return JsonResponse({'result':"OK", "slope": 0})
+        print("unknown cmd: ", cmd)
+        return HttpResponse("Unknown command")
+        #return JsonResponse({'result':"OK", "slope": 0})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
-
-@csrf_exempt
-def test3d(request):
-    print("test3d request - calling test_nn")
-    result = test_nn()
-    return JsonResponse({ **result, 'result':"OK"})

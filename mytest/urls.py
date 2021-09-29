@@ -7,6 +7,7 @@ from mytest import views
 
 urlpatterns = [
     path("", views.test),
+    path("debug", views.debug),
     path("sendply/", views.sendply),
     path("start_scan/", views.start_scan),
     path("install_models/", views.install_models),

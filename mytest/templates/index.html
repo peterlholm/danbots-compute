@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+
 <h1>System Debug</h1>
+<br>
+Selected device is {{device}}
+<br>
 <br>
 <a href="test/start_scan" class="btn btn-lg btn-primary">Start Scan</a>
 <a href="nn/showresult" class="btn btn-lg btn-primary">Display results</a>
 <br>
 <br><br>
+<h3>Debug</h3>
+<br>
+<a href="test/debug" class="btn btn-lg btn-secondary">Debug</a>
+<br><br>
+<h3>Documentation</h3>
+<br>
 <a href="test/install_models" class="btn btn-lg btn-primary">Install Models</a>
-
-
-</div>
 
 {% endblock %}
