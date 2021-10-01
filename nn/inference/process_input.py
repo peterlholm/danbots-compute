@@ -10,6 +10,7 @@ from nn.inference.H_model import Hmodel, nnHprocess
 from nn.inference.L_model import nnLprocess
 from nn.inference.depth import newDepth
 from nn.inference.pointcloud import nngenerate_pointcloud
+from Utils.Imaging.pcl2png import pcl2png
 
 def process_input_folder(folder):
     print("processing folder: ", folder)
@@ -28,6 +29,8 @@ def process_input_folder(folder):
     newDepth(folder, 300)
 
     nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
+
+    pcl2png(folder / 'pointcl-nndepth.ply',folder / 'pointcl-nndepth.png')
 
     print ("Processing endet")
     return

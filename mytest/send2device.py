@@ -8,7 +8,7 @@ import requests
 
 PIC2D_FUNC = 'sendpicture'
 PIC3D_FUNC = "sendply"
-HTTP_TIMEOUT = 10
+HTTP_TIMEOUT = 30
 
 def send_request(url, params=None):
     try:

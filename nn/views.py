@@ -14,7 +14,7 @@ if NN_ENABLE:
     from nn.inference.process import process_blender_folder
 
 IN_TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata"
-TESTDATA = DATA_PATH / 'testdata'
+TESTDATA_OUT = DATA_PATH / 'testdata'
 
 print(IN_TESTDATAPATH)
 
@@ -41,8 +41,26 @@ def copy_devicedata(infolder, outfolder):
 def index(request):
     return render (request, 'nn_index.html')
 
+def process_blender_testdata(request):
+    """
+    Process blender testdata set to data/testdata
+    """
+    TESTDATAFOLDER = Path(__file__).resolve().parent.parent / "testdata/render12"
+    data_path = DATA_PATH / 'testdata/process'
+    if Path.exists(data_path):
+        rmtree(data_path)
+    Path.mkdir(data_path)
+    infolder = Path(TESTDATAFOLDER)
+    if NN_ENABLE:
+        process_blender_folder(infolder, data_path)
+    return redirect("/nn/show_pictures")
+    #return HttpResponse("Testdata Processed...")
+
 def process_device_folder(request):
-    outfolder  = TESTDATA / 'process'
+    """
+    Process data in folder from device
+    """
+    outfolder  = TESTDATA_OUT / 'process'
     rmtree(outfolder, ignore_errors=True)
     copy_devicedata(IN_TESTDATAPATH / "device", outfolder)
     proc_device_data(None, outfolder)
@@ -53,32 +71,10 @@ def process_device_folder(request):
         print ("NN disabled")
     return redirect("/nn/show_pictures")
 
-def process_folder(request):
-    outfolder  = TESTDATA / 'process'
-    rmtree(outfolder, ignore_errors=True)
-    copy_testdata(IN_TESTDATAPATH / "device", outfolder)
-    proc_device_data(None, outfolder)
-    if NN_ENABLE:
-        process_nn_folder(outfolder)
-    else:
-        print ("NN disabled")
-    return redirect("/nn/show_pictures")
-    #return HttpResponse("Folder processed")
-
-
-def process_testdata(request):
-    TESTDATAFOLDER = Path(__file__).resolve().parent.parent / "testdata/render12"
-    data_path = DATA_PATH / 'testdata'
-    if Path.exists(data_path):
-        rmtree(data_path)
-    Path.mkdir(data_path)
-    infolder = Path(TESTDATAFOLDER)
-    if NN_ENABLE:
-        process_blender_folder(infolder, data_path)
-
-    return HttpResponse("Testdata Processed...")
-
 def showresult(request):
+    """
+    Show standard pictures in folder
+    """
     path = '/data/testdata/'
     picpath = request.GET.get('folder', path)
 
@@ -107,12 +103,18 @@ def showresult(request):
     return render (request, 'showresult.html', context=mycontext)
 
 def show_pictures(request):
+    """
+    Show all jpg and png pictures in folder
+    """
     datapath = 'testdata/process/'
+    #datapath = 'testdata/'
     abs_path = DATA_PATH / request.GET.get('folder', datapath)
     pic_list = []
+    print (abs_path)
     for p in Path.glob(abs_path,"*.jpg"):
         pic_list.append("/data/"+datapath+p.name)
     for p in Path.glob(abs_path,"*.png"):
         pic_list.append("/data/"+datapath+p.name)
     mycontext={"path": datapath, "pictures": pic_list}
+    print (mycontext)
     return render (request, 'showresult.html', context=mycontext)

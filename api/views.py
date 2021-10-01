@@ -17,7 +17,7 @@ from .forms import Form3dScan
 DEVICE_PATH = DATA_PATH / 'device'
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'api_index.html')
 
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
@@ -116,6 +116,7 @@ def scan3d(request):
         if picform.is_valid():
             devicefolder = device_folder(request)
             set_number = request.POST['pictureno']
+            receive_pictures(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
             receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
             return JsonResponse({'result':"OK"})
         print ("Form not valid", picform.errors)
@@ -135,7 +136,7 @@ def stop3d(request):
 def sendfiles(request):
     if request.method in ['POST']:
         devicefolder = device_folder(request)
-        cmd = request.POST['cmd']
+        cmd = request.POST.get('cmd', None)
         if cmd == "calibrate":
             print("Calibrate")
             datafolder = devicefolder / 'calibrate'
@@ -165,7 +166,19 @@ def sendfiles(request):
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             return JsonResponse({'result':"OK"})
-        print("unknown cmd: ", cmd)
+        else:
+            print("unknown cmd: ", cmd)
+            datafolder = devicefolder / 'unknown_cmd'
+            os.makedirs(datafolder, exist_ok=True)
+            for i in request.FILES:
+                print(i)
+                flist = request.FILES.getlist(i)
+                for j in flist:
+                    print(j)
+                    filepath = datafolder / j.name
+                    save_uploaded_file(j, filepath)
+            return JsonResponse({'result':"OK"})
+
         return HttpResponse("Unknown command")
         #return JsonResponse({'result':"OK", "slope": 0})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
