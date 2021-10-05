@@ -2,6 +2,7 @@
 api views
 """
 import os
+#from threading import Thread
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,11 +11,14 @@ from api.utils import receive_pictures
 from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
-from nn.receive import receive_pic_set
+#from nn.receive import receive_pic_set
 from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
+from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
 
 DEVICE_PATH = DATA_PATH / 'device'
+
+_DEBUG = True
 
 def index(request):
     return render(request, 'api_index.html')
@@ -106,22 +110,22 @@ def save3d(request):
     #print(mycontext)
     return render(request, 'send3dscan.html', mycontext)
 
-@csrf_exempt
-def scan3d2(request):
-    picform = Form3dScan(initial={'deviceid': 123})
-    mycontext = {
-        'form': picform,
-    }
-    if request.method == 'POST':
-        picform = Form3dScan(request.POST, request.FILES)
-        if picform.is_valid():
-            devicefolder = device_folder(request)
-            set_number = request.POST['pictureno']
-            receive_pictures(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
-            receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
-            return JsonResponse({'result':"OK"})
-        print ("Form not valid", picform.errors)
-    return render(request, 'send3dscan.html', mycontext)
+# @csrf_exempt
+# def scan3d2(request):
+#     picform = Form3dScan(initial={'deviceid': 123})
+#     mycontext = {
+#         'form': picform,
+#     }
+#     if request.method == 'POST':
+#         picform = Form3dScan(request.POST, request.FILES)
+#         if picform.is_valid():
+#             devicefolder = device_folder(request)
+#             set_number = request.POST['pictureno']
+#             receive_pictures(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
+#             receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
+#             return JsonResponse({'result':"OK"})
+#         print ("Form not valid", picform.errors)
+#     return render(request, 'send3dscan.html', mycontext)
 
 @csrf_exempt
 def scan3d(request):
@@ -150,14 +154,21 @@ def stop3d(request):
 
 # sendfiles
 
+def create_masks(deviceid, datafolder):
+    mask = create_mask(datafolder / "flash.jpg")
+    save_flash_mask(deviceid, mask)
+    mask = create_mask(datafolder / "dias.jpg", blur=True)
+    save_dias_mask(deviceid, mask)
+
 @csrf_exempt
 def sendfiles(request):
     if request.method in ['POST']:
+        deviceid = check_device(request)
         devicefolder = device_folder(request)
         cmd = request.POST.get('cmd', None)
-        if cmd == "calibrate":
-            print("Calibrate")
-            datafolder = devicefolder / 'calibrate'
+        if cmd == "caldias":
+            print("Calibrate dias")
+            datafolder = devicefolder / 'calibrate' / 'calcamera'
             os.makedirs(datafolder, exist_ok=True)
             for i in request.FILES:
                 flist = request.FILES.getlist(i)
@@ -167,13 +178,15 @@ def sendfiles(request):
             cal_picture = datafolder / 'color.png'
             slope = get_img_slope(cal_picture)
             freq = get_img_freq(cal_picture)
-            print(slope,freq)
+            if _DEBUG:
+                print(f"Callibrate device {deviceid} Slope: {slope}, Freq: {freq}")
             config = read_config(devicefolder)
             config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
-            save_config(config, devicefolder )
+            save_config(config, devicefolder)
+            create_masks(deviceid, datafolder)
             return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
         if cmd == "calflash":
-            print("Calibrate flash")
+            print("Calibrate flash led")
             datafolder = devicefolder / 'calibrate' / 'calflash'
             os.makedirs(datafolder, exist_ok=True)
             for i in request.FILES:
@@ -183,19 +196,16 @@ def sendfiles(request):
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             return JsonResponse({'result':"OK"})
-        else:
-            print("unknown cmd: ", cmd)
-            datafolder = devicefolder / 'unknown_cmd'
-            os.makedirs(datafolder, exist_ok=True)
-            for i in request.FILES:
-                print(i)
-                flist = request.FILES.getlist(i)
-                for j in flist:
-                    print(j)
-                    filepath = datafolder / j.name
-                    save_uploaded_file(j, filepath)
-            return JsonResponse({'result':"OK"})
 
-        return HttpResponse("Unknown command")
-        #return JsonResponse({'result':"OK", "slope": 0})
+        print("unknown cmd: ", cmd)
+        datafolder = devicefolder / 'unknown_cmd'
+        os.makedirs(datafolder, exist_ok=True)
+        for i in request.FILES:
+            print(i)
+            flist = request.FILES.getlist(i)
+            for j in flist:
+                print(j)
+                filepath = datafolder / j.name
+                save_uploaded_file(j, filepath)
+        return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
