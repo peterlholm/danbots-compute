@@ -57,10 +57,24 @@ def save_dias_mask(device, mask):
     config = read_device_config(device)
     if CALIBRATE_SECTION not in config.sections():
         config.add_section(CALIBRATE_SECTION)
-    config[CALIBRATE_SECTION]['flash_dias_left'] = str(mask[0])
-    config[CALIBRATE_SECTION]['flash_dias_top'] = str(mask[1])
-    config[CALIBRATE_SECTION]['flash_dias_right'] = str(mask[2])
-    config[CALIBRATE_SECTION]['flash_dias_bottom'] = str(mask[3])
+    config[CALIBRATE_SECTION]['dias_mask_left'] = str(mask[0])
+    config[CALIBRATE_SECTION]['dias_mask_top'] = str(mask[1])
+    config[CALIBRATE_SECTION]['dias_mask_right'] = str(mask[2])
+    config[CALIBRATE_SECTION]['dias_mask_bottom'] = str(mask[3])
+    # calculate dias 160 masks
+    faktor = 1944 / 160
+    if mask[0] < (8189-1941)/2:
+        left = 0
+    else:
+        left = int((mask[0]-(8189-1941)/2)/faktor)
+    if mask[2] > 8189-(8189-1941)/2:
+        right = 160
+    else:
+        right = int(160- (8189-(8189-1941)/2 -mask[2])/faktor )
+    config[CALIBRATE_SECTION]['dias_160_left'] = str(left)
+    config[CALIBRATE_SECTION]['dias_160_top'] = str(int(mask[1]/faktor))
+    config[CALIBRATE_SECTION]['dias_160_right'] = str(right)
+    config[CALIBRATE_SECTION]['dias_160_bottom'] = str(int(mask[3]/faktor))
     save_device_config(config, device)
 
 if __name__ == "__main__":

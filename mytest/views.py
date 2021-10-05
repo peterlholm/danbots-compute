@@ -12,6 +12,7 @@ from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
 from compute.settings import DATA_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
+from api.pic_utils import include_all_masks
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -60,3 +61,9 @@ def flash_led(request):
     device = "b827eb05abc2"
     flash_led_test(device)
     return HttpResponse("OK")
+
+def include_masks(request):
+    folder = "data/device/b827eb05abc2/input"
+    include_all_masks(Path(folder))
+    return HttpResponse("OK")
+   

@@ -11,7 +11,7 @@ from api.utils import receive_pictures
 from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
-#from nn.receive import receive_pic_set
+from nn.receive import receive_pic_set
 from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
@@ -43,7 +43,7 @@ def check_device(request):
     deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
     return deviceid
 
-# 2D
+# ***************** 2D *******************
 @csrf_exempt
 def start2d(request):
     if not request.method in ['GET','POST']:
@@ -80,7 +80,7 @@ def stop2d(request):
     print("stop2d received: ", devicefolder)
     return JsonResponse({'result':"OK"})
 
-# 3D
+# *************** 3D *********************
 @csrf_exempt
 def start3d(request):
     if request.method =="GET":
