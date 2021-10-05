@@ -83,8 +83,9 @@ def start3d(request):
         if request.GET.get('deviceid') is None:
             return HttpResponse('start3d must include deviceid')
     if request.method in ['GET','POST']:
+        deviceid = check_device(request)
         devicefolder = device_folder(request)
-        start_scan(devicefolder)
+        start_scan(deviceid, devicefolder)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "illegal method"})
 
@@ -106,7 +107,7 @@ def save3d(request):
     return render(request, 'send3dscan.html', mycontext)
 
 @csrf_exempt
-def scan3d(request):
+def scan3d2(request):
     picform = Form3dScan(initial={'deviceid': 123})
     mycontext = {
         'form': picform,
@@ -123,10 +124,27 @@ def scan3d(request):
     return render(request, 'send3dscan.html', mycontext)
 
 @csrf_exempt
+def scan3d(request):
+    if request.method in ['POST']:
+        #cmd = request.POST.get('cmd', None)
+        devicefolder = device_folder(request)
+        set_number = request.POST['pictureno']
+        folder = devicefolder / 'input' / str(set_number)
+        os.makedirs(folder, exist_ok=True)
+        for i in request.FILES:
+            flist = request.FILES.getlist(i)
+            for j in flist:
+                filepath = folder / j.name
+                save_uploaded_file(j, filepath)
+        return JsonResponse({'result':"OK"})
+    return JsonResponse({'result':"False", "errortext":"request is not post"})
+
+@csrf_exempt
 def stop3d(request):
     if request.method in ['GET','POST']:
+        deviceid = check_device(request)
         devicefolder = device_folder(request)
-        stop_scan(devicefolder)
+        stop_scan(deviceid, devicefolder)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
 
@@ -162,7 +180,6 @@ def sendfiles(request):
                 print(i)
                 flist = request.FILES.getlist(i)
                 for j in flist:
-                    print(j)
                     filepath = datafolder / j.name
                     save_uploaded_file(j, filepath)
             return JsonResponse({'result':"OK"})

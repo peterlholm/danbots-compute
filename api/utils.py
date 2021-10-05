@@ -31,7 +31,7 @@ def receive_pictures(device, set_number, color_picture, dias_picture, noligt_pic
     save_uploaded_file(noligt_picture, folder / nolight_pic )
     return True
 
-def start_scan(device_path):
+def start_scan(device, device_path):
     # archive last input folder
     infolder = device_path / INPUT_FOLDER
     os.makedirs(infolder, exist_ok=True)
@@ -44,5 +44,5 @@ def start_scan(device_path):
     rmtree(infolder)
     os.makedirs(infolder, exist_ok=True)
 
-def stop_scan(device_path):
-    print('Scan Stop device:', device_path)
+def stop_scan(device, device_path):
+    return
