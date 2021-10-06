@@ -12,7 +12,8 @@ from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
 from nn.receive import receive_pic_set
-from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
+#from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
+from calibrate.functions import cal_camera
 from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
 
@@ -160,52 +161,46 @@ def create_masks(deviceid, datafolder):
     mask = create_mask(datafolder / "dias.jpg", blur=True)
     save_dias_mask(deviceid, mask)
 
+def save_file_to_folder(request, datafolder):
+    os.makedirs(datafolder, exist_ok=True)
+    for i in request.FILES:
+        flist = request.FILES.getlist(i)
+        for j in flist:
+            filepath = datafolder / j.name
+            save_uploaded_file(j, filepath)
+
 @csrf_exempt
 def sendfiles(request):
     if request.method in ['POST']:
         deviceid = check_device(request)
         devicefolder = device_folder(request)
         cmd = request.POST.get('cmd', None)
-        if cmd == "caldias":
-            print("Calibrate dias")
-            datafolder = devicefolder / 'calibrate' / 'calcamera'
-            os.makedirs(datafolder, exist_ok=True)
-            for i in request.FILES:
-                flist = request.FILES.getlist(i)
-                for j in flist:
-                    filepath = datafolder / j.name
-                    save_uploaded_file(j, filepath)
-            cal_picture = datafolder / 'color.png'
-            slope = get_img_slope(cal_picture)
-            freq = get_img_freq(cal_picture)
-            if _DEBUG:
-                print(f"Callibrate device {deviceid} Slope: {slope}, Freq: {freq}")
-            config = read_config(devicefolder)
-            config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
-            save_config(config, devicefolder)
-            create_masks(deviceid, datafolder)
-            return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
+        if cmd=="caldias":
+            datafolder = devicefolder / 'calibrate' / 'camera'
+            save_file_to_folder(request, datafolder)
+            cal_camera(deviceid, datafolder)
+            return JsonResponse({'result':"OK"})
+        # if cmd == "caldias":
+        #     print("Calibrate dias")
+        #     datafolder = devicefolder / 'calibrate' / 'calcamera'
+        #     save_file_to_folder(request, datafolder)
+        #     cal_picture = datafolder / 'color.png'
+        #     slope = get_img_slope(cal_picture)
+        #     freq = get_img_freq(cal_picture)
+        #     if _DEBUG:
+        #         print(f"Callibrate device {deviceid} Slope: {slope}, Freq: {freq}")
+        #     config = read_config(devicefolder)
+        #     config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
+        #     save_config(config, devicefolder)
+        #     create_masks(deviceid, datafolder)
+        #     return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
         if cmd == "calflash":
             print("Calibrate flash led")
-            datafolder = devicefolder / 'calibrate' / 'calflash'
-            os.makedirs(datafolder, exist_ok=True)
-            for i in request.FILES:
-                print(i)
-                flist = request.FILES.getlist(i)
-                for j in flist:
-                    filepath = datafolder / j.name
-                    save_uploaded_file(j, filepath)
+            datafolder = devicefolder / 'calibrate' / 'calcamera'
             return JsonResponse({'result':"OK"})
 
         print("unknown cmd: ", cmd)
         datafolder = devicefolder / 'unknown_cmd'
-        os.makedirs(datafolder, exist_ok=True)
-        for i in request.FILES:
-            print(i)
-            flist = request.FILES.getlist(i)
-            for j in flist:
-                print(j)
-                filepath = datafolder / j.name
-                save_uploaded_file(j, filepath)
+        save_file_to_folder(request, datafolder)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})

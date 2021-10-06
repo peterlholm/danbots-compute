@@ -43,6 +43,16 @@ def create_mask(pathname, blur=False, tolerence=0.85):
     right = x
     return (left, top, right, button)
 
+def save_mask(config, mask, label="flash_mask"):
+    #config = read_device_config(device)
+    if CALIBRATE_SECTION not in config.sections():
+        config.add_section(CALIBRATE_SECTION)
+    config[CALIBRATE_SECTION][label +'_left'] = str(mask[0])
+    config[CALIBRATE_SECTION][label +'_top'] = str(mask[1])
+    config[CALIBRATE_SECTION][label +'_right'] = str(mask[2])
+    config[CALIBRATE_SECTION][label +'_bottom'] = str(mask[3])
+    return config
+
 def save_flash_mask(device, mask):
     config = read_device_config(device)
     if CALIBRATE_SECTION not in config.sections():
@@ -76,6 +86,11 @@ def save_dias_mask(device, mask):
     config[CALIBRATE_SECTION]['dias_160_right'] = str(right)
     config[CALIBRATE_SECTION]['dias_160_bottom'] = str(int(mask[3]/faktor))
     save_device_config(config, device)
+
+def create_mask_in_config(file, config, label="flash_mask", blur=None):
+    mask = create_mask(file, blur=blur)
+    print ("Mask:", mask)
+    return save_mask(config, mask, label=label)
 
 if __name__ == "__main__":
     FILE = "data/device/b827eb05abc2/calibrate/calcamera/flash.jpg"

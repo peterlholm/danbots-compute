@@ -1,5 +1,6 @@
+""" module for camera calibration """
 from PIL import Image, ImageEnhance
-from Utils.Imaging.calibrering.regressions import linear_regress
+from calibrate.regressions import linear_regress
 
 def search_high(img, x, y, up=False):
     # find higher value up or down return better value or false
