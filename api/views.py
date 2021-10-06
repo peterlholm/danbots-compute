@@ -8,13 +8,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
-from api.device_config import read_config, save_config
+#from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
-from nn.receive import receive_pic_set
+#from nn.receive import receive_pic_set
 #from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 from calibrate.functions import cal_camera
-from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
+#from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
 
 DEVICE_PATH = DATA_PATH / 'device'
@@ -155,11 +155,11 @@ def stop3d(request):
 
 # sendfiles
 
-def create_masks(deviceid, datafolder):
-    mask = create_mask(datafolder / "flash.jpg")
-    save_flash_mask(deviceid, mask)
-    mask = create_mask(datafolder / "dias.jpg", blur=True)
-    save_dias_mask(deviceid, mask)
+# def create_masks(deviceid, datafolder):
+#     mask = create_mask(datafolder / "flash.jpg")
+#     save_flash_mask(deviceid, mask)
+#     mask = create_mask(datafolder / "dias.jpg", blur=True)
+#     save_dias_mask(deviceid, mask)
 
 def save_file_to_folder(request, datafolder):
     os.makedirs(datafolder, exist_ok=True)
@@ -175,7 +175,7 @@ def sendfiles(request):
         deviceid = check_device(request)
         devicefolder = device_folder(request)
         cmd = request.POST.get('cmd', None)
-        if cmd=="caldias":
+        if cmd=="calcamera":
             datafolder = devicefolder / 'calibrate' / 'camera'
             save_file_to_folder(request, datafolder)
             cal_camera(deviceid, datafolder)

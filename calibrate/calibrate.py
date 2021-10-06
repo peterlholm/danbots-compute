@@ -1,6 +1,8 @@
 """ module for camera calibration """
-from PIL import Image, ImageEnhance
+from PIL import Image #, ImageEnhance
 from calibrate.regressions import linear_regress
+
+# pylint: disable=invalid-name
 
 def search_high(img, x, y, up=False):
     # find higher value up or down return better value or false
@@ -22,8 +24,7 @@ def search_high(img, x, y, up=False):
         else:
             if found:
                 return(x,oldy)
-            else:
-                return False
+            return False
 
 def search_low(img, x, y, up=False):
     # find lowest value up or down return better value or false
@@ -45,15 +46,12 @@ def search_low(img, x, y, up=False):
         else:
             if found:
                 return(x,oldy)
-            else:
-                return False
+            return False
 
 def find_next_high(img, x, y):
     # find the nearest heigh pixel in same x column
     new1 = search_high(img, x,y)
     new2 = search_high(img, x,y,True)
-    #print("new1", new1)
-    #print('new2', new2)
     if not new1:
         if not new2:
             return ((x,y))
@@ -82,7 +80,6 @@ def get_img_slope(filename):
         point = find_next_high(grey,i,y)
         arr.append(point)
     degree = linear_regress(arr)
-    #print("slope", degree, "degree")
     return -degree
 
 def get_img_freq(filename):
@@ -90,27 +87,17 @@ def get_img_freq(filename):
     grey = img.convert('L')
     x=50
     y=50
-    #print ("start", x,y )
     start = find_next_high(grey,x,y)
-    #print ("nystart", start)
     x=start[0]
     y=start[1]
     up = search_low(grey, x,y)
-    #print("up",up)
     down = search_low(grey, x,y, up=True)
-    #print("down", down)
     diff = up[1]-down[1]
-    #print ("diff", diff)
-    #print ( diff/100.0)
     return diff/100.0
 
 if __name__ == "__main__":
-    filename = "Imaging/calibrering/testdata/align/image0.jpg"
-    deg = get_img_slope(filename)
+    myfilename = "Imaging/calibrering/testdata/align/image0.jpg"
+    deg = get_img_slope(myfilename)
     print("degree: ", deg)
-
-    # img = Image.open(filename)
-    # img.rotate(-deg).show()
-
-    freq = get_img_freq(filename)
+    freq = get_img_freq(myfilename)
     print("freq",freq)
