@@ -1,3 +1,4 @@
+"""Utillities for picture management"""
 from PIL import Image
 
 def create_mask(img, mask):
@@ -18,10 +19,8 @@ def include_device_masks(file, mask):
     img.putalpha(maskimg)
     img.show()
     img.save("myfile.png")
-    return
 
 def include_all_masks(folder):
     print(str(folder))
     mask = (30,30,100,100)
     include_device_masks(folder / '1' / 'dias.jpg', mask)
-
