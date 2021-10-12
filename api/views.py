@@ -2,16 +2,17 @@
 api views
 """
 import os
+from time import sleep
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
 from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
-from nn.receive import receive_pic_set
+#from nn.receive import receive_pic_set
 from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
@@ -49,10 +50,11 @@ def start2d(request):
     if not request.method in ['GET','POST']:
         return JsonResponse({'result':"False", "reason": "illegal method"})
     deviceid = check_device(request)
+    devicefolder = device_folder(request) / '2d'
     if not deviceid:
         return HttpResponse('start2d must include deviceid')
-    devicefolder = get_device_folder(deviceid)
     print("start2d received: ", devicefolder)
+    start_scan(deviceid, devicefolder)
     return JsonResponse({'result':"OK"})
 
 @csrf_exempt
@@ -60,12 +62,18 @@ def save2d(request):
     if not request.method in ['POST']:
         return JsonResponse({'result':"False", "reason": "illegal method"})
     deviceid = check_device(request)
+    devicefolder = device_folder(request)
     if not deviceid:
         return HttpResponse('save2d must include deviceid')
-    #devicefolder = get_device_folder(deviceid)
-    file = request.FILES['picture']
-    print(file)
-    print(file.content_type)
+    datafolder = devicefolder / '2d'
+    set_number = request.POST['pictureno']
+    print ("set", set_number)
+    for i in request.FILES:
+        flist = request.FILES.getlist(i)
+        for j in flist:
+            print(j)
+            filepath = datafolder / j.name
+            save_uploaded_file(j, filepath)
     print("save2d received: ")
     return JsonResponse({'result':"OK"})
 
@@ -109,23 +117,6 @@ def save3d(request):
     }
     #print(mycontext)
     return render(request, 'send3dscan.html', mycontext)
-
-# @csrf_exempt
-# def scan3d2(request):
-#     picform = Form3dScan(initial={'deviceid': 123})
-#     mycontext = {
-#         'form': picform,
-#     }
-#     if request.method == 'POST':
-#         picform = Form3dScan(request.POST, request.FILES)
-#         if picform.is_valid():
-#             devicefolder = device_folder(request)
-#             set_number = request.POST['pictureno']
-#             receive_pictures(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
-#             receive_pic_set(devicefolder, set_number, request.FILES['color_picture'], request.FILES['dias_picture'],request.FILES['noLight_picture'])
-#             return JsonResponse({'result':"OK"})
-#         print ("Form not valid", picform.errors)
-#     return render(request, 'send3dscan.html', mycontext)
 
 @csrf_exempt
 def scan3d(request):
@@ -209,3 +200,45 @@ def sendfiles(request):
                 save_uploaded_file(j, filepath)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
+
+# MJpeg streaming
+
+def mjpeg_stream(file, file_watcher):
+    running = True
+    while running:
+        #image_data = open(file, mode='rb').read()
+        try:
+            with open(file, mode='rb') as fd:
+                print ("Display...")
+                image_data = fd.read()
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n')
+                # display twice for chrome
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n')
+                #yield (b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n' + boundary)
+                sleep(1)
+                #file_watcher.release()
+        except Exception as ex:
+            print("vi rydder op")
+            print (ex)
+            running = False
+            #file_watcher.close()
+        #file_watcher.acquire()
+    print ("slutter")
+
+@csrf_exempt
+def pic_stream(request):
+    deviceid = check_device(request)
+    if not deviceid:
+        return HttpResponse('pic_stream must include deviceid')
+    devicefolder = get_device_folder(deviceid)
+
+    #filefolder = BASE_DIR / "testdata/device/color.jpg"
+
+    print(devicefolder)
+    file = devicefolder / "input/1/dias.jpg"
+    #sem = FileWatcher(".")
+    sem = None
+    stream = mjpeg_stream(file, sem)
+    return StreamingHttpResponse(stream, content_type='multipart/x-mixed-replace;boundary=frame')

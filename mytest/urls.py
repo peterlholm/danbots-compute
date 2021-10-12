@@ -15,5 +15,6 @@ urlpatterns = [
     path('errorlog/', views.errorlog),
     path('upgrade/', views.upgrade),
     path('flash_led/', views.flash_led),
+    path('stream/', views.pic_stream),
     path("include_masks/", views.include_masks)
 ]

@@ -1,7 +1,6 @@
 """
 urls for the api
 """
-
 from django.urls import path
 from api import views
 
@@ -14,5 +13,6 @@ urlpatterns = [
     path('save3d', views.save3d),
     path('scan3d', views.scan3d),
     path('stop3d', views.stop3d),
-    path('sendfiles', views.sendfiles)
+    path('sendfiles', views.sendfiles),
+    path('pic_stream', views.pic_stream)
 ]
