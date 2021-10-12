@@ -13,6 +13,7 @@ from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
 from compute.settings import BASE_DIR, DATA_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
+from calibrate.functions import cal_camera
 from api.pic_utils import include_all_masks
 
 def index(request):
@@ -20,6 +21,12 @@ def index(request):
 
 def debug(request):
     return render (request, 'debug.html')
+
+def calibrate_camera(request):
+    deviceid = MYDEVICE
+    folder = DATA_PATH / 'device' / deviceid / 'calibrate/calcamera'
+    cal_camera(deviceid, Path(folder))
+    return HttpResponse("Calibration finish")
 
 def start_scan(request):
     device_path = "/data/device/" + MYDEVICE + "/input/1/"

@@ -8,6 +8,8 @@ from mytest import views
 urlpatterns = [
     path("", views.debug),
     path("debug", views.debug),
+    path("calibrate_camera", views.calibrate_camera),
+
     path("sendply/", views.sendply),
     path("start_scan/", views.start_scan),
     path("install_models/", views.install_models),

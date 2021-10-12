@@ -1,7 +1,7 @@
 """Find mask for picture"""
 from pathlib import Path
 from PIL import Image, ImageStat, ImageFilter #, ImageEnhance, ImageDraw,
-from api.device_config import read_device_config, save_device_config
+#from api.device_config import read_device_config, save_device_config
 
 CALIBRATE_SECTION = 'calibrate'
 
@@ -43,42 +43,23 @@ def create_mask(pathname, blur=False, tolerence=0.85):
     right = x
     return (left, top, right, button)
 
-def save_flash_mask(device, mask):
-    config = read_device_config(device)
+def save_mask(config, mask, label="flash_mask"):
+    #config = read_device_config(device)
     if CALIBRATE_SECTION not in config.sections():
         config.add_section(CALIBRATE_SECTION)
-    config[CALIBRATE_SECTION]['flash_mask_left'] = str(mask[0])
-    config[CALIBRATE_SECTION]['flash_mask_top'] = str(mask[1])
-    config[CALIBRATE_SECTION]['flash_mask_right'] = str(mask[2])
-    config[CALIBRATE_SECTION]['flash_mask_bottom'] = str(mask[3])
-    save_device_config(config, device)
+    config[CALIBRATE_SECTION][label +'_left'] = str(mask[0])
+    config[CALIBRATE_SECTION][label +'_top'] = str(mask[1])
+    config[CALIBRATE_SECTION][label +'_right'] = str(mask[2])
+    config[CALIBRATE_SECTION][label +'_bottom'] = str(mask[3])
+    return config
 
-def save_dias_mask(device, mask):
-    config = read_device_config(device)
-    if CALIBRATE_SECTION not in config.sections():
-        config.add_section(CALIBRATE_SECTION)
-    config[CALIBRATE_SECTION]['dias_mask_left'] = str(mask[0])
-    config[CALIBRATE_SECTION]['dias_mask_top'] = str(mask[1])
-    config[CALIBRATE_SECTION]['dias_mask_right'] = str(mask[2])
-    config[CALIBRATE_SECTION]['dias_mask_bottom'] = str(mask[3])
-    # calculate dias 160 masks
-    faktor = 1944 / 160
-    if mask[0] < (8189-1941)/2:
-        left = 0
-    else:
-        left = int((mask[0]-(8189-1941)/2)/faktor)
-    if mask[2] > 8189-(8189-1941)/2:
-        right = 160
-    else:
-        right = int(160- (8189-(8189-1941)/2 -mask[2])/faktor )
-    config[CALIBRATE_SECTION]['dias_160_left'] = str(left)
-    config[CALIBRATE_SECTION]['dias_160_top'] = str(int(mask[1]/faktor))
-    config[CALIBRATE_SECTION]['dias_160_right'] = str(right)
-    config[CALIBRATE_SECTION]['dias_160_bottom'] = str(int(mask[3]/faktor))
-    save_device_config(config, device)
+def create_mask_in_config(file, config, label="flash_mask", blur=None):
+    mask = create_mask(file, blur=blur)
+    print ("Mask:", mask)
+    return save_mask(config, mask, label=label)
 
 if __name__ == "__main__":
     FILE = "data/device/b827eb05abc2/calibrate/calcamera/flash.jpg"
     mymask = create_mask(Path(FILE))
     print (mymask)
-    save_flash_mask("123", mymask)
+    save_mask("123", mymask)

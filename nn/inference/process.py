@@ -10,7 +10,7 @@ from nn.inference.H_model import Hmodel, nnHprocess
 from nn.inference.L_model import nnLprocess
 from nn.inference.depth import newDepth
 from nn.inference.pointcloud import nngenerate_pointcloud
-from Utils.Imaging.pcl2png import pcl2png
+from utils.pcl2png import pcl2png
 
 def process_blender_folder(infolder, outfolder):
     # receive a folder from blender, convert to standard files
