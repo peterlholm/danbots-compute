@@ -14,5 +14,6 @@ urlpatterns = [
     path('scan3d', views.scan3d),
     path('stop3d', views.stop3d),
     path('sendfiles', views.sendfiles),
-    path('pic_stream', views.pic_stream)
+    path('pic_stream2', views.pic_stream),
+    path('pic_stream', views.pic)
 ]
