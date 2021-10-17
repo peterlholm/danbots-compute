@@ -21,6 +21,7 @@ from compute import settings
 
 urlpatterns = [
     path("api/", include('api.urls')),
+    path("web/", include('web.urls')),
     path("nn/", include('nn.urls')),
     path("test/", include('mytest.urls')),
     #path("train/", include('train.urls')),

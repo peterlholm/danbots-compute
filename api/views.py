@@ -2,12 +2,11 @@
 api views
 """
 import os
-from time import sleep
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
-from django.http import JsonResponse, StreamingHttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import BASE_DIR, DATA_PATH #, NN_ENABLE #, TEMP_PATH
+from compute.settings import DEVICE_PATH
 from api.utils import receive_pictures
 #from api.device_config import read_config, save_config
 #from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
@@ -17,8 +16,6 @@ from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
 from calibrate.functions import cal_camera
 #from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 from .forms import Form3dScan
-
-DEVICE_PATH = DATA_PATH / 'device'
 
 _DEBUG = True
 
@@ -197,59 +194,3 @@ def sendfiles(request):
         save_file_to_folder(request, datafolder)
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
-
-# MJpeg streaming
-
-def mjpeg_stream(file, file_watcher):
-    running = True
-    sleep(15)
-    while running:
-        #image_data = open(file, mode='rb').read()
-        try:
-            with open(file, mode='rb') as fd:
-                print ("Display...")
-                image_data = fd.read()
-                yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n')
-                # display twice for chrome
-                # yield (b'--frame\r\n'
-                #     b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n')
-                #yield (b'Content-Type: image/jpeg\r\n\r\n' + image_data + b'\r\n' + boundary)
-            sleep(1)
-            #file_watcher.release()
-        except Exception as ex:
-            print("vi rydder op")
-            print (ex)
-            running = False
-            #file_watcher.close()
-        #file_watcher.acquire()
-    print ("slutter")
-
-@csrf_exempt
-def pic_stream(request):
-    deviceid = check_device(request)
-    if not deviceid:
-        return HttpResponse('pic_stream must include deviceid')
-    devicefolder = get_device_folder(deviceid)
-
-    #filefolder = BASE_DIR / "testdata/device/color.jpg"
-
-    print(devicefolder)
-    file = devicefolder / 'input' / 'last_dias.jpg'
-    print(file)
-    #file = BASE_DIR / "testdata/device/fringe.jpg"
-    #sem = FileWatcher(".")
-    sem = None
-    stream = mjpeg_stream(file, sem)
-    return StreamingHttpResponse(stream, content_type='multipart/x-mixed-replace;boundary=frame')
-
-def pic(request):
-    deviceid = check_device(request)
-    if not deviceid:
-        return HttpResponse('pic_stream must include deviceid')
-    #devicefolder = get_device_folder(deviceid)
-    file = BASE_DIR / "testdata/device/color.jpg"
-    #file = devicefolder / 'input' / 'last_dias.jpg'
-    with open(file, "rb") as fd:
-        return HttpResponse(fd.read(), content_type="image/jpeg")
-    return HttpResponse("noget gik galt")
