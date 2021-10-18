@@ -19,8 +19,6 @@ from .forms import Form3dScan
 #from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
 #from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 
-DEVICE_PATH = DATA_PATH / 'device'
-
 _DEBUG = True
 
 def index(request):
