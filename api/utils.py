@@ -13,6 +13,8 @@ INPUT_FOLDER = 'input'
 ARCHIVE_FOLDER = 'archive'
 ARCHIVE_DATA = True
 
+_DEBUG = True
+
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
         for chunk in handle.chunks():
@@ -33,11 +35,12 @@ def receive_pictures(device, set_number, color_picture, dias_picture, noligt_pic
 
 def start_scan(device, device_path):
     # archive last input folder
+    print("Start scan:", device, device_path)
     infolder = device_path / INPUT_FOLDER
     os.makedirs(infolder, exist_ok=True)
     if ARCHIVE_DATA:
         if os.path.exists(infolder):
-            datestr = datetime.now().strftime('%y%m%d-%H%M')
+            datestr = datetime.now().strftime('%y%m%d-%H%M%S')
             outfolder = device_path / ARCHIVE_FOLDER / datestr
             copytree(infolder, outfolder, dirs_exist_ok=True)
     # clean folder
@@ -45,4 +48,5 @@ def start_scan(device, device_path):
     os.makedirs(infolder, exist_ok=True)
 
 def stop_scan(device, device_path):
-    return
+    if _DEBUG:
+        print("Stop scan:", device, device_path)
