@@ -29,7 +29,8 @@ def mjpeg_stream(file):
         try:
             with open(file, mode='rb') as fd:
                 image_data = fd.read()
-        except IOError:
+        except IOError as ex:
+            #print("nodata", ex)
             image_data = no_data
         try:
             yield (b'--frame\r\n'

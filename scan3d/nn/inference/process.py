@@ -2,14 +2,14 @@ import os
 from datetime import datetime
 from shutil import copytree, rmtree
 from pathlib import Path
-from nn.prepare_input import prepare_blender_input, COLORPICTURE
+from .prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
-from nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME
-from nn.inference.create_mask import create_mask
-from nn.inference.H_model import Hmodel, nnHprocess
-from nn.inference.L_model import nnLprocess
-from nn.inference.depth import newDepth
-from nn.inference.pointcloud import nngenerate_pointcloud
+from config import COLOR_FILENAME, NOLIGHT_FILENAME
+from create_mask import create_mask
+from H_model import Hmodel, nnHprocess
+from L_model import nnLprocess
+from depth import newDepth
+from pointcloud import nngenerate_pointcloud
 from utils.pcl2png import pcl2png
 
 def process_blender_folder(infolder, outfolder):

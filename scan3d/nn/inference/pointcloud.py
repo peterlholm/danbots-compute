@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 
+_DEBUG=False
 
 def nngenerate_pointcloud(rgb_file, mask_file,depth_file,ply_file):
     """
@@ -46,10 +47,10 @@ def nngenerate_pointcloud(rgb_file, mask_file,depth_file,ply_file):
                 if Z == 0: continue
                 Y = .306 * (v-80) *  Z/80 #.306 = tan(FOV/2) = tan(34/2)
                 X = .306 * (u-80) *  Z/80
-                if (u==80 and v ==80):
+                if (u==80 and v ==80) and _DEBUG:
                     print('80:z=', Z, X, Y)
                 else:
-                   if (u==102 and v ==82):
+                   if (u==102 and v ==82) and _DEBUG:
                         print('82:z=', Z, X, Y) 
                 points.append("%f %f %f %d %d %d 0\n"%(X,Y,Z,color[0],color[1],color[2]))
     file = open(ply_file,"w")

@@ -7,7 +7,7 @@ import os
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse #, StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import DATA_PATH #, NN_ENABLE #, TEMP_PATH
+from compute.settings import DATA_PATH, DEVICE_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import receive_pictures
 from api.utils import start_scan,  stop_scan #, test_nn # receive_pic_set,
 from calibrate.functions import cal_camera

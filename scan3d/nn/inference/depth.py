@@ -9,6 +9,8 @@ DEPTH_DB = MODEL_PATH / DDBASE
 rwidth = 160
 rheight = 160
 
+_DEBUG = False
+
 def newDepth(folder, basecount):
     #basefile = '/home/samir/Desktop/blender/pycode/bldev2/calplanes/DDbase.npy'
     DBase = np.load(str(DEPTH_DB))
@@ -40,7 +42,8 @@ def newDepth(folder, basecount):
                 depth[i,j]= (zee/basecount*-30 + 40)*1
 
     # print('depth:', np.amax(depth), np.amin(depth))
-    print('nndepthrange=', np.ptp(depth), np.max(depth), np.min(depth) )
+    if _DEBUG:
+        print('nndepthrange=', np.ptp(depth), np.max(depth), np.min(depth) )
 
     im_depth = depth# np.max(unwrapdata)*255)
     cv2.imwrite(str (folder / 'nndepth.png'), im_depth)

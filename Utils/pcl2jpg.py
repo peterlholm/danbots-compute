@@ -27,7 +27,7 @@ def pcl2jpg(pcd, outfile):
     if _DEBUG:
         img = vis.capture_screen_float_buffer(True)
         plt.imshow(np.asarray(img))
-    vis.capture_screen_image(outfile, do_render=True)
+    vis.capture_screen_image(str(outfile), do_render=True)
 
 def ply2jpg(infile, outfile):
     #print(infile)

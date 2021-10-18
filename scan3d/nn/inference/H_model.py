@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 import tensorflow.keras
 from compute.settings import DATA_PATH
-from nn.inference.nn_util import normalize_image255, make_grayscale, db_predict
-from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
+from .nn_util import normalize_image255, make_grayscale, db_predict
+from .config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
 
 MODEL_PATH = DATA_PATH / 'nnmodels/'
 H_MODELFILE = 'im0wr40.h5'
@@ -13,9 +13,12 @@ H_MODELFILE = 'H_model.h5'
 #COLOR_IMAGE = 'color.png'
 PI = np.pi
 
+_DEBUG=False
+
 def load_h_model():
     model = tensorflow.keras.models.load_model(MODEL_PATH / H_MODELFILE)
-    print("H model loaded")
+    if _DEBUG:
+        print("H model loaded")
     return model
 
 Hmodel = load_h_model()

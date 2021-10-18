@@ -13,7 +13,7 @@ INPUT_FOLDER = 'input'
 ARCHIVE_FOLDER = 'archive'
 ARCHIVE_DATA = True
 
-_DEBUG = True
+_DEBUG = False
 
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
@@ -35,7 +35,8 @@ def receive_pictures(device, set_number, color_picture, dias_picture, noligt_pic
 
 def start_scan(device, device_path):
     # archive last input folder
-    print("Start scan:", device, device_path)
+    if _DEBUG:
+        print("Start scan:", device, device_path)
     infolder = device_path / INPUT_FOLDER
     os.makedirs(infolder, exist_ok=True)
     if ARCHIVE_DATA:

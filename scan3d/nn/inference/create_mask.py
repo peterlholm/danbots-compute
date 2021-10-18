@@ -1,7 +1,10 @@
-import numpy as np
+"Create the mask file"
 from pathlib import Path
+import numpy as np
 import cv2
-from .config import *
+from .config import PICTURE_HEIGHT, PICTURE_WIDTH, MASK_NPY, MASK_FILENAME
+
+_DEBUG=False
 
 def make_grayscale(img):
     # Transform color image to grayscale
@@ -9,7 +12,8 @@ def make_grayscale(img):
     return gray_img
 
 def create_mask(color_picture, nolight_picture, outfolder):
-    print("creating mask")
+    if _DEBUG:
+        print("creating mask")
     outfolder = Path(outfolder)
     #color = folder / 'image8.png'
     #print('color:', color_picture)
