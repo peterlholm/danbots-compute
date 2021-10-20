@@ -9,6 +9,8 @@ urlpatterns = [
     path("", views.debug),
     path("debug", views.debug),
     path("calibrate_camera", views.calibrate_camera),
+    #path('showresult', views.showresult),
+    path('show_pictures', views.show_pictures),
 
     path("sendply/", views.sendply),
     path("start_scan/", views.start_scan),
@@ -17,6 +19,6 @@ urlpatterns = [
     path('errorlog/', views.errorlog),
     path('upgrade/', views.upgrade),
     path('flash_led/', views.flash_led),
-    path('stream/', views.pic_stream),
+    #path('stream/', views.pic_stream),
     path("include_masks/", views.include_masks)
 ]

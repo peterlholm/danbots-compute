@@ -3,6 +3,7 @@ utils for used in the api view
 """
 
 import os
+from pathlib import Path
 from shutil import copytree, rmtree
 from datetime import datetime
 from compute.settings import DATA_PATH
@@ -19,6 +20,13 @@ def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
         for chunk in handle.chunks():
             destination.write(chunk)
+
+def filename_number(filename, number):
+    "return new filename whith _number appended to name and same extension"
+    name = Path(filename)
+    ext = name.suffix
+    newname = f'{name.stem}_{number:0=03}{ext}'
+    return newname
 
 def receive_pictures(device, set_number, color_picture, dias_picture, noligt_picture):
     # receive jpg pictures and save in input folder with set_number

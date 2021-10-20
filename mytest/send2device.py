@@ -25,7 +25,7 @@ def send_request(url, params=None):
 def send_start_scan(deviceurl="http://danwand.local:8080/"):
     cmd = "3d/3d"
     url = deviceurl + cmd
-    print (url)
+    #print (url)
     res = send_request(url)
-    print(res)
+    #print(res)
     return res

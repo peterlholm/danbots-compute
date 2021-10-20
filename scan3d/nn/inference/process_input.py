@@ -6,7 +6,7 @@ from pathlib import Path
 #from nn.prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
 from utils.pcl2jpg import ply2jpg
-from utils.pclutils import mirror_file
+from utils.pclutils import mirror_pcl
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
 from .create_mask import create_mask
 from .H_model import nnHprocess
@@ -35,9 +35,7 @@ def process_input_folder(folder):
 
     nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 
-    print ("Vi er her",folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
-    mirror_file(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
-    print("og her")
+    mirror_pcl(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
     ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
     if _DEBUG:
         print ("Processing endet")
