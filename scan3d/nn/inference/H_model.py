@@ -16,6 +16,7 @@ PI = np.pi
 _DEBUG=False
 
 def load_h_model():
+    print(MODEL_PATH / H_MODELFILE)
     model = tensorflow.keras.models.load_model(MODEL_PATH / H_MODELFILE)
     if _DEBUG:
         print("H model loaded")

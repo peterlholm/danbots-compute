@@ -11,7 +11,8 @@ _DEBUG = False
 
 def pcl2jpg(pcd, outfile):
     vis = o3d.visualization.Visualizer()
-    vis.create_window(visible = _DEBUG, width=500, height=500)
+    res = vis.create_window(visible = _DEBUG, width=500, height=500)
+    print("create window result", res)
     vis.add_geometry(pcd)
     #is.get_render_option().load_from_json("Imaging/di
     # splay/RenderOption.json")
