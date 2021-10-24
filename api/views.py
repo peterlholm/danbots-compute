@@ -95,15 +95,6 @@ def stop2d(request):
 @csrf_exempt
 def start3d(request):
     return start(request)
-    # if request.method =="GET":
-    #     if request.GET.get('deviceid') is None:
-    #         return HttpResponse('start3d must include deviceid')
-    # if request.method in ['GET','POST']:
-    #     deviceid = check_device(request)
-    #     devicefolder = device_folder(request)
-    #     start_scan(deviceid, devicefolder)
-    #     return JsonResponse({'result':"OK"})
-    # return JsonResponse({'result':"False", "reason": "illegal method"})
 
 @csrf_exempt
 def scan3d(request):

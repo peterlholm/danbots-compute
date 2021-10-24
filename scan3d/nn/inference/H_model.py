@@ -13,7 +13,7 @@ H_MODELFILE = 'H_model.h5'
 #COLOR_IMAGE = 'color.png'
 PI = np.pi
 
-_DEBUG=False
+_DEBUG=True
 
 def load_h_model():
     model = tensorflow.keras.models.load_model(MODEL_PATH / H_MODELFILE)

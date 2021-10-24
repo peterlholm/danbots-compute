@@ -7,6 +7,8 @@ from mytest import views
 
 urlpatterns = [
     path("", views.debug),
+    path("receiveblender", views.receive_blender),
+    
     path("debug", views.debug),
     path("calibrate_camera", views.calibrate_camera),
     #path('showresult', views.showresult),

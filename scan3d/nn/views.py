@@ -5,13 +5,13 @@ from pathlib import Path
 from shutil import rmtree
 from django.shortcuts import redirect, render, HttpResponse
 from compute.settings import DATA_PATH, NN_ENABLE  #, API_SERVER, TEMP_PATH
-from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME, MASK_FILENAME
+#from nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME, MASK_FILENAME
 from device.proc import proc_device_data
 from .prepare_input import prepare_blender_input, prepare_device_input
 
-if NN_ENABLE:
-    from nn.inference.process import process_nn_folder
-    from nn.inference.process import process_blender_folder
+# if NN_ENABLE:
+#     from nn.inference.process import process_nn_folder
+#     from nn.inference.process import process_blender_folder
 
 IN_TESTDATAPATH = Path(__file__).resolve().parent.parent / "testdata"
 TESTDATA_OUT = DATA_PATH / 'testdata'
@@ -70,51 +70,3 @@ def process_device_folder(request):
     else:
         print ("NN disabled")
     return redirect("/nn/show_pictures")
-
-def showresult(request):
-    """
-    Show standard pictures in folder
-    """
-    path = '/data/testdata/'
-    picpath = request.GET.get('folder', path)
-
-    piclist = [picpath + COLOR_FILENAME,
-        picpath + FRINGE_FILENAME,
-        picpath + NOLIGHT_FILENAME,
-        picpath + MASK_FILENAME,
-        picpath + "nnwrap1.png",
-        picpath + "nnunwrap.png",
-        picpath + "nndepth.png",
-        picpath + "nndepth2.png",
-      ]
-    mycontext = {
-        'path': picpath,
-        'pictures': piclist,
-        'pic1': picpath + "color.png",
-        'pic2': picpath + "dias.png",
-        'pic3': picpath + "nolight.png",
-        'pic4': picpath + "mask.png",
-        'pic5': picpath + "nnwrap1.png",
-        'pic6': picpath + "nnunwrap.png",
-        'pic7': picpath + "nndepth.png",
-        # 'pic8': picpath + "unwrap1.png"
-        #'pic8': picpath + "../testdata/"
-    }
-    return render (request, 'showresult.html', context=mycontext)
-
-def show_pictures(request):
-    """
-    Show all jpg and png pictures in folder
-    """
-    datapath = 'testdata/process/'
-    #datapath = 'testdata/'
-    abs_path = DATA_PATH / request.GET.get('folder', datapath)
-    pic_list = []
-    print (abs_path)
-    for p in Path.glob(abs_path,"*.jpg"):
-        pic_list.append("/data/"+datapath+p.name)
-    for p in Path.glob(abs_path,"*.png"):
-        pic_list.append("/data/"+datapath+p.name)
-    mycontext={"path": datapath, "pictures": pic_list}
-    print (mycontext)
-    return render (request, 'showresult.html', context=mycontext)

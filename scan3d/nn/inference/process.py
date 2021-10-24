@@ -29,7 +29,7 @@ def process_blender_folder(infolder, outfolder):
     #print(Hmodel)
     nnHprocess(folder)
     nnLprocess(folder)
-    newDepth(folder, 300)
+    #newDepth(folder, 300)
 
     nngenerate_pointcloud(folder / COLOR_FILENAME, folder /'mask.png', folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 

@@ -34,11 +34,11 @@ def newDepth(folder, basecount):
                     else:
                         s+=1
                         if s==basecount:
-                            print('not found!')
+                            print('s==bascount not found!')
 
                 # print(i,j,unwrap[i,j],DBase[i,j,s])
                 if zee == 0:
-                    print('not found')
+                    print('zee=0 not found')
                 depth[i,j]= (zee/basecount*-30 + 40)*1
 
     # print('depth:', np.amax(depth), np.amin(depth))

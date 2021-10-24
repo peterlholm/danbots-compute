@@ -15,9 +15,10 @@ from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
 
-_DEBUG=False
+_DEBUG=True
 
 def process_input_folder(folder):
+    "Process folder through normal nn processing"
     if _DEBUG:
         print("processing folder: ", folder)
     if not Path.exists(folder):
