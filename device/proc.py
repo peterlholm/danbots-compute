@@ -10,7 +10,7 @@ _DEBUG=True
 def proc_device_data(device, folder):
     if _DEBUG:
         print(f"Device specifix processing, device: {device} folder: {folder}")
-
+    print("check config exist")
     config = read_device_config(device)
     slope = float(config['calibrate']['slope'])
     print("slope", slope)

@@ -1,15 +1,17 @@
 "receive"
 from pathlib import Path
 from shutil import copy2
-from compute.settings import DEVICE_PATH
-#from device.proc import proc_device_data
+from compute.settings import DEVICE_PATH, NN_ENABLE
+from device.proc import proc_device_data
 from utils.img2img import img2img
 #from .nn_template.process import process_picture_set
 #from .nn.inference.process import proc
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
-from .nn.inference.process_input import process_input_folder
+if NN_ENABLE:
+    from .nn.inference.process_input import process_input_folder
 
 _DEBUG = False
+DEVICE_PROCESSING = False
 
 def copy2nn(folder):
     img2img(folder / 'color.jpg', folder / COLOR_FILENAME)
@@ -23,7 +25,8 @@ def receive_scan(deviceid, folder):
     # copy file
     #copy2(folder / 'dias.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
     copy2nn(folder)
-    #proc_device_data(deviceid, folder)
+    if DEVICE_PROCESSING:
+        proc_device_data(deviceid, folder)
     img2img(folder / 'dias.jpg', folder / FRINGE_FILENAME)
     process_input_folder(folder)
     if Path.exists(folder / 'pointcloud.jpg'):
