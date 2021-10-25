@@ -7,6 +7,8 @@ from utils.img2img import img2img
 #from .nn_template.process import process_picture_set
 #from .nn.inference.process import proc
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
+from .preprocessing import preprocessing
+
 if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
 
@@ -28,6 +30,7 @@ def receive_scan(deviceid, folder):
     if DEVICE_PROCESSING:
         proc_device_data(deviceid, folder)
     img2img(folder / 'dias.jpg', folder / FRINGE_FILENAME)
+    preprocessing(folder)
     process_input_folder(folder)
     if Path.exists(folder / 'pointcloud.jpg'):
         copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )

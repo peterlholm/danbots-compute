@@ -49,14 +49,13 @@ def show_pictures(request):
     return render (request, 'showresult.html', context=mycontext)
 
 ####### receive blender
-TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "okt25" / "render5"
 
 def receive_blender(request):
-    #TESTDATAFOLDER = BASE_DIR / "testdata/render12"
     data_path = DEVICE_PATH / 'blender' / 'input'
     print(data_path)
     if Path.exists(data_path):
-        rmtree(data_path)
+        rmtree(data_path, ignore_errors=True)
     Path.mkdir(data_path, parents=True)
     infolder = Path(TESTDATAFOLDER)
     prepare_blender_input(infolder, data_path)

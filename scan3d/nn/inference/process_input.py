@@ -7,6 +7,7 @@ from pathlib import Path
 #from nn.inference.wrap_net import wrap_net
 from utils.pcl2jpg import ply2jpg
 from utils.pclutils import mirror_pcl
+from utils.show_npy import show_npy
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
 from .create_mask import create_mask
 from .H_model import nnHprocess
@@ -32,6 +33,8 @@ def process_input_folder(folder):
     #print(Hmodel)
     nnHprocess(folder)
     nnLprocess(folder)
+    show_npy(folder / 'nnunwrap.npy', folder / "test.png")
+
     newDepth(folder, 300)
 
     nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')

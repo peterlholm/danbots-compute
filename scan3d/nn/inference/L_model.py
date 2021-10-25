@@ -35,9 +35,10 @@ def nnLprocess(folder):
     # mask = np.load(folder+'mask.npy')
     # predicted_img = np.multiply(np.logical_not(mask), predicted_img)
 
+    PI = np.pi
+    #nnunwrap= (255*predicted_img)
+    nnunwrap= 2*PI*predicted_img
 
-    nnunwrap= (255*predicted_img)
-    # nnunwrap= 2*PI*predicted_img
     np.save(str(folder / 'nnunwrap.npy'), nnunwrap, allow_pickle=False)
     # prdicted_img = np.round(predicted_img*17/(np.max(predicted_img)))
     cv2.imwrite( str(folder / 'nnunwrap.png'),nnunwrap)
