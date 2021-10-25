@@ -7,7 +7,7 @@ import subprocess
 from os import name
 from shutil import rmtree
 from pathlib import Path
-#from time import sleep
+from time import sleep
 from django.http import FileResponse #, StreamingHttpResponse
 from django.shortcuts import render, HttpResponse, redirect
 from send2live.send2live import send_picture, send_ply_picture
@@ -15,7 +15,7 @@ from mytest.send2device import send_start_scan
 from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
 from calibrate.functions import cal_camera
-from api.pic_utils import include_all_masks
+#from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_scan_set, prepare_blender_input
 
 def index(request):
@@ -68,6 +68,8 @@ def start_scan(request):
     device_path = "device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:
+        # wait for processing
+        sleep(3)
         return redirect("/test/show_pictures?folder="+device_path)
     return HttpResponse("Scan start gik galt", res)
 

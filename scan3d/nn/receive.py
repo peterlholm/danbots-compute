@@ -16,16 +16,3 @@ def receive_pic_set(device, set_number, color_picture, dias_picture, noligt_pict
 
     deviceconfig = read_config(DATA_PATH / device)
     print (deviceconfig)
-
-    if NN_ENABLE:
-        process_input_folder(folder)
-
-    # result = send_picture(device, folder / COLOR_FILENAME )
-    # if not result:
-    #     print("Send picture failed")
-    # plyfile = Path(__file__).resolve().parent / 'test.ply'
-    #print("plyfile", plyfile)
-    # result = send_ply_picture(device, plyfile )
-    # if not result:
-    #     print("Send ply picture failed")
-    return True

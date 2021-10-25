@@ -1,4 +1,4 @@
-"""Utillities for picture management"""
+"Utillities for picture management"
 from PIL import Image
 
 def create_mask(img, mask):
@@ -7,6 +7,19 @@ def create_mask(img, mask):
         for y in range(10, img.height-17):
             mask.putpixel((x,y), 255)
     return mask
+
+def insert_mask(infile, mask, outfile):
+    "mask is (left,top,right,button)"
+    #print(infile)
+    img = Image.open(infile)
+    #img.show()
+    maskimg = Image.new('L', img.size, color=0)
+    for x in range(mask[0], mask[2]):
+        for y in range(mask[1], mask[3]):
+            maskimg.putpixel((x,y), 255)
+    img.putalpha(maskimg)
+    #img.show()
+    img.save(outfile)
 
 def include_device_masks(file, mask):
     print(file)

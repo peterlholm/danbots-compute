@@ -12,8 +12,8 @@ from .preprocessing import preprocessing
 if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
 
-_DEBUG = False
-DEVICE_PROCESSING = False
+_DEBUG = True
+DEVICE_PROCESSING = True
 
 def copy2nn(folder):
     img2img(folder / 'color.jpg', folder / COLOR_FILENAME)
@@ -31,6 +31,7 @@ def receive_scan(deviceid, folder):
         proc_device_data(deviceid, folder)
     img2img(folder / 'dias.jpg', folder / FRINGE_FILENAME)
     preprocessing(folder)
-    process_input_folder(folder)
+    if NN_ENABLE:
+        process_input_folder(folder)
     if Path.exists(folder / 'pointcloud.jpg'):
         copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
