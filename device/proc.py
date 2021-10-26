@@ -31,6 +31,17 @@ def picture_mask(config, infile, outfile):
     mask(pic_mask, infile, outfile)
     return
 
+def dias_mask(config, infile, outfile):
+    "insert device mask in picture"
+    top = config['calibrate'].getint("dias_mask_top",0)
+    left = config['calibrate'].getint("dias_mask_left",0)
+    right = config['calibrate'].getint("dias_mask_right",159)
+    bottom = config['calibrate'].getint("dias_mask_bottom",159)
+    pic_mask = (top,left,right,bottom)
+    #print("pic_mask", pic_mask)
+    mask(pic_mask, infile, outfile)
+    return
+
 def proc_device_data(device, folder):
     if _DEBUG:
         print(f"Device specifix processing, device: {device} folder: {folder}")
@@ -45,10 +56,12 @@ def proc_device_data(device, folder):
         if True:
             print("create masks")
             picture_mask(config, folder / 'color.jpg', folder / 'mycolor.png')
+            dias_mask(config, folder / 'dias.jpg', folder / 'mydias.png')
             mymask = get_mask(folder / 'mycolor.png')  
             #mymask.show()
             histo_img(folder / 'color.png', folder / 'mycolor_histo.png')
             histo_img(folder / 'mycolor.png', folder / 'mycolor_histo2.png', mask=mymask)
+            histo_img(folder / 'mydias.png', folder / 'mydias_histo2.png', mask=mymask)
     if _DEBUG:
         print("finish proc_device_data")
     return True

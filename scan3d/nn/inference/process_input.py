@@ -5,8 +5,8 @@
 from pathlib import Path
 #from nn.prepare_input import prepare_blender_input, COLORPICTURE
 #from nn.inference.wrap_net import wrap_net
-from utils.pcl2jpg import ply2jpg
-from utils.pclutils import mirror_pcl
+from utils.pcl_utils import ply2jpg
+from utils.pcl_utils import mirror_pcl
 from utils.show_npy import show_npy
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
 from .create_mask import create_mask

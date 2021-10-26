@@ -13,7 +13,7 @@ if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
 
 _DEBUG = True
-DEVICE_PROCESSING = False
+DEVICE_PROCESSING = True
 
 def copy2nn(folder):
     img2img(folder / 'color.jpg', folder / COLOR_FILENAME)
