@@ -5,7 +5,7 @@ test funtion til servere
 
 import subprocess
 from os import name
-from shutil import rmtree
+from shutil import rmtree, copy2
 from pathlib import Path
 from time import sleep
 from django.http import FileResponse #, StreamingHttpResponse
@@ -47,6 +47,23 @@ def show_pictures(request):
     mycontext={"path": abs_path, "pictures": pic_list}
     #print (mycontext)
     return render (request, 'showresult.html', context=mycontext)
+
+####### receive folder
+
+def folder(request):
+    data = DEVICE_PATH / 'folder'
+    data_path = DEVICE_PATH / 'folder' / 'input'
+    print(data_path)
+    if Path.exists(data_path):
+       rmtree(data_path, ignore_errors=True)
+    Path.mkdir(data_path, parents=True)
+    infolder = Path(data)
+    copy2(infolder / 'color.png', data_path / 'color.png')
+    copy2(infolder / 'fringe.png', data_path / 'fringe.png')
+    copy2(infolder / 'nolight.png', data_path / 'nolight.png')
+    #prepare_blender_input(infolder, data_path)
+    receive_scan_set(data_path)
+    return redirect("/test/show_pictures?folder=device/folder/input/")
 
 ####### receive blender
 TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
