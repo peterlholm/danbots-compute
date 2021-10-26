@@ -49,7 +49,7 @@ def show_pictures(request):
     return render (request, 'showresult.html', context=mycontext)
 
 ####### receive blender
-TESTDATAFOLDER = BASE_DIR / "testdata" / "okt25" / "render5"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
 
 def receive_blender(request):
     data_path = DEVICE_PATH / 'blender' / 'input'

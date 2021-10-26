@@ -9,11 +9,11 @@ from mpl_toolkits.mplot3d import axes3d
 def show_npy(filename, outputfile=None):
     #file = "np/nnunwrap.npy"
     db = np.load(filename)
-    print("dtype", db.dtype)
-    print("shape", db.shape)
-    print("ndim", db.ndim)
-    print("min,max", np.amin(db), np.amax(db))
-    if False:
+    # print("dtype", db.dtype)
+    # print("shape", db.shape)
+    # print("ndim", db.ndim)
+    # print("min,max", np.amin(db), np.amax(db))
+    if True:
         plt.imshow(db)
         #plt.imshow(db, cmap='gray', vmin=0, vmax=54298)
     else:
@@ -41,5 +41,5 @@ def show_npy(filename, outputfile=None):
         ax1.scatter(xd, yd, zd, color = 'r', marker = 'o', s=1)
     if outputfile:
         plt.savefig(outputfile)
-    plt.show()
+    #plt.show()
     plt.clf()

@@ -35,7 +35,7 @@ def process_input_folder(folder):
     nnLprocess(folder)
     show_npy(folder / 'nnunwrap.npy', folder / "test.png")
 
-    newDepth(folder, 300)
+    newDepth(folder, 30)
 
     nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 
