@@ -13,7 +13,7 @@ H_MODELFILE = 'H_model.h5'
 #COLOR_IMAGE = 'color.png'
 PI = np.pi
 
-_DEBUG=True
+_DEBUG=False
 
 def load_h_model():
     print(MODEL_PATH / H_MODELFILE)

@@ -55,13 +55,13 @@ def proc_device_data(device, folder):
             # rotate_img(folder / 'dias.jpg', -slope*30.0, folder / 'fringe.png')
         if True:
             print("create masks")
-            picture_mask(config, folder / 'color.jpg', folder / 'mycolor.png')
-            dias_mask(config, folder / 'dias.jpg', folder / 'mydias.png')
-            mymask = get_mask(folder / 'mycolor.png')  
+            picture_mask(config, folder / 'color.jpg', folder / 'color.png')
+            dias_mask(config, folder / 'dias.jpg', folder / 'fringe.png')
+            #mymask = get_mask(folder / 'fringe.png')  
             #mymask.show()
-            histo_img(folder / 'color.png', folder / 'mycolor_histo.png')
-            histo_img(folder / 'mycolor.png', folder / 'mycolor_histo2.png', mask=mymask)
-            histo_img(folder / 'mydias.png', folder / 'mydias_histo2.png', mask=mymask)
+            #histo_img(folder / 'color.jpg', folder / 'mycolor_histo.png')
+            histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
+            #histo_img(folder / 'dias.png', folder / 'mydias_histo2.png', mask=mymask)
     if _DEBUG:
         print("finish proc_device_data")
     return True

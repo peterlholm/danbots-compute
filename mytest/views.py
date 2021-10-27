@@ -82,6 +82,7 @@ def receive_blender(request):
 ####################################################
 def start_scan(request):
     "Request scan from device and display results"
+    print("Send start scan to device:" + MYDEVICE)
     device_path = "device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:

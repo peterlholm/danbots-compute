@@ -13,6 +13,7 @@ COLOR_IMAGE = 'color.png'
 
 def load_L_model():
     model = tensorflow.keras.models.load_model(MODEL_PATH / L_MODELFILE)
+    print("L model Loaded")
     return model
 
 Lmodel = load_L_model()
