@@ -33,7 +33,7 @@ def process_input_folder(folder):
     #print(Hmodel)
     nnHprocess(folder)
     nnLprocess(folder)
-    show_npy(folder / 'nnunwrap.npy', folder / "test.png")
+    #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
 
     newDepth(folder, 30)
 

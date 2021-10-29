@@ -54,7 +54,8 @@ def proc_device_data(device, folder):
             # print("slope", slope)
             # rotate_img(folder / 'dias.jpg', -slope*30.0, folder / 'fringe.png')
         if True:
-            print("create masks")
+            if _DEBUG:
+                print("create device masks")
             picture_mask(config, folder / 'color.jpg', folder / 'color.png')
             dias_mask(config, folder / 'dias.jpg', folder / 'fringe.png')
             #mymask = get_mask(folder / 'fringe.png')  

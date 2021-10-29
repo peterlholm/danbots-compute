@@ -12,11 +12,13 @@ from django.http import FileResponse #, StreamingHttpResponse
 from django.shortcuts import render, HttpResponse, redirect
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
-from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE #, API_SERVER, TEMP_PATH
+from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE, NN_ENABLE #, API_SERVER, TEMP_PATH
 from calibrate.flash import flash_led_test
 from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_scan_set, prepare_blender_input
+from scan3d.receivescan import receive_scan
+from scan3d.preprocessing import copy_test_set
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -50,12 +52,12 @@ def show_pictures(request):
 
 ####### receive folder
 
-def folder(request):
+def rec_folder(request):
     data = DEVICE_PATH / 'folder'
     data_path = DEVICE_PATH / 'folder' / 'input'
     print(data_path)
     if Path.exists(data_path):
-       rmtree(data_path, ignore_errors=True)
+        rmtree(data_path, ignore_errors=True)
     Path.mkdir(data_path, parents=True)
     infolder = Path(data)
     copy2(infolder / 'color.png', data_path / 'color.png')
@@ -66,11 +68,11 @@ def folder(request):
     return redirect("/test/show_pictures?folder=device/folder/input/")
 
 ####### receive blender
-TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
 
 def receive_blender(request):
     data_path = DEVICE_PATH / 'blender' / 'input'
-    print(data_path)
     if Path.exists(data_path):
         rmtree(data_path, ignore_errors=True)
     Path.mkdir(data_path, parents=True)
@@ -88,9 +90,24 @@ def start_scan(request):
     if res:
         # wait for processing
         sleep(3)
+        if NN_ENABLE:
+            sleep(8)
         return redirect("/test/show_pictures?folder="+device_path)
     return HttpResponse("Scan start gik galt", res)
 
+def start_scan5(request):
+    "Request scan from device and display results"
+    print("Send start scan to device:" + MYDEVICE)
+    device_path = "device/" + MYDEVICE + "/input/1/"
+    res = send_start_scan()
+    if res:
+        copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
+        for i in range(2,6):
+            print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
+            receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
+        # wait for processing
+        return redirect("/test/show_pictures?folder="+device_path)
+    return HttpResponse("Scan start gik galt", res)
 
 def install_models(request):
     return render (request, 'install_models.html')
@@ -124,9 +141,4 @@ def upgrade(request):
 def flash_led(request):
     device = "b827eb05abc2"
     flash_led_test(device)
-    return HttpResponse("OK")
-
-def include_masks(request):
-    folder = "data/device/b827eb05abc2/input"
-    include_all_masks(Path(folder))
     return HttpResponse("OK")

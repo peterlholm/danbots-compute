@@ -8,7 +8,7 @@ from utils.histoimg import histo_img
 #from .nn_template.process import process_picture_set
 #from .nn.inference.process import proc
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
-from .preprocessing import preprocessing
+from .preprocessing import general_postprocessing, scan_preprocessing
 
 if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
@@ -34,7 +34,8 @@ def receive_scan(deviceid, folder):
     if DEVICE_PROCESSING:
         proc_device_data(deviceid, folder)
     #img2img(folder / 'dias.jpg', folder / FRINGE_FILENAME)
-    preprocessing(folder)
+    scan_preprocessing(folder)  # change contrast etc
+    general_postprocessing(folder)
     # here the color.png, fringe.png, nolight.png is expected
     if NN_ENABLE:
         process_input_folder(folder)

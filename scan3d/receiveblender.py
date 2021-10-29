@@ -4,9 +4,10 @@ from pathlib import Path
 from PIL import Image
 from compute.settings import NN_ENABLE
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
+from .preprocessing import general_postprocessing
 if NN_ENABLE:
     from scan3d.nn.inference.process_input import process_input_folder
-from .preprocessing import preprocessing
+
 # def process_blender_testdata(request):
 #     """
 #     Process blender testdata set to data/testdata
@@ -34,6 +35,8 @@ NOLIGHT = "image9.png"
 # OUTDIAS = "dias.png"
 # OUTNOLIGHT = "nolight.png"
 
+_DEBUG = False
+
 def prepare_blender_input(infolder, outfolder=None):
     if not outfolder:
         outfolder = infolder
@@ -45,10 +48,8 @@ def prepare_blender_input(infolder, outfolder=None):
     pic.save(Path(outfolder) / NOLIGHT_FILENAME)
 
 def receive_scan_set(folder):
-    print("Receive Blender Scan_set", folder)
-    preprocessing(folder)
+    if _DEBUG:
+        print("Receive Blender Scan_set", folder)
+    general_postprocessing(folder)
     if NN_ENABLE:
         process_input_folder(folder)
-
-    # if Path.exists(folder / 'pointcloud.jpg'):
-    #     copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )

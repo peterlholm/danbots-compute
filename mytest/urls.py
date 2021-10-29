@@ -8,8 +8,10 @@ from mytest import views
 urlpatterns = [
     path("", views.debug),
     path("receiveblender", views.receive_blender),
-    path("folder", views.folder),
-    
+    path("folder", views.rec_folder),
+    path("start_scan/", views.start_scan),
+    path("start_scan5/", views.start_scan5),
+
     path("debug", views.debug),
     path("calibrate_camera", views.calibrate_camera),
     #path('showresult', views.showresult),
@@ -21,7 +23,5 @@ urlpatterns = [
     path("sendpicture/", views.sendpicture),
     path('errorlog/', views.errorlog),
     path('upgrade/', views.upgrade),
-    path('flash_led/', views.flash_led),
-    #path('stream/', views.pic_stream),
-    path("include_masks/", views.include_masks)
+    path('flash_led/', views.flash_led)
 ]
