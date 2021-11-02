@@ -13,7 +13,7 @@ from .preprocessing import general_postprocessing, scan_preprocessing
 if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
 
-_DEBUG = True
+_DEBUG = False
 DEVICE_PROCESSING = True
 
 def copy2nn(folder):

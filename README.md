@@ -1,6 +1,9 @@
 # Compute Site for 3d scan
 
 The site have an api and a train entrance
+## requirements
+
+apt install python3-opencv
 
 ## api
 

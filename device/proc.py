@@ -8,7 +8,7 @@ from utils.img_utils import rotate_img
 from utils.pic_utils import insert_mask
 from utils.histoimg import histo_img, get_mask
 
-_DEBUG=True
+_DEBUG=False
 
 def rotation(config, infile, outfile):
     #config = read_device_config(device)
