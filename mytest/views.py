@@ -109,6 +109,16 @@ def start_scan5(request):
         return redirect("/test/show_pictures?folder="+device_path)
     return HttpResponse("Scan start gik galt", res)
 
+def calc5(request):
+    "Request scan from device and display results"
+    print("Recalculate 4 pictures:" + MYDEVICE)
+    device_path = "device/" + MYDEVICE + "/input/1/"
+    for i in range(1,6):
+        print("Recalculating", DEVICE_PATH / MYDEVICE / 'input' / str(i))
+        receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
+    # wait for processing
+    return redirect("/test/show_pictures?folder="+device_path)
+
 def install_models(request):
     return render (request, 'install_models.html')
 

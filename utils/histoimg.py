@@ -1,5 +1,5 @@
 "stat info for img"
-#from pathlib import Path
+from pathlib import Path
 from matplotlib import pyplot as plt
 from matplotlib import use
 from PIL import Image, ImageStat
@@ -14,6 +14,7 @@ def get_mask(imgfile):
 
 def histo_img(imgfile, outfile, mask=None):
     use('Agg')
+    Path(outfile).unlink(missing_ok=True)
     img = Image.open(imgfile)
     maske = None
     if 'A' in img.getbands():

@@ -11,9 +11,12 @@ L_MODELFILE = 'L_model.h5'
 
 COLOR_IMAGE = 'color.png'
 
+_DEBUG = False
+
 def load_L_model():
     model = tensorflow.keras.models.load_model(MODEL_PATH / L_MODELFILE)
-    print("L model Loaded")
+    if _DEBUG:
+        print("L model Loaded")
     return model
 
 Lmodel = load_L_model()

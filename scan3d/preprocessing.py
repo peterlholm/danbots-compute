@@ -25,18 +25,19 @@ def copy_test_set(folder):
 
 def change_exposure(infile, outfile):
     tempfile = "temp.png"
-    change_contrast(infile, tempfile, 0.6)
+    change_contrast(infile, tempfile, 0.9)
     change_brightness(tempfile, outfile, 0.9)
 
 def scan_preprocessing(folder):
+    "input fringe.png"
     if _DEBUG:
-        print("generating histograms")
+        print("generating histograms", folder)
         #histo_img(folder / 'color.jpg', folder / 'color_histo.jpg')
         #histo_img(folder / 'color.png', folder / 'color_histo.png')
         #histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
 
-    Path(folder / 'fringe.png').rename(folder / 'org_fringe.png')
-    change_exposure(folder / 'org_fringe.png', folder / 'fringe.png')
+    Path(folder / 'fringe.png').replace(folder / 'pre_fringe.png')
+    change_exposure(folder / 'pre_fringe.png', folder / 'fringe.png')
     #histo_img(folder / 'fringe.png', folder / 'fringe_new_histo.png')
 
 def general_postprocessing(folder):

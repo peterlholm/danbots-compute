@@ -29,7 +29,7 @@ def create_mask(color_picture, nolight_picture, outfolder):
     img2 = cv2.imread(str(nolight_picture), 0).astype(np.float32)
     diff1 = np.subtract(gray, .5*img2)
     my_mask =  np.zeros((PICTURE_HEIGHT, PICTURE_WIDTH), dtype=np.float)
-    cv2.imwrite( str(outfolder / 'test2.png'), 128*my_mask)
+    #cv2.imwrite( str(outfolder / 'test2.png'), 128*my_mask)
     for i in range(PICTURE_HEIGHT):
         for j in range(PICTURE_WIDTH):
             if (diff1[i,j]<50):
