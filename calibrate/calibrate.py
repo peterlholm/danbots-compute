@@ -6,6 +6,7 @@ from calibrate.regressions import linear_regress
 
 def search_high(img, x, y, up=False):
     # find higher value up or down return better value or false
+    print("search_high", x,y,up)
     found = False
     startval = img.getpixel((x,y))
     myval = startval
@@ -17,6 +18,7 @@ def search_high(img, x, y, up=False):
             y = y+1
         if (y==0 or y>img.height) and not found:
             return False
+        #print(x,y)
         newval = img.getpixel((x,y))
         if newval >= myval:
             found = True

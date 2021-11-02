@@ -9,7 +9,8 @@ def cal_camera(deviceid, folder):
     if _DEBUG:
         print("Calibrating", deviceid)
     cal_picture = folder / 'color.png'
-    slope = get_img_slope(cal_picture)
+    #slope = get_img_slope(cal_picture)
+    slope = 0
     freq = get_img_freq(cal_picture)
     if _DEBUG:
         print("Slope:", slope, "deg Freq:", freq, " f/100 bit" )

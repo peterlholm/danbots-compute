@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from .config import PICTURE_HEIGHT, PICTURE_WIDTH, MASK_NPY, MASK_FILENAME
 
-_DEBUG=False
+_DEBUG=True
 
 def make_grayscale(img):
     # Transform color image to grayscale
@@ -12,7 +12,7 @@ def make_grayscale(img):
     return gray_img
 
 def create_mask(color_picture, nolight_picture, outfolder):
-    "Create a numpy array with 0: inclded, 1: excluded"
+    "Create a numpy array with 0: included, 1: excluded"
     if _DEBUG:
         print("creating mask", color_picture, nolight_picture)
     outfolder = Path(outfolder)
@@ -35,7 +35,8 @@ def create_mask(color_picture, nolight_picture, outfolder):
             if (diff1[i,j]<50):
                 my_mask[i,j]= True
     # if alfa channel
-    if img1.shape[2]>3:
+
+    if True and img1.shape[2]>3:
         channels = cv2.split(img1)
         # add alfa mask
         for i in range(img1.shape[0]):

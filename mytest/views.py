@@ -39,14 +39,27 @@ def show_pictures(request):
     datapath = 'testdata/process/'
     #datapath = 'testdata/'
     data_path = request.GET.get('folder', datapath)
-    abs_path = DATA_PATH / data_path
+    number = request.GET.get('number',None)
+    if number:
+        sdata_path = data_path + str(number) + '/'
+    else:
+        sdata_path = data_path
+    abs_path = DATA_PATH / sdata_path
+    print(abs_path)
     pic_list = []
     #print ("abs", abs_path)
     for pic in Path.glob(abs_path,"*.jpg"):
-        pic_list.append("/data/"+data_path+pic.name)
+        pic_list.append("/data/"+sdata_path+pic.name)
     for pic in Path.glob(abs_path,"*.png"):
-        pic_list.append("/data/"+data_path+pic.name)
-    mycontext={"path": abs_path, "pictures": pic_list}
+        pic_list.append("/data/"+sdata_path+pic.name)
+    nextfolder = ''
+    if number:
+        nextfolder = data_path + str(int(number)+1) + '/'
+        #prev = data_path + str(number-1)
+
+    print (nextfolder)
+    link = "http:/test/show_pictures?folder=" + nextfolder
+    mycontext={"path": abs_path, "pictures": pic_list, "link": link}
     #print (mycontext)
     return render (request, 'showresult.html', context=mycontext)
 
@@ -106,7 +119,7 @@ def start_scan5(request):
             print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
             receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
         # wait for processing
-        return redirect("/test/show_pictures?folder="+device_path)
+        return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/&number=1")
     return HttpResponse("Scan start gik galt", res)
 
 def install_models(request):

@@ -8,6 +8,7 @@ from pathlib import Path
 from utils.pcl_utils import ply2jpg
 from utils.pcl_utils import mirror_pcl
 from utils.show_npy import show_npy
+from utils.np_utils import add_mask, maskedfile
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
 from .create_mask import create_mask
 from .H_model import nnHprocess
@@ -32,6 +33,8 @@ def process_input_folder(folder):
 
     #print(Hmodel)
     nnHprocess(folder)
+    print ("creating masked wrap")
+    newmask = maskedfile( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
     nnLprocess(folder)
     #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
 
