@@ -2,7 +2,7 @@
 import numpy as np
 import cv2
 
-_DEBUG = True
+_DEBUG = False
 
 def add_mask(np_in, mask_in):
     #print(npin.shape)

@@ -23,7 +23,8 @@ def mirror_pcl(infile, outfile):
 def pcl2jpg(pcd, outfile):
     vis = o3d.visualization.Visualizer()
     res = vis.create_window(visible = _DEBUG, width=500, height=500)
-    print("create window result", res)
+    if not res:
+        print("create window result", res)
     vis.add_geometry(pcd)
     #is.get_render_option().load_from_json("Imaging/di
     # splay/RenderOption.json")

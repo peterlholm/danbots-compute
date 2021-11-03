@@ -1,4 +1,4 @@
-"Process a blender dataset"
+"Receive a blender dataset and prepare it for NN"
 from pathlib import Path
 #from shutil import copy2
 from PIL import Image
@@ -8,28 +8,12 @@ from .preprocessing import general_postprocessing
 if NN_ENABLE:
     from scan3d.nn.inference.process_input import process_input_folder
 
-# def process_blender_testdata(request):
-#     """
-#     Process blender testdata set to data/testdata
-#     """
-#     TESTDATAFOLDER = Path(__file__).resolve().parent.parent / "testdata/render12"
-#     data_path = DATA_PATH / 'testdata/process'
-#     if Path.exists(data_path):
-#         rmtree(data_path)
-#     Path.mkdir(data_path)
-#     infolder = Path(TESTDATAFOLDER)
-#     if NN_ENABLE:
-#         process_blender_folder(infolder, data_path)
-#     return redirect("/nn/show_pictures")
-#     #return HttpResponse("Testdata Processed...")
-
 # blender names
 
 COLORPICTURE = "image8.png"
 BLACKWHITEPICTURE = "image8.png"
 DIASPICTURE = "image0.png"
 NOLIGHT = "image9.png"
-
 
 # OUTCOLOR = "color.png"
 # OUTDIAS = "dias.png"

@@ -49,9 +49,3 @@ def process_nn_folder(folder):
     pcl2png(folder / 'pointcl-nndepth.ply',folder / 'pointcl-nndepth.png')
 
     print ("Processing endet")
-
-
-
-def process_nn():
-    return
-    

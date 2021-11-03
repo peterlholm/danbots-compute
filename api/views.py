@@ -8,16 +8,9 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse #, StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DEVICE_PATH #, NN_ENABLE #, TEMP_PATH
-#from api.utils import receive_pictures
-from api.utils import filename_number, start_scan,  stop_scan #, test_nn # receive_pic_set,
+from api.utils import filename_number, start_scan,  stop_scan #, test_nn
 from calibrate.functions import cal_camera
 from scan3d.receivescan import receive_scan
-#from .forms import Form3dScan
-#from api.device_config import read_config, save_config
-#from compute3d.receive import start_scan,  stop_scan, test_nn # receive_pic_set,
-#from nn.receive import receive_pic_set
-#from Utils.Imaging.calibrering.calibrate import get_img_slope, get_img_freq
-#from calibrate.mask import create_mask, save_flash_mask, save_dias_mask
 
 _DEBUG = True
 
@@ -125,7 +118,7 @@ def stop3d(request):
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "reason": "Missing deviceid"})
 
-##################################################################
+############### Sendfiles ##################
 
 def save_file_to_folder(request, datafolder):
     os.makedirs(datafolder, exist_ok=True)
@@ -146,25 +139,10 @@ def sendfiles(request):
             save_file_to_folder(request, datafolder)
             cal_camera(deviceid, datafolder)
             return JsonResponse({'result':"OK"})
-        # if cmd == "caldias":
-        #     print("Calibrate dias")
-        #     datafolder = devicefolder / 'calibrate' / 'calcamera'
-        #     save_file_to_folder(request, datafolder)
-        #     cal_picture = datafolder / 'color.png'
-        #     slope = get_img_slope(cal_picture)
-        #     freq = get_img_freq(cal_picture)
-        #     if _DEBUG:
-        #         print(f"Callibrate device {deviceid} Slope: {slope}, Freq: {freq}")
-        #     config = read_config(devicefolder)
-        #     config['calibrate'] = {'calibrate': True, "slope": slope, "frequency": freq }
-        #     save_config(config, devicefolder)
-        #     create_masks(deviceid, datafolder)
-        #     return JsonResponse({'result':"OK", "slope": slope, "frequency": freq})
         if cmd == "calflash":
             print("Calibrate flash led")
             datafolder = devicefolder / 'calibrate' / 'calcamera'
             return JsonResponse({'result':"OK"})
-
         print("unknown cmd: ", cmd)
         datafolder = devicefolder / 'unknown_cmd'
         save_file_to_folder(request, datafolder)

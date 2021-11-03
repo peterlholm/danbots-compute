@@ -1,12 +1,10 @@
-"receive"
+"Receive a scanner data set and prepare it for NN"
 from pathlib import Path
 from shutil import copy2
 from compute.settings import DEVICE_PATH, NN_ENABLE
-from device.proc import proc_device_data
+from device.device_proc import proc_device_data
 from utils.img2img import img2img
 from utils.histoimg import histo_img
-#from .nn_template.process import process_picture_set
-#from .nn.inference.process import proc
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
 from .preprocessing import general_postprocessing, scan_preprocessing
 

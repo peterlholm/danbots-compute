@@ -48,7 +48,7 @@ def proc_device_data(device, folder):
         print("Overwriting color.png and fringe.png")
     config = read_device_config(device)
     if config.has_section('calibrate'):
-        print("calibrate section exist")
+        #print("calibrate section exist")
         if False:
             rotation(config,folder / 'dias.jpg', folder / 'fringe.png')
             # slope = float(config['calibrate']['slope'])
@@ -62,7 +62,8 @@ def proc_device_data(device, folder):
             #mymask = get_mask(folder / 'fringe.png')  
             #mymask.show()
             #histo_img(folder / 'color.jpg', folder / 'mycolor_histo.png')
-            histo_img(folder / 'fringe.png', folder / 'device_fringe_histo.png')
+            if _DEBUG:
+                histo_img(folder / 'fringe.png', folder / 'device_fringe_histo.png')
             #histo_img(folder / 'dias.png', folder / 'mydias_histo2.png', mask=mymask)
     if _DEBUG:
         print("finish proc_device_data")

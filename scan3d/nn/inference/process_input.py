@@ -3,8 +3,6 @@
 #from datetime import datetime
 #from shutil import copytree, rmtree
 from pathlib import Path
-#from nn.prepare_input import prepare_blender_input, COLORPICTURE
-#from nn.inference.wrap_net import wrap_net
 from utils.pcl_utils import ply2jpg
 from utils.pcl_utils import mirror_pcl
 from utils.show_npy import show_npy
@@ -16,13 +14,13 @@ from .L_model import nnLprocess
 from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
-
-_DEBUG=True
+_DEBUG=False
+_NET2=False
 
 def process_input_folder(folder):
     "Process folder through normal nn processing"
     if _DEBUG:
-        print("processing folder: ", folder)
+        print("NN processing folder: ", folder)
     if not Path.exists(folder):
         raise Exception("Input directory does not exist", folder)
 
@@ -33,20 +31,19 @@ def process_input_folder(folder):
 
     #print(Hmodel)
     nnHprocess(folder)
-    print ("creating masked wrap")
-    newmask = maskedfile( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
-    nnLprocess(folder)
-    #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
-
-    newDepth(folder, 30)
-
-    nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
-
-    mirror_pcl(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
-    ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
     if _DEBUG:
-        print ("Processing endet")
-
-def process_nn():
-    return
+        print ("creating masked wrap")
+    newmask = maskedfile( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
     
+    if _NET2:
+        nnLprocess(folder)
+        #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
+
+        newDepth(folder, 30)
+
+        nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
+
+        mirror_pcl(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
+        ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
+        if _DEBUG:
+            print ("Processing endet")

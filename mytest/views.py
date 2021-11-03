@@ -45,7 +45,7 @@ def show_pictures(request):
     else:
         sdata_path = data_path
     abs_path = DATA_PATH / sdata_path
-    print(abs_path)
+    #print(abs_path)
     pic_list = []
     #print ("abs", abs_path)
     for pic in Path.glob(abs_path,"*.jpg"):
@@ -97,7 +97,7 @@ def receive_blender(request):
 ####################################################
 def start_scan(request):
     "Request scan from device and display results"
-    print("Send start scan to device:" + MYDEVICE)
+    #print("Send start scan to device:" + MYDEVICE)
     device_path = "device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:
@@ -110,7 +110,7 @@ def start_scan(request):
 
 def start_scan5(request):
     "Request scan from device and display results"
-    print("Send start scan to device:" + MYDEVICE)
+    #print("Send start scan to device:" + MYDEVICE)
     device_path = "device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:
