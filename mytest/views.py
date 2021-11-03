@@ -18,7 +18,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_scan_set, prepare_blender_input
 from scan3d.receivescan import receive_scan
-from scan3d.preprocessing import copy_test_set
+from scan3d.processing import copy_test_set
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -57,7 +57,7 @@ def show_pictures(request):
         nextfolder = data_path + str(int(number)+1) + '/'
         #prev = data_path + str(number-1)
 
-    print (nextfolder)
+    #print (nextfolder)
     link = "http:/test/show_pictures?folder=" + nextfolder
     mycontext={"path": abs_path, "pictures": pic_list, "link": link}
     #print (mycontext)
@@ -111,12 +111,12 @@ def start_scan(request):
 def start_scan5(request):
     "Request scan from device and display results"
     #print("Send start scan to device:" + MYDEVICE)
-    device_path = "device/" + MYDEVICE + "/input/1/"
+    #device_path = "device/" + MYDEVICE + "/input/1/"
     res = send_start_scan()
     if res:
         copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
         for i in range(2,6):
-            print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
+            #print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
             receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
         # wait for processing
         return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/&number=1")
@@ -125,6 +125,7 @@ def start_scan5(request):
 def calc5(request):
     "Request scan from device and display results"
     print("Recalculate 4 pictures:" + MYDEVICE)
+    copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
     device_path = "device/" + MYDEVICE + "/input/1/"
     for i in range(1,6):
         print("Recalculating", DEVICE_PATH / MYDEVICE / 'input' / str(i))

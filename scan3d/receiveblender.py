@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 from compute.settings import NN_ENABLE
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
-from .preprocessing import general_postprocessing
+from .processing import general_postprocessing
 if NN_ENABLE:
     from scan3d.nn.inference.process_input import process_input_folder
 

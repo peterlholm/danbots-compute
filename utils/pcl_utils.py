@@ -29,6 +29,8 @@ def pcl2jpg(pcd, outfile):
     #is.get_render_option().load_from_json("Imaging/di
     # splay/RenderOption.json")
     ctr = vis.get_view_control()
+    if ctr is None:
+        print("pcl2jpg cant get view_control", vis)
     ctr.set_zoom(0.4)
     ctr.set_front(CAM_POSITION)
     ctr.set_lookat(OBJ_CENTER)

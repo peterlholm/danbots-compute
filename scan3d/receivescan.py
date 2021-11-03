@@ -1,4 +1,4 @@
-"Receive a scanner data set and prepare it for NN"
+"Receive a scanner data set do device preprocessing and prepare it for NN"
 from pathlib import Path
 from shutil import copy2
 from compute.settings import DEVICE_PATH, NN_ENABLE
@@ -6,12 +6,12 @@ from device.device_proc import proc_device_data
 from utils.img2img import img2img
 from utils.histoimg import histo_img
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
-from .preprocessing import general_postprocessing, scan_preprocessing
+from .processing import general_postprocessing, scan_preprocessing
 
 if NN_ENABLE:
     from .nn.inference.process_input import process_input_folder
 
-_DEBUG = False
+_DEBUG = True
 DEVICE_PROCESSING = True
 
 def copy2nn(folder):

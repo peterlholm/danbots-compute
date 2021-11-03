@@ -1,7 +1,8 @@
-"Common preprocess before nn"
+"Common processing"
 from pathlib import Path
-from shutil import copy2
-from scan3d.nn.inference.config import FRINGE_FILENAME
+from shutil import copy2, rmtree
+#from compute.settings import TEMP_PATH
+#from scan3d.nn.inference.config import FRINGE_FILENAME
 from utils.histoimg import histo_img
 from utils.img_utils import change_contrast, change_brightness
 #from PIL import Image
@@ -12,17 +13,18 @@ def copy_test_set(folder):
     path1 = folder / '1'
     for i in range(2,6):
         newpath = folder / str(i)
+        rmtree(newpath, ignore_errors=True)
         Path(newpath).mkdir()
         copy2(path1 / 'color.jpg', newpath / 'color.jpg')
         #copy2(path1 / 'dias.jpg', newpath / 'dias.jpg')
         copy2(path1 / 'nolight.jpg', newpath / 'nolight.jpg')
     change_contrast(folder / '1' / 'dias.jpg', folder / '2' / 'dias.jpg', 0.8)
     change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', 1.2)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.9)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.1)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.8)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.2)
 
 def change_exposure(infile, outfile):
-    tempfile = "temp.png"
+    tempfile = Path(outfile).parent / "temp.png"
     change_contrast(infile, tempfile, 0.9)
     change_brightness(tempfile, outfile, 0.9)
 
@@ -34,8 +36,8 @@ def scan_preprocessing(folder):
         #histo_img(folder / 'color.png', folder / 'color_histo.png')
         #histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
 
-    Path(folder / 'fringe.png').replace(folder / 'pre_fringe.png')
-    change_exposure(folder / 'pre_fringe.png', folder / 'fringe.png')
+    Path(folder / 'fringe.png').replace(folder / 'fringe0.png')
+    change_exposure(folder / 'fringe0.png', folder / 'fringe.png')
     #histo_img(folder / 'fringe.png', folder / 'fringe_new_histo.png')
 
 def general_postprocessing(folder):

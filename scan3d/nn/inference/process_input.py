@@ -15,7 +15,7 @@ from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
 _DEBUG=False
-_NET2=False
+_NET2=True
 
 def process_input_folder(folder):
     "Process folder through normal nn processing"
@@ -34,7 +34,7 @@ def process_input_folder(folder):
     if _DEBUG:
         print ("creating masked wrap")
     newmask = maskedfile( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
-    
+
     if _NET2:
         nnLprocess(folder)
         #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
