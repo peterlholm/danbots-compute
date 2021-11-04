@@ -26,12 +26,11 @@ def receive_scan(deviceid, folder):
         histo_img(folder / 'color.jpg', folder / 'color_histo.jpg')
         histo_img(folder / 'dias.jpg', folder / 'dias_histo.jpg')
         histo_img(folder / 'nolight.jpg', folder / 'nolight_histo.jpg')
-    # copy file
-    #copy2(folder / 'dias.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
-    copy2nn(folder)
+    copy2(folder / 'dias.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
     if DEVICE_PROCESSING:
         proc_device_data(deviceid, folder)
-    #img2img(folder / 'dias.jpg', folder / FRINGE_FILENAME)
+    else:
+        copy2nn(folder)
     scan_preprocessing(folder)  # change contrast etc
     general_postprocessing(folder)
     # here the color.png, fringe.png, nolight.png is expected
@@ -39,3 +38,4 @@ def receive_scan(deviceid, folder):
         process_input_folder(folder)
     if Path.exists(folder / 'pointcloud.jpg'):
         copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
+        copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )

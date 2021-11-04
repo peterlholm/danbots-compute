@@ -3,6 +3,7 @@ mytest views.py
 test funtion til servere
 """
 
+from datetime import datetime
 import subprocess
 from os import name
 from shutil import rmtree, copy2
@@ -32,6 +33,7 @@ def calibrate_camera(request):
     cal_camera(deviceid, Path(folder))
     return HttpResponse("Calibration finish")
 
+############### show pictures #################
 def show_pictures(request):
     """
     Show all jpg and png pictures in folder
@@ -53,13 +55,13 @@ def show_pictures(request):
     for pic in Path.glob(abs_path,"*.png"):
         pic_list.append("/data/"+sdata_path+pic.name)
     nextfolder = ''
+    prevfolder=''
     if number:
-        nextfolder = data_path + str(int(number)+1) + '/'
-        #prev = data_path + str(number-1)
-
-    #print (nextfolder)
+        nextfolder = data_path + '&number=' + str(int(number)+1)
+        prevfolder = data_path + '&number=' + str(int(number)-1)
     link = "http:/test/show_pictures?folder=" + nextfolder
-    mycontext={"path": abs_path, "pictures": pic_list, "link": link}
+    linkprev = "http:/test/show_pictures?folder=" + prevfolder
+    mycontext={"path": abs_path, "pictures": pic_list, "link": link, "linkprev": linkprev}
     #print (mycontext)
     return render (request, 'showresult.html', context=mycontext)
 
@@ -112,8 +114,12 @@ def start_scan5(request):
     "Request scan from device and display results"
     #print("Send start scan to device:" + MYDEVICE)
     #device_path = "device/" + MYDEVICE + "/input/1/"
+    print(datetime.now())
     res = send_start_scan()
+    print(datetime.now())
     if res:
+        sleep(11)
+        print(datetime.now())
         copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
         for i in range(2,6):
             #print(DEVICE_PATH / MYDEVICE / 'input' / str(i))

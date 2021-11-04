@@ -58,6 +58,7 @@ def proc_device_data(device, folder):
             if _DEBUG:
                 print("create device masks")
             picture_mask(config, folder / 'color.jpg', folder / 'color.png')
+            picture_mask(config, folder / 'nolight.jpg', folder / 'nolight.png')
             dias_mask(config, folder / 'dias.jpg', folder / 'fringe.png')
             #mymask = get_mask(folder / 'fringe.png')  
             #mymask.show()

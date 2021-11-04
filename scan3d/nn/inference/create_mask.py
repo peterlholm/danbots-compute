@@ -36,7 +36,7 @@ def create_mask(color_picture, nolight_picture, outfolder):
                 my_mask[i,j]= True
     # if alfa channel
 
-    if True and img1.shape[2]>3:
+    if False and img1.shape[2]>3:
         channels = cv2.split(img1)
         # add alfa mask
         for i in range(img1.shape[0]):
