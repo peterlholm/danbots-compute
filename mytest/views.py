@@ -84,7 +84,8 @@ def rec_folder(request):
 
 ####### receive blender   ##################
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
-TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "nyrenders" / "render23000"
 
 def receive_blender(request):
     data_path = DEVICE_PATH / 'blender' / 'input' / '1'

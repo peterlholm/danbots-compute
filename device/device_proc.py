@@ -59,7 +59,7 @@ def proc_device_data(device, folder):
                 print("create device masks")
             picture_mask(config, folder / 'color.png', folder / 'color.png')
             picture_mask(config, folder / 'nolight.png', folder / 'nolight.png')
-            dias_mask(config, folder / 'dias.png', folder / 'fringe.png')
+            dias_mask(config, folder / 'fringe.png', folder / 'fringe.png')
             #mymask = get_mask(folder / 'fringe.png')  
             #mymask.show()
             #histo_img(folder / 'color.jpg', folder / 'mycolor_histo.png')

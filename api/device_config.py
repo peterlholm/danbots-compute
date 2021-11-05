@@ -6,6 +6,7 @@ import configparser
 from compute.settings import DATA_PATH
 
 CONFIG_FILE = "device_config.conf"
+_DEBUG = False
 
 myconfig = configparser.ConfigParser()
 
@@ -17,7 +18,8 @@ def read_config(folder):
             myconfig.read_file(configfile)
         #print("reading config")
     else:
-        print("no config file", folder)
+        if _DEBUG:
+            print("no config file", folder)
     return myconfig
 
 def save_config(config, folder):
