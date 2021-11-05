@@ -27,6 +27,23 @@ def receive_scan(deviceid, folder):
         histo_img(folder / 'dias.jpg', folder / 'dias_histo.jpg')
         histo_img(folder / 'nolight.jpg', folder / 'nolight_histo.jpg')
     copy2(folder / 'dias.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
+    copy2nn(folder)
+    process_scan(deviceid, folder)
+    # if DEVICE_PROCESSING:
+    #     proc_device_data(deviceid, folder)
+    # else:
+    #     copy2nn(folder)
+    # scan_preprocessing(folder)  # change contrast etc
+    # general_postprocessing(folder)
+    # # here the color.png, fringe.png, nolight.png is expected
+    # if NN_ENABLE:
+    #     process_input_folder(folder)
+    # if Path.exists(folder / 'pointcloud.jpg'):
+    #     copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
+    #     copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
+
+def process_scan(deviceid, folder):
+    "receive png files"
     if DEVICE_PROCESSING:
         proc_device_data(deviceid, folder)
     else:

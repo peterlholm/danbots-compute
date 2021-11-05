@@ -8,6 +8,7 @@ from mytest import views
 urlpatterns = [
     path("", views.debug),
     path("receiveblender", views.receive_blender),
+    path("receiveblender5", views.receive_blender5),
     path("folder", views.rec_folder),
     path("start_scan/", views.start_scan),
     path("start_scan5/", views.start_scan5),

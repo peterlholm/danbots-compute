@@ -2,11 +2,13 @@
 from pathlib import Path
 #from shutil import copy2
 from PIL import Image
-from compute.settings import NN_ENABLE
+#from compute.settings import NN_ENABLE
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
-from .processing import general_postprocessing
-if NN_ENABLE:
-    from scan3d.nn.inference.process_input import process_input_folder
+#from .processing import general_postprocessing
+from .receivescan import process_scan
+
+# if NN_ENABLE:
+#     from scan3d.nn.inference.process_input import process_input_folder
 
 # blender names
 
@@ -31,9 +33,11 @@ def prepare_blender_input(infolder, outfolder=None):
     pic = Image.open(infolder / NOLIGHT)
     pic.save(Path(outfolder) / NOLIGHT_FILENAME)
 
-def receive_scan_set(folder):
+def receive_blender_set(infolder, folder):
     if _DEBUG:
         print("Receive Blender Scan_set", folder)
-    general_postprocessing(folder)
-    if NN_ENABLE:
-        process_input_folder(folder)
+    prepare_blender_input(infolder, folder)
+    process_scan('blender', folder)
+    # general_postprocessing(folder)
+    # if NN_ENABLE:
+    #     process_input_folder(folder)

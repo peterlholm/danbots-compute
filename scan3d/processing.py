@@ -9,7 +9,7 @@ from utils.img_utils import change_contrast, change_brightness
 
 _DEBUG=False
 
-def copy_test_set(folder):
+def copy_x_test_set(folder):
     path1 = folder / '1'
     for i in range(2,6):
         newpath = folder / str(i)
@@ -22,6 +22,20 @@ def copy_test_set(folder):
     change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', 1.2)
     change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.8)
     change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.2)
+
+def copy_test_set(folder):
+    path1 = folder / '1'
+    for i in range(2,6):
+        newpath = folder / str(i)
+        rmtree(newpath, ignore_errors=True)
+        Path(newpath).mkdir()
+        copy2(path1 / 'fringe.png', newpath / 'fringe.png')
+        copy2(path1 / 'color.png', newpath / 'color.png')
+        copy2(path1 / 'nolight.png', newpath / 'nolight.png')
+    change_contrast(folder / '1' / 'fringe.png', folder / '2' / 'fringe.png', 0.8)
+    change_contrast(folder / '1' / 'fringe.png', folder / '3' / 'fringe.png', 1.2)
+    change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.8)
+    change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.2)
 
 def change_exposure(infile, outfile):
     tempfile = Path(outfile).parent / "temp.png"
