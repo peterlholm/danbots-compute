@@ -85,7 +85,9 @@ def rec_folder(request):
 ####### receive blender   ##################
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
-TESTDATAFOLDER = BASE_DIR / "testdata" / "nyrenders" / "render23000"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "nyrenders" / "render23000"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
 
 def receive_blender(request):
     data_path = DEVICE_PATH / 'blender' / 'input' / '1'
@@ -142,7 +144,7 @@ def start_scan5(request):
         copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
         for i in range(2,6):
             #print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
-            receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
+            process_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
         # wait for processing
         return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/&number=1")
     return HttpResponse("Scan start gik galt", res)
