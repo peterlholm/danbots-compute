@@ -39,8 +39,8 @@ def copy_test_set(folder):
 
 def change_exposure(infile, outfile):
     tempfile = Path(outfile).parent / "temp.png"
-    change_contrast(infile, tempfile, 1.2)
-    change_brightness(tempfile, outfile, 1)
+    change_contrast(infile, tempfile, 1.5)
+    change_brightness(tempfile, outfile, 0.9)
 
 def scan_preprocessing(folder):
     "input fringe.png"

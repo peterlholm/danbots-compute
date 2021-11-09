@@ -65,6 +65,16 @@ def show_pictures(request):
     #print (mycontext)
     return render (request, 'showresult.html', context=mycontext)
 
+def show5(request):
+    datapath = 'device/blender/input/'
+    data_path = request.GET.get('folder', datapath)
+    abs_path = DATA_PATH / data_path
+    pic_list = []
+    for i in range(1,5):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
+    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
+    return render (request, 'showresult.html', context=mycontext)
+
 ####### receive folder
 
 def rec_folder(request):
@@ -86,8 +96,8 @@ def rec_folder(request):
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "nyrenders" / "render23000"
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
-TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
 
 def receive_blender(request):
     data_path = DEVICE_PATH / 'blender' / 'input' / '1'
@@ -159,6 +169,7 @@ def calc5(request):
         receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
     # wait for processing
     return redirect("/test/show_pictures?folder="+device_path)
+
 
 def install_models(request):
     return render (request, 'install_models.html')
