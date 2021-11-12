@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib import style
 from mpl_toolkits.mplot3d import axes3d
 
-def show_npy(filename, outputfile=None):
+def show_npy(filename, outputfile=None, grey=False):
     #file = "np/nnunwrap.npy"
     db = np.load(filename)
     # print("dtype", db.dtype)
@@ -14,7 +14,13 @@ def show_npy(filename, outputfile=None):
     # print("ndim", db.ndim)
     # print("min,max", np.amin(db), np.amax(db))
     if True:
-        plt.imshow(db)
+        if grey:
+            print("min,max", np.min(db), np.max(db) )
+            plt.imshow(db, cmap='gray', vmin=0, vmax=1+int(np.max(db)))
+            plt.figtext(0.7, 0.8, f"Min: {int(np.min(db))}")
+            plt.figtext(0.7, 0.9, f"Max: {int(np.max(db))}")
+        else:
+            plt.imshow(db)
         #plt.imshow(db, cmap='gray', vmin=0, vmax=54298)
     else:
         xd = []

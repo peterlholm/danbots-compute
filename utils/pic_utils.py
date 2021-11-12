@@ -33,6 +33,15 @@ def include_device_masks(file, mask):
     img.show()
     img.save("myfile.png")
 
+def include_pic_mask(pic_filename, mask_filename, out_filename):
+    _img = Image.open(pic_filename)
+    _mask= Image.open(mask_filename)
+    for x in range(0, _img.width):
+        for y in range(0, _img.height):
+            if _mask.getpixel==0:
+                _img.putpixel((x,y),(0,0,0,255))
+    _img.save(out_filename)
+
 def include_all_masks(folder):
     print(str(folder))
     mask = (30,30,100,100)
