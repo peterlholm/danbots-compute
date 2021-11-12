@@ -6,7 +6,7 @@ from pathlib import Path
 from utils.pcl_utils import ply2jpg
 from utils.pcl_utils import mirror_pcl, mask_pcl
 from utils.show_npy import show_npy
-from utils.pic_utils import include_pic_mask
+from utils.pic_utils import include_pic_mask, convert_mask_to_color
 from utils.np_utils import add_0mask_file, add_mask, mask_file
 from .config import COLOR_FILENAME, FRINGE_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
 from .create_mask import create_mask, create_nomask, create_0mask
@@ -30,7 +30,7 @@ def process_input_folder(folder):
     create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
     #create_nomask(folder)
     include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
-
+    convert_mask_to_color(folder / 'fringe.png', folder / 'fringexx.png')
     nnHprocess(folder)
     # create nnwrap1.npy and nnwrap1.png from fringe.png
 

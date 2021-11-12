@@ -79,10 +79,10 @@ def show5(request):
 ####### process scan #######
 def proc_scan(request):
     data = DEVICE_PATH / MYDEVICE
-    data_path = data / 'input'
+    data_path = data / 'input/1/'
     print(data_path)
-    receive_scan('folder', data_path)
-    return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/")
+    receive_scan(MYDEVICE, data_path)
+    return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/1/")
 
 ####### receive folder
 

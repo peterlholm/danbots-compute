@@ -46,3 +46,12 @@ def include_all_masks(folder):
     print(str(folder))
     mask = (30,30,100,100)
     include_device_masks(folder / '1' / 'dias.jpg', mask)
+
+def convert_mask_to_color(picture_filename, out_filename, color=0):
+    _img = Image.open(picture_filename)
+    for x in range(0, _img.width):
+        for y in range(0, _img.height):
+            pixcel = _img.getpixel((x,y))
+            if pixcel[3]==0:
+                _img.putpixel((x,y),(0,0,0,0))
+    _img.save(out_filename)
