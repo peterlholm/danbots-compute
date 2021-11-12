@@ -21,12 +21,6 @@ def copy2nn(folder):
 
 def receive_scan(deviceid, folder):
     "Receive scan from device: color.jpg, dias.jpg, nolight.jpg"
-    # if _DEBUG:
-    #     print(f"Receiveing scan from {deviceid} in {folder}")
-    #     histo_img(folder / 'color.png', folder / 'color_histo.jpg')
-    #     histo_img(folder / 'dias.png', folder / 'dias_histo.jpg')
-    #     histo_img(folder / 'nolight.png', folder / 'nolight_histo.jpg')
-    #copy2(folder / 'dias.png', DEVICE_PATH / deviceid / 'input' / 'last_dias.png' )
     copy2nn(folder)
     process_scan(deviceid, folder)
 

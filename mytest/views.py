@@ -75,6 +75,14 @@ def show5(request):
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
 
+####### process scan #######
+def proc_scan(request):
+    data = DEVICE_PATH / MYDEVICE
+    data_path = data / 'input'
+    print(data_path)
+    receive_scan('folder', data_path)
+    return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/")
+
 ####### receive folder
 
 def rec_folder(request):
@@ -128,6 +136,7 @@ def receive_blender5(request):
     #return redirect("/test/show_pictures?folder=device/blender/input/")
 
 ####################################################
+
 def start_scan(request):
     "Request scan from device and display results"
     #print("Send start scan to device:" + MYDEVICE)
