@@ -66,11 +66,12 @@ def show_pictures(request):
     return render (request, 'showresult.html', context=mycontext)
 
 def show5(request):
-    datapath = 'device/blender/input/'
+    datapath = 'device/' + MYDEVICE +'/input/'
     data_path = request.GET.get('folder', datapath)
+    number = request.GET.get('folder', 5) + 1
     abs_path = DATA_PATH / data_path
     pic_list = []
-    for i in range(1,5):
+    for i in range(1,number):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)

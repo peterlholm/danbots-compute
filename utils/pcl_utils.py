@@ -78,3 +78,19 @@ def pcl2png(infilename, outfilename):
     img = vis.capture_screen_float_buffer(True)
     plt.imshow(np.asarray(img))
     vis.capture_screen_image(str(outfilename), do_render=True)
+
+def mask_pcl(pcl_filename, mask_filename, out_filename):
+    "mask pointcloud from maskfile"
+    print("Masking pcl", pcl_filename, mask_filename, out_filename)
+    pcd = o3d.io.read_point_cloud(str(pcl_filename))
+    arr = np.asarray(pcd.points)
+    _mask = np.load(mask_filename)
+
+    #print('xyz_load', arr)
+    for pkt in arr:
+        print(pkt)
+        #pkt[0] = -pkt[0]
+    #print('xyz_load', arr)
+    opcd = o3d.geometry.PointCloud()
+    opcd.points = o3d.utility.Vector3dVector(arr)
+    o3d.io.write_point_cloud(str(out_filename), opcd)
