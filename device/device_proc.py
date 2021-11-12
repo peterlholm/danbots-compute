@@ -5,7 +5,7 @@ from os import read
 from api.device_config import read_device_config, save_device_config
 from scan3d.nn.inference.config import FRINGE_FILENAME
 from utils.img_utils import rotate_img
-from utils.pic_utils import insert_mask
+from utils.pic_utils import convert_mask_to_color, insert_mask
 from utils.histoimg import histo_img, get_mask
 
 _DEBUG=False
@@ -57,9 +57,9 @@ def proc_device_data(device, folder):
         if True:
             if _DEBUG:
                 print("create device masks")
-            picture_mask(config, folder / 'color.png', folder / 'colorx.png')
-            picture_mask(config, folder / 'nolight.png', folder / 'nolightx.png')
-            dias_mask(config, folder / 'fringe.png', folder / 'fringex.png')
+            picture_mask(config, folder / 'color.png', folder / 'color.png')
+            picture_mask(config, folder / 'nolight.png', folder / 'nolight.png')
+            dias_mask(config, folder / 'fringe.png', folder / 'fringe.png')
             #mymask = get_mask(folder / 'fringe.png')  
             #mymask.show()
             #histo_img(folder / 'color.jpg', folder / 'mycolor_histo.png')
