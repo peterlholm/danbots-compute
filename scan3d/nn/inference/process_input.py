@@ -30,7 +30,9 @@ def process_input_folder(folder):
     create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
     #create_nomask(folder)
     include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
-    convert_mask_to_color(folder / 'fringe.png', folder / 'fringexx.png')
+    Path(folder / 'fringe_nomask.png').unlink(missing_ok=True)
+    Path(folder / 'fringe.png').rename(folder / 'fringe_nomask.png')
+    convert_mask_to_color(folder / 'fringe_nomask.png', folder / 'fringe.png', color=0)
     nnHprocess(folder)
     # create nnwrap1.npy and nnwrap1.png from fringe.png
 

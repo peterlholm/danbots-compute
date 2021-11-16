@@ -1,4 +1,5 @@
 "Common processing"
+#from os import path
 from pathlib import Path
 from shutil import copy2, rmtree
 #from compute.settings import TEMP_PATH
@@ -38,9 +39,14 @@ def copy_test_set(folder):
     change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.2)
 
 def change_exposure(infile, outfile):
+    CONTRAST=1.5
+    BRIGHTNESS=0.9
+    CONTRAST=1
+    BRIGHTNESS=1
     tempfile = Path(outfile).parent / "temp.png"
-    change_contrast(infile, tempfile, 1.5)
-    change_brightness(tempfile, outfile, 0.9)
+    change_contrast(infile, tempfile, CONTRAST)
+    change_brightness(tempfile, outfile, BRIGHTNESS)
+    tempfile.unlink()
 
 def scan_preprocessing(folder):
     "input fringe.png"

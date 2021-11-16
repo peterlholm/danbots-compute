@@ -53,5 +53,5 @@ def convert_mask_to_color(picture_filename, out_filename, color=0):
         for y in range(0, _img.height):
             pixcel = _img.getpixel((x,y))
             if pixcel[3]==0:
-                _img.putpixel((x,y),(0,0,0,0))
+                _img.putpixel((x,y),(color,color,color,0))
     _img.save(out_filename)

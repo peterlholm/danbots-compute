@@ -145,7 +145,7 @@ def start_scan(request):
     res = send_start_scan()
     if res:
         # wait for processing
-        sleep(3)
+        sleep(0.5)
         if NN_ENABLE:
             sleep(8)
         return redirect("/test/show_pictures?folder="+device_path)
