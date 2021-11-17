@@ -4,19 +4,20 @@
 #from shutil import copytree, rmtree
 from pathlib import Path
 from utils.pcl_utils import ply2jpg
-from utils.pcl_utils import mirror_pcl, mask_pcl
+from utils.pcl_utils import mirror_pcl #, mask_pcl
 from utils.show_npy import show_npy
-from utils.pic_utils import include_pic_mask, convert_mask_to_color
-from utils.np_utils import add_0mask_file, add_mask, mask_file
-from .config import COLOR_FILENAME, FRINGE_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME
-from .create_mask import create_mask, create_nomask, create_0mask
+from utils.pic_utils import convert_mask_to_color # include_pic_mask,
+#from utils.np_utils import add_0mask_file, add_mask, mask_file
+from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME # FRINGE_FILENAME
+from .create_mask import create_mask, create_0mask # create_nomask,
 from .H_model import nnHprocess
 from .L_model import nnLprocess
 from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
 _DEBUG=False
-_NET2=False
+_NET2=True
+_MASK=False
 
 def process_input_folder(folder):
     "Process folder through normal nn processing"
@@ -27,19 +28,24 @@ def process_input_folder(folder):
 
     # create mask.npy (and mask.png)
     create_mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
-    create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
+    if _MASK:
+        create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
     #create_nomask(folder)
-    include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
-    Path(folder / 'fringe_nomask.png').unlink(missing_ok=True)
-    Path(folder / 'fringe.png').rename(folder / 'fringe_nomask.png')
-    convert_mask_to_color(folder / 'fringe_nomask.png', folder / 'fringe.png', color=0)
+
+    #include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
+
+    if _MASK:
+        (folder / 'fringe_nomask.png').unlink(missing_ok=True)
+        (folder / 'fringe.png').rename(folder / 'fringe_nomask.png')
+        convert_mask_to_color(folder / 'fringe_nomask.png', folder / 'fringe.png', color=0)
+
     nnHprocess(folder)
     # create nnwrap1.npy and nnwrap1.png from fringe.png
 
     if _DEBUG:
         print ("creating masked wrap")
-    mask_file( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
-    show_npy(folder / 'dummy.npy', folder / "dummy.png", grey=True)
+    #mask_file( folder /'nnwrap1.npy', folder /'mask.npy', folder /'dummy.npy')
+    #show_npy(folder / 'dummy.npy', folder / "dummy.png", grey=True)
 
     if _NET2:
         nnLprocess(folder) # generate nnunwrap.png

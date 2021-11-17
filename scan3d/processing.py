@@ -10,7 +10,7 @@ from utils.img_utils import change_contrast, change_brightness
 
 _DEBUG=False
 
-def copy_x_test_set(folder):
+def copy_jpg_test_set(folder):
     path1 = folder / '1'
     for i in range(2,6):
         newpath = folder / str(i)
@@ -38,27 +38,27 @@ def copy_test_set(folder):
     change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.8)
     change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.2)
 
-def change_exposure(infile, outfile):
-    CONTRAST=1.5
-    BRIGHTNESS=0.9
-    CONTRAST=1
-    BRIGHTNESS=1
-    tempfile = Path(outfile).parent / "temp.png"
-    change_contrast(infile, tempfile, CONTRAST)
-    change_brightness(tempfile, outfile, BRIGHTNESS)
-    tempfile.unlink()
+# def change_exposure(infile, outfile):
+#     CONTRAST=1.5
+#     BRIGHTNESS=0.9
+#     CONTRAST=1
+#     BRIGHTNESS=1
+#     tempfile = Path(outfile).parent / "temp.png"
+#     change_contrast(infile, tempfile, CONTRAST)
+#     change_brightness(tempfile, outfile, BRIGHTNESS)
+#     tempfile.unlink()
 
-def scan_preprocessing(folder):
-    "input fringe.png"
-    if _DEBUG:
-        print("generating histograms", folder)
-        #histo_img(folder / 'color.jpg', folder / 'color_histo.jpg')
-        #histo_img(folder / 'color.png', folder / 'color_histo.png')
-        #histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
+# def scan_preprocessing(folder):
+#     "input fringe.png"
+#     if _DEBUG:
+#         print("generating histograms", folder)
+#         #histo_img(folder / 'color.jpg', folder / 'color_histo.jpg')
+#         #histo_img(folder / 'color.png', folder / 'color_histo.png')
+#         #histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
 
-    Path(folder / 'fringe.png').replace(folder / 'fringe0.png')
-    change_exposure(folder / 'fringe0.png', folder / 'fringe.png')
-    #histo_img(folder / 'fringe.png', folder / 'fringe_new_histo.png')
+#     Path(folder / 'fringe.png').replace(folder / 'fringe0.png')
+#     #change_exposure(folder / 'fringe0.png', folder / 'fringe.png')
+#     #histo_img(folder / 'fringe.png', folder / 'fringe_new_histo.png')
 
 def general_postprocessing(folder):
     "preproccsing for scan and blender"

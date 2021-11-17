@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 OBJ_CENTER = [0.0,0.0,22.0]
 CAM_POSITION = [-10.0, -0.0, -25.0]
+ZOOM = 0.3
 
 _DEBUG = False
 
@@ -31,7 +32,7 @@ def pcl2jpg(pcd, outfile):
     ctr = vis.get_view_control()
     if ctr is None:
         print("pcl2jpg cant get view_control", vis)
-    ctr.set_zoom(0.4)
+    ctr.set_zoom(ZOOM)
     ctr.set_front(CAM_POSITION)
     ctr.set_lookat(OBJ_CENTER)
     ctr.set_up([+10.0, 0, 0])

@@ -3,11 +3,13 @@
 import numpy as np
 #import open3d as o3d
 from matplotlib import pyplot as plt
+from matplotlib import use
 from matplotlib import style
 from mpl_toolkits.mplot3d import axes3d
 
 def show_npy(filename, outputfile=None, grey=False):
     #file = "np/nnunwrap.npy"
+    use('Agg')
     db = np.load(filename)
     # print("dtype", db.dtype)
     # print("shape", db.shape)

@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from .config import PICTURE_HEIGHT, PICTURE_WIDTH, MASK_NPY, MASK_FILENAME
 
-_DEBUG=True
+_DEBUG=False
 
 def make_grayscale(img):
     # Transform color image to grayscale

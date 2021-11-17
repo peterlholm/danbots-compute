@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from compute.settings import DEVICE_PATH #, NN_ENABLE #, TEMP_PATH
 from api.utils import filename_number, start_scan,  stop_scan #, test_nn
 from calibrate.functions import cal_camera
-from scan3d.receivescan import process_scan, receive_scan
+from scan3d.receivescan import receive_scan # process_scan,
 
 _DEBUG = True
 

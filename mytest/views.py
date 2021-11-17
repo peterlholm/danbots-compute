@@ -3,7 +3,7 @@ mytest views.py
 test funtion til servere
 """
 
-from datetime import datetime
+#from datetime import datetime
 import subprocess
 from os import name
 from shutil import rmtree, copy2
@@ -19,7 +19,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set #prepare_blender_input
 from scan3d.receivescan import receive_scan, process_scan
-from scan3d.processing import copy_test_set #, copy_blender_test_set
+from scan3d.processing import copy_test_set, copy_jpg_test_set # copy_blender_test_set
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -72,6 +72,12 @@ def show5(request):
     abs_path = DATA_PATH / data_path
     pic_list = []
     for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/fringe.png')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/nnwrap1.png')
+    for i in range(1,number):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
@@ -80,7 +86,7 @@ def show5(request):
 def proc_scan(request):
     data = DEVICE_PATH / MYDEVICE
     data_path = data / 'input/1/'
-    print(data_path)
+    #print(data_path)
     receive_scan(MYDEVICE, data_path)
     return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/1/")
 
@@ -153,33 +159,25 @@ def start_scan(request):
 
 def start_scan5(request):
     "Request scan from device and display results"
-    #print("Send start scan to device:" + MYDEVICE)
-    #device_path = "device/" + MYDEVICE + "/input/1/"
-    print(datetime.now())
     res = send_start_scan()
-    print(datetime.now())
     if res:
         sleep(11)
-        print(datetime.now())
-        copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
+        copy_jpg_test_set(DEVICE_PATH / MYDEVICE / 'input')
         for i in range(2,6):
-            #print(DEVICE_PATH / MYDEVICE / 'input' / str(i))
-            process_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
-        # wait for processing
+            receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
+            #process_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
         return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/&number=1")
     return HttpResponse("Scan start gik galt", res)
 
 def calc5(request):
     "Request scan from device and display results"
     print("Recalculate 4 pictures:" + MYDEVICE)
-    copy_test_set(DEVICE_PATH / MYDEVICE / 'input')
+    copy_jpg_test_set(DEVICE_PATH / MYDEVICE / 'input')
     device_path = "device/" + MYDEVICE + "/input/1/"
     for i in range(1,6):
         print("Recalculating", DEVICE_PATH / MYDEVICE / 'input' / str(i))
         receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
-    # wait for processing
     return redirect("/test/show_pictures?folder="+device_path)
-
 
 def install_models(request):
     return render (request, 'install_models.html')
