@@ -16,10 +16,47 @@ def mirror_pcl(infile, outfile):
     #print('xyz_load', arr)
     for pkt in arr:
         pkt[0] = -pkt[0]
+        #print(pkt)
     #print('xyz_load', arr)
     opcd = o3d.geometry.PointCloud()
     opcd.points = o3d.utility.Vector3dVector(arr)
     o3d.io.write_point_cloud(str(outfile), opcd)
+
+def filter_pcl(infile, outfile):
+    "filter outer procent part of pcl"
+    procent = 0.15
+    pcd = o3d.io.read_point_cloud(str(infile))
+    arr = np.asarray(pcd.points)
+    print(arr.min(axis=0), arr.max(axis=0))
+    amin = arr.min(axis=0)
+    amax = arr.max(axis=0)
+    #xmin = amin[0] + procent*(amax[0]-amin[0])
+    #xmax = amax[0] - procent*(amax[0]-amin[0])
+    #ymin = amin[1] + procent*(amax[1]-amin[1])
+    #ymax = amax[1] - procent*(amax[1]-amin[1])
+    #print (xmin, xmax, ymin, ymax)
+    #print (arr.shape)
+    # X Axis
+    #points = np.asarray(pcd_clean.points)
+    mask_x_1 = arr[:,0] > (amin[0] + procent*(amax[0]-amin[0]))
+    mask_x_2 = arr[:,0] < (amax[0] - procent*(amax[0]-amin[0]))
+    #print(mask_x_1)
+    #print(mask_x_2)
+    # Y Axis
+    mask_y_1 = arr[:,1] > (amin[1] + procent*(amax[1]-amin[1]))
+    mask_y_2 = arr[:,1] < (amax[1] - procent*(amax[1]-amin[1]))
+    # Z Axis
+    # mask_z_1 = points[:,2] < 0.3 # Closer to floor
+    # mask_z_2 = points[:,2] > -0.1 # Clooser to ceiling
+    mask_x = np.logical_and(mask_x_1, mask_x_2) # Along table's wide
+    mask_y = np.logical_and(mask_y_1, mask_y_2) # Along table's longitude
+    #mask_z = np.logical_and(mask_z_1, mask_z_2) # Along table's height
+    #mask = np.logical_and(mask_x, mask_y, mask_z)
+    mask = np.logical_and(mask_x, mask_y)
+    #print(mask)
+    #pcd_clean = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(arr[mask])
+    o3d.io.write_point_cloud(str(outfile), pcd)
 
 def pcl2jpg(pcd, outfile):
     vis = o3d.visualization.Visualizer()
