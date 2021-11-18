@@ -19,7 +19,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set #prepare_blender_input
 from scan3d.receivescan import receive_scan, process_scan
-from scan3d.processing import copy_test_set, copy_jpg_test_set # copy_blender_test_set
+from scan3d.processing import copy_test_set, copy_jpg_test_set, copy_stitch_test_set # copy_blender_test_set
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -108,9 +108,7 @@ def rec_folder(request):
     return redirect("/test/show_pictures?folder=device/folder/input/")
 
 ####### receive blender   ##################
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "render26"
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "render0"
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "nyrenders" / "render23000"
+
 TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
 
@@ -142,7 +140,7 @@ def receive_blender5(request):
     return redirect("/test/show_pictures?folder=device/blender/input/&number=1")
     #return redirect("/test/show_pictures?folder=device/blender/input/")
 
-####################################################
+#################### SCAN ################################
 
 def start_scan(request):
     "Request scan from device and display results"
@@ -177,14 +175,26 @@ def calc5(request):
     for i in range(1,6):
         print("Recalculating", DEVICE_PATH / MYDEVICE / 'input' / str(i))
         receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
-    return redirect("/test/show_pictures?folder="+device_path)
+    return redirect("/test/show_pictures?folder=device/"+device_path)
+
+################## STITCH ################
+STITCH_SET = BASE_DIR / "testdata" / "renders211105"
+def stitch(request):
+    "Stich 2 pcl"
+    device = 'stitch'
+    ofolder = DEVICE_PATH / device / 'stitch'
+    print("Stitch: " + device)
+    copy_stitch_test_set(STITCH_SET, ofolder )
+
+    return redirect("/test/show_pictures?folder=device/"+device+"/stitch/&number=1")
+
+
+############# DOC ########################
 
 def install_models(request):
     return render (request, 'install_models.html')
 
-def test(request):
-    return HttpResponse("Hello, Django!")
-
+#############  send to live #################
 def sendply(request):
     path = DATA_PATH / "temp/faar.jpg"
     result = send_ply_picture("123", path)

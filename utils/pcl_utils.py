@@ -1,13 +1,16 @@
 "pointcload utils"
 import open3d as o3d
 import numpy as np
-from matplotlib import pyplot as plt
+from matplotlib import use, pyplot as plt
+#from matplotlib import use
+
 
 OBJ_CENTER = [0.0,0.0,22.0]
 CAM_POSITION = [-10.0, -0.0, -25.0]
 ZOOM = 0.3
+ZOOM = 0.5
 
-_DEBUG = False
+_DEBUG = True
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -59,6 +62,15 @@ def filter_pcl(infile, outfile):
     o3d.io.write_point_cloud(str(outfile), pcd)
 
 def pcl2jpg(pcd, outfile):
+    obj_center = OBJ_CENTER
+    print (obj_center)
+    if _DEBUG:
+        arr = np.asarray(pcd.points)
+        amin = np.min(arr, axis=0)
+        amax = np.max(arr, axis=0)
+        print("PCL limits", amin, amax)
+        obj_center = ((amax[0]+amin[0])/2,(amax[1]+amin[1])/2,(amax[2]+amin[2])/2)
+        print("center", obj_center)
     vis = o3d.visualization.Visualizer()
     res = vis.create_window(visible = _DEBUG, width=500, height=500)
     if not res:
@@ -91,17 +103,15 @@ def render_image(pcd, outfile):
     #plt.show()
 
 def ply2jpg(infile, outfile):
-    #print(infile)
-    #print(outfile)
     pcd = o3d.io.read_point_cloud(str(infile))
     pcl2jpg(pcd, outfile)
-    #render_image(pcd, outfile)
 
 #ply2jpg(Path(__file__+'/../../testdata/render0/pointcl-nndepth.ply'), 'ud.jpg')
 
 # maybe not used
 def pcl2png(infilename, outfilename):
     "write file with pointcloud"
+    use('Agg')
     pcd = o3d.io.read_point_cloud(str(infilename))
     vis = o3d.visualization.Visualizer()
     vis.create_window(visible = False)

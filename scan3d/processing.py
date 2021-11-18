@@ -2,10 +2,11 @@
 #from os import path
 from pathlib import Path
 from shutil import copy2, rmtree
-#from compute.settings import TEMP_PATH
+#from compute.settings import BASE_DIR
 #from scan3d.nn.inference.config import FRINGE_FILENAME
 from utils.histoimg import histo_img
 from utils.img_utils import change_contrast, change_brightness
+from utils.pcl_utils import ply2jpg, mirror_pcl #, pcl2jpg
 #from PIL import Image
 
 _DEBUG=False
@@ -38,27 +39,23 @@ def copy_test_set(folder):
     change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.8)
     change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.2)
 
-# def change_exposure(infile, outfile):
-#     CONTRAST=1.5
-#     BRIGHTNESS=0.9
-#     CONTRAST=1
-#     BRIGHTNESS=1
-#     tempfile = Path(outfile).parent / "temp.png"
-#     change_contrast(infile, tempfile, CONTRAST)
-#     change_brightness(tempfile, outfile, BRIGHTNESS)
-#     tempfile.unlink()
-
-# def scan_preprocessing(folder):
-#     "input fringe.png"
-#     if _DEBUG:
-#         print("generating histograms", folder)
-#         #histo_img(folder / 'color.jpg', folder / 'color_histo.jpg')
-#         #histo_img(folder / 'color.png', folder / 'color_histo.png')
-#         #histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
-
-#     Path(folder / 'fringe.png').replace(folder / 'fringe0.png')
-#     #change_exposure(folder / 'fringe0.png', folder / 'fringe.png')
-#     #histo_img(folder / 'fringe.png', folder / 'fringe_new_histo.png')
+def copy_stitch_test_set(from_folder, to_folder):
+    #STITCH_SET = BASE_DIR / "testdata" / "renders211105" / "render14"
+    #TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
+    Path(to_folder).mkdir(parents=True, exist_ok=True)
+    for i in range(1,50):
+        ifold = from_folder / ('render'+str(i-1))
+        ofold = to_folder / str(i)
+        #print(ifold)
+        if Path(ifold).exists():
+            Path(ofold).mkdir(parents=True, exist_ok=True)
+            copy2(ifold / "image8.png", ofold / "color.png")
+            copy2(ifold / "pointcl-nndepth.ply", ofold / "pointcl-nndepth.ply")
+            mirror_pcl(ofold / "pointcl-nndepth.ply", ofold / 'pointcloud.ply')
+            #filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
+            #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
+            ply2jpg(ofold / 'pointcloud.ply', ofold / 'pointcloud.jpg')
+            #ply2jpg(ofold / 'pointcloud1.ply', ofold / 'pointcloud1.jpg')
 
 def general_postprocessing(folder):
     "preproccsing for scan and blender"
