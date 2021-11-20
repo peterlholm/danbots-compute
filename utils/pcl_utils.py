@@ -10,7 +10,7 @@ CAM_POSITION = [-10.0, -0.0, -25.0]
 ZOOM = 0.3
 ZOOM = 0.5
 
-_DEBUG = True
+_DEBUG = False
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -63,16 +63,15 @@ def filter_pcl(infile, outfile):
 
 def pcl2jpg(pcd, outfile):
     obj_center = OBJ_CENTER
-    print (obj_center)
     if _DEBUG:
         arr = np.asarray(pcd.points)
         amin = np.min(arr, axis=0)
         amax = np.max(arr, axis=0)
         print("PCL limits", amin, amax)
         obj_center = ((amax[0]+amin[0])/2,(amax[1]+amin[1])/2,(amax[2]+amin[2])/2)
-        print("center", obj_center)
+        print("center", obj_center, pcd.get_center())
     vis = o3d.visualization.Visualizer()
-    res = vis.create_window(visible = _DEBUG, width=500, height=500)
+    res = vis.create_window(visible = False, width=500, height=500)
     if not res:
         print("create window result", res)
     vis.add_geometry(pcd)
@@ -83,7 +82,7 @@ def pcl2jpg(pcd, outfile):
         print("pcl2jpg cant get view_control", vis)
     ctr.set_zoom(ZOOM)
     ctr.set_front(CAM_POSITION)
-    ctr.set_lookat(OBJ_CENTER)
+    ctr.set_lookat(obj_center)
     ctr.set_up([+10.0, 0, 0])
     opt = vis.get_render_option()
     opt.point_size = 1.0

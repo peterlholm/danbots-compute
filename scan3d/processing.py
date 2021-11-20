@@ -43,7 +43,7 @@ def copy_stitch_test_set(from_folder, to_folder):
     #STITCH_SET = BASE_DIR / "testdata" / "renders211105" / "render14"
     #TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
     Path(to_folder).mkdir(parents=True, exist_ok=True)
-    for i in range(1,50):
+    for i in range(1,20):
         ifold = from_folder / ('render'+str(i-1))
         ofold = to_folder / str(i)
         #print(ifold)

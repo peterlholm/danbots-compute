@@ -16,7 +16,8 @@ urlpatterns = [
     path("calc5/", views.calc5),
     path("show5/", views.show5),
 
-    path("stitch/", views.stitch),
+    path("genstitch/", views.gen_stitch),
+    path("stitchfolder/", views.stitch_folder),
     path("debug", views.debug),
     path("calibrate_camera", views.calibrate_camera),
     #path('showresult', views.showresult),

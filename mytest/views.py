@@ -20,6 +20,7 @@ from calibrate.functions import cal_camera
 from scan3d.receiveblender import receive_blender_set #prepare_blender_input
 from scan3d.receivescan import receive_scan, process_scan
 from scan3d.processing import copy_test_set, copy_jpg_test_set, copy_stitch_test_set # copy_blender_test_set
+from stitching.stitch import stitch_run
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
@@ -179,7 +180,7 @@ def calc5(request):
 
 ################## STITCH ################
 STITCH_SET = BASE_DIR / "testdata" / "renders211105"
-def stitch(request):
+def gen_stitch(request):
     "Stich 2 pcl"
     device = 'stitch'
     ofolder = DEVICE_PATH / device / 'stitch'
@@ -187,6 +188,12 @@ def stitch(request):
     copy_stitch_test_set(STITCH_SET, ofolder )
 
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/&number=1")
+
+def stitch_folder(request):
+    device = 'stitch'
+    folder = DEVICE_PATH / device / 'stitch'
+    stitch_run(folder)
+    return redirect("/test/show_pictures?folder=device/"+device+"/stitch/")
 
 
 ############# DOC ########################
