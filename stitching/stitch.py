@@ -75,6 +75,7 @@ def stitch_run(folder):
     for i in range(ANTAL):
         write_pointcloud(components[i], folder / ("in"+str(i)+".jpg"))
         cpcl = clean_point_cloud(components[i])
+        o3d.io.write_point_cloud(str(folder / ("clean"+str(i)+".ply")), cpcl)
         pcls.append(cpcl)
         pcl2jpg(cpcl, folder / ("clean"+str(i)+".jpg"))
 
