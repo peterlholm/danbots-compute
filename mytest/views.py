@@ -83,6 +83,29 @@ def show5(request):
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
 
+def show5sequense(request, data_path, dias=True):
+    #datapath = 'device/' + MYDEVICE +'/input/'
+    #data_path = request.GET.get('folder', datapath)
+    #number = request.GET.get('folder', 5) + 1
+    number = 6
+    abs_path = DATA_PATH / data_path
+    pic_list = []
+    for i in range(1,number):
+        if dias:
+            pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/fringe.png')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/nnwrap1.png')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
+    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
+    return render (request, 'showresult.html', context=mycontext)
+
+def showblender5(request):
+    datapath = 'device/blender/input/'
+    return show5sequense(request, datapath, dias=False)
+
 ####### process scan #######
 def proc_scan(request):
     data = DEVICE_PATH / MYDEVICE

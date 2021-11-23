@@ -9,6 +9,8 @@ urlpatterns = [
     path("", views.debug),
     path("receiveblender", views.receive_blender),
     path("receiveblender5", views.receive_blender5),
+    path("showblender5", views.showblender5),
+
     path("folder", views.rec_folder),
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),

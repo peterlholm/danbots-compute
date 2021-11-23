@@ -20,10 +20,10 @@ def copy_jpg_test_set(folder):
         copy2(path1 / 'color.jpg', newpath / 'color.jpg')
         #copy2(path1 / 'dias.jpg', newpath / 'dias.jpg')
         copy2(path1 / 'nolight.jpg', newpath / 'nolight.jpg')
-    change_contrast(folder / '1' / 'dias.jpg', folder / '2' / 'dias.jpg', 0.8)
-    change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', 1.2)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.8)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.2)
+    change_contrast(folder / '1' / 'dias.jpg', folder / '2' / 'dias.jpg', 0.7)
+    change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', 1.3)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.7)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.3)
 
 def copy_test_set(folder):
     path1 = folder / '1'
@@ -34,10 +34,10 @@ def copy_test_set(folder):
         copy2(path1 / 'fringe.png', newpath / 'fringe.png')
         copy2(path1 / 'color.png', newpath / 'color.png')
         copy2(path1 / 'nolight.png', newpath / 'nolight.png')
-    change_contrast(folder / '1' / 'fringe.png', folder / '2' / 'fringe.png', 0.8)
-    change_contrast(folder / '1' / 'fringe.png', folder / '3' / 'fringe.png', 1.2)
-    change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.8)
-    change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.2)
+    change_contrast(folder / '1' / 'fringe.png', folder / '2' / 'fringe.png', 0.7)
+    change_contrast(folder / '1' / 'fringe.png', folder / '3' / 'fringe.png', 1.3)
+    change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.7)
+    change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.3)
 
 def copy_stitch_test_set(from_folder, to_folder):
     #STITCH_SET = BASE_DIR / "testdata" / "renders211105" / "render14"

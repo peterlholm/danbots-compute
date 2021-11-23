@@ -47,7 +47,7 @@ def clean_point_cloud(pcd):
     epsilon = 0.35
     minimum_points = 7
     required_share = 0.06
-    print("points", len(pcd.points) )
+    print("input points", len(pcd.points) )
     pcd_result, kept_indicies = nr.keep_significant_clusters(pcd, required_share, epsilon, minimum_points)
     print("Removing ", len(pcd.points) - len(kept_indicies), "points")
     return pcd_result

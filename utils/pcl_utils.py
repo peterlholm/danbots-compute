@@ -5,12 +5,8 @@ from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
 
-OBJ_CENTER = [0.0,0.0,22.0]
-CAM_POSITION = [-10.0, -0.0, -25.0]
-ZOOM = 0.3
-ZOOM = 0.5
 
-_DEBUG = False
+_DEBUG = True
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -61,7 +57,15 @@ def filter_pcl(infile, outfile):
     pcd.points = o3d.utility.Vector3dVector(arr[mask])
     o3d.io.write_point_cloud(str(outfile), pcd)
 
-def pcl2jpg(pcd, outfile):
+OBJ_CENTER = [0.0,0.0,22.0]
+CAM_POSITION = [-10.0, -0.0, -25.0]
+#CAM_POSITION = [-0.0, 0.0, -25.0]
+
+ZOOM = 0.3
+ZOOM = 0.5
+#ZOOM = 0.6
+
+def pcl2jpg(pcd, outfile, cam='n'):
     obj_center = OBJ_CENTER
     if _DEBUG:
         arr = np.asarray(pcd.points)
@@ -70,6 +74,22 @@ def pcl2jpg(pcd, outfile):
         print("PCL limits", amin, amax)
         obj_center = ((amax[0]+amin[0])/2,(amax[1]+amin[1])/2,(amax[2]+amin[2])/2)
         print("center", obj_center, pcd.get_center())
+    obj_center = pcd.get_center()
+    cam_position = obj_center
+    cam_position = CAM_POSITION
+    #cam_position[2] = CAM_POSITION[2]
+    print("Cam position:", cam_position)
+    # camera position
+    if cam=='n':
+        pass
+        #cam_position[0] = amax[0]
+    elif cam=='e':
+        pass
+    elif cam=='v':
+        pass
+    else:
+        pass
+    print ("newcam", cam_position)
     vis = o3d.visualization.Visualizer()
     res = vis.create_window(visible = False, width=500, height=500)
     if not res:
@@ -101,9 +121,9 @@ def render_image(pcd, outfile):
     plt.savefig(outfile)
     #plt.show()
 
-def ply2jpg(infile, outfile):
+def ply2jpg(infile, outfile, cam='s'):
     pcd = o3d.io.read_point_cloud(str(infile))
-    pcl2jpg(pcd, outfile)
+    pcl2jpg(pcd, outfile, cam=cam)
 
 #ply2jpg(Path(__file__+'/../../testdata/render0/pointcl-nndepth.ply'), 'ud.jpg')
 

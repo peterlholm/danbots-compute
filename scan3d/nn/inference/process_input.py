@@ -55,12 +55,12 @@ def process_input_folder(folder):
         nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 
         mirror_pcl(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
-
-        filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
-
-        #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
         ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
-        ply2jpg(folder / 'pointcloud1.ply', folder / 'pointcloud1.jpg')
+
+        #filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
+        #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
+        #ply2jpg(folder / 'pointcloud1.ply', folder / 'pointcloud1.jpg')
         #ply2jpg(folder / 'nypointcloud.ply', folder / 'nypointcloud.jpg')
+
         if _DEBUG:
             print ("Processing endet")
