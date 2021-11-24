@@ -65,7 +65,7 @@ ZOOM = 0.3
 ZOOM = 0.5
 #ZOOM = 0.6
 
-def pcl2jpg(pcd, outfile, cam='n'):
+def pcl2jpg(pcd, outfile, cam='s'):
     obj_center = OBJ_CENTER
     if _DEBUG:
         arr = np.asarray(pcd.points)
@@ -78,10 +78,10 @@ def pcl2jpg(pcd, outfile, cam='n'):
     cam_position = obj_center
     cam_position = CAM_POSITION
     #cam_position[2] = CAM_POSITION[2]
-    print("Cam position:", cam_position)
+    print("Start cam position:", cam_position)
     # camera position
     if cam=='n':
-        pass
+        cam_position = [+10.0, -0.0, -25.0]
         #cam_position[0] = amax[0]
     elif cam=='e':
         pass
@@ -101,7 +101,8 @@ def pcl2jpg(pcd, outfile, cam='n'):
     if ctr is None:
         print("pcl2jpg cant get view_control", vis)
     ctr.set_zoom(ZOOM)
-    ctr.set_front(CAM_POSITION)
+    #ctr.set_front(CAM_POSITION)
+    ctr.set_front(cam_position)
     ctr.set_lookat(obj_center)
     ctr.set_up([+10.0, 0, 0])
     opt = vis.get_render_option()

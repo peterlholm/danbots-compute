@@ -17,9 +17,9 @@ from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE, NN_ENAB
 from calibrate.flash import flash_led_test
 from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
-from scan3d.receiveblender import receive_blender_set #prepare_blender_input
-from scan3d.receivescan import receive_scan, process_scan
-from scan3d.processing import copy_test_set, copy_jpg_test_set, copy_stitch_test_set # copy_blender_test_set
+from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
+from scan3d.receivescan import receive_scan #, process_scan
+from scan3d.test_set import copy_test_set, copy_jpg_test_set, copy_stitch_test_set # copy_blender_test_set
 from stitching.stitch import stitch_run
 
 def index(request):
@@ -133,13 +133,14 @@ def rec_folder(request):
 
 ####### receive blender   ##################
 
-TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render23044"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
 
 def receive_blender(request):
-    data_path = DEVICE_PATH / 'blender' / 'input' / '1'
-    if Path.exists(data_path):
-        rmtree(data_path, ignore_errors=True)
+    input_path = DEVICE_PATH / 'blender' / 'input'
+    if Path.exists(input_path):
+        rmtree(input_path, ignore_errors=True)
+    data_path =input_path / '1'
     Path.mkdir(data_path, parents=True)
     infolder = Path(TESTDATAFOLDER)
     #prepare_blender_input(infolder, data_path)
@@ -147,22 +148,30 @@ def receive_blender(request):
     return redirect("/test/show_pictures?folder=device/blender/input/1/")
 
 def receive_blender5(request):
-    folder_path = DEVICE_PATH / 'blender' / 'input'
-    data_path = folder_path / '1'
-    if Path.exists(data_path):
-        rmtree(data_path, ignore_errors=True)
+    input_path = DEVICE_PATH / 'blender' / 'input'
+    if Path.exists(input_path):
+        rmtree(input_path, ignore_errors=True)
+    data_path =input_path / '1'
     Path.mkdir(data_path, parents=True)
     infolder = Path(TESTDATAFOLDER)
-    #prepare_blender_input(infolder, data_path)
     receive_blender_set(infolder, data_path)
-    copy_test_set(folder_path)
+
+    # folder_path = DEVICE_PATH / 'blender' / 'input'
+    # data_path = folder_path / '1'
+    # if Path.exists(data_path):
+    #     rmtree(data_path, ignore_errors=True)
+    # Path.mkdir(data_path, parents=True)
+    # infolder = Path(TESTDATAFOLDER)
+    # #prepare_blender_input(infolder, data_path)
+    # receive_blender_set(infolder, data_path)
+
+    copy_test_set(input_path)
     for i in range(2,6):
-        print( folder_path / str(i))
-        #receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input' / str(i))
-        process_scan('blender', folder_path / str(i))
+        folder = input_path / str(i)
+        print( folder )
+        process_blender(folder)
     # wait for processing
     return redirect("/test/show_pictures?folder=device/blender/input/&number=1")
-    #return redirect("/test/show_pictures?folder=device/blender/input/")
 
 #################### SCAN ################################
 
@@ -178,6 +187,11 @@ def start_scan(request):
             sleep(8)
         return redirect("/test/show_pictures?folder="+device_path)
     return HttpResponse("Scan start gik galt", res)
+
+def calc_scan(request):
+    #device_path = "device/" + MYDEVICE + "/input/1/"
+    receive_scan(MYDEVICE, DEVICE_PATH / MYDEVICE / 'input/1/')
+    return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/&number=1")
 
 def start_scan5(request):
     "Request scan from device and display results"

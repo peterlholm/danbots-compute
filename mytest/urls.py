@@ -14,6 +14,8 @@ urlpatterns = [
     path("folder", views.rec_folder),
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),
+    path("calc_scan/", views.calc_scan),
+
     path("start_scan5/", views.start_scan5),
     path("calc5/", views.calc5),
     path("show5/", views.show5),
