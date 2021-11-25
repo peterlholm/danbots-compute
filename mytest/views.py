@@ -133,10 +133,11 @@ def rec_folder(request):
 
 ####### receive blender   ##################
 
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
-TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
 
 def receive_blender(request):
+    print("Start receive blender")
     input_path = DEVICE_PATH / 'blender' / 'input'
     if Path.exists(input_path):
         rmtree(input_path, ignore_errors=True)

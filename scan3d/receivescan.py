@@ -9,6 +9,7 @@ from utils.img2img import img2img
 from utils.img_utils import change_contrast_brightness
 from utils.pcl_utils import ply2jpg
 from utils.histoimg import histo_img
+from utils.np_utils import multiply
 from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
 #from .test_set import general_postprocessing
 #from .filtering import radius_outliersremoval, scan_filter
@@ -19,8 +20,8 @@ if NN_ENABLE:
 _DEBUG = True
 DEVICE_PROCESSING = False
 EXPOSURE_PROCESSING = True
-CONTRAST = 1.6
-BRIGHTNESS = 0.6
+CONTRAST = 1.5
+BRIGHTNESS = 0.8
 
 def copy2png(folder):
     img2img(folder / 'color.jpg', folder / COLOR_FILENAME)
@@ -28,7 +29,8 @@ def copy2png(folder):
     img2img(folder / 'nolight.jpg', folder / NOLIGHT_FILENAME)
 
 def change_exposure(infile, outfile):
-    change_contrast_brightness(infile, outfile, contrast=CONTRAST, brightness=BRIGHTNESS)
+    change_contrast_brightness(infile, "tmp.png", contrast=CONTRAST, brightness=BRIGHTNESS)
+    multiply("tmp.png", outfile, 1.5)
 
 def process_scan(deviceid, folder):
     "receive png files"
@@ -42,6 +44,7 @@ def process_scan(deviceid, folder):
     if EXPOSURE_PROCESSING:
         Path(folder / 'fringe.png').replace(folder / 'fringe_org.png')
         change_exposure(folder / 'fringe_org.png', folder / 'fringe.png')
+        histo_img(folder / 'fringe.png', folder / 'fringe_histo2.jpg')
 
     #scan_preprocessing(folder)  # change contrast etc
     #general_postprocessing(folder)

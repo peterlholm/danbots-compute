@@ -4,13 +4,7 @@ from shutil import copy2
 from PIL import Image
 from utils.img_utils import change_contrast_brightness
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
-#from scan3d.receivescan import BRIGHTNESS
-#from .processing import general_postprocessing
-#from .receivescan import process_scan
 from .processing import process
-
-# if NN_ENABLE:
-#     from scan3d.nn.inference.process_input import process_input_folder
 
 # blender names
 
@@ -52,6 +46,6 @@ CONTRAST = 2.1
 BRIGHTNESS = 0.9
 
 def process_blender(folder):
-    Path(folder / FRINGE_FILENAME ).replace(folder / 'fringe_org.png')
-    change_contrast_brightness(folder / 'fringe_org.png', folder / FRINGE_FILENAME, contrast=CONTRAST, brightness=BRIGHTNESS)
+    #Path(folder / FRINGE_FILENAME ).replace(folder / 'fringe_org.png')
+    #change_contrast_brightness(folder / 'fringe_org.png', folder / FRINGE_FILENAME, contrast=CONTRAST, brightness=BRIGHTNESS)
     process('blender', folder)

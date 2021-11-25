@@ -45,6 +45,11 @@ def mask_file(np_filename, maskfilename, outfilename):
         fac = 255 / np.max(_newnp)
         cv2.imwrite( "newmask.png", fac*_newnp)
 
+def multiply(infile, outfile, tal):
+    img = cv2.imread(str(infile), 1).astype(np.float32)
+    img = tal * img
+    cv2.imwrite( str(outfile), img)
+
 if __name__ == '__main__':
     mymask = "testdata/okt25/render5/mask.npy"
     wrap = "testdata/okt25/render5/nnunwrap.npy"

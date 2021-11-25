@@ -28,6 +28,9 @@ def process(deviceid, folder):
     nn_process(folder)
     if NN_ENABLE:
         ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg',cam='n' )
+        ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_e.jpg',cam='e' )
+        ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_w.jpg',cam='w' )
+
         if Path.exists(folder / 'pointcloud.jpg'):
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
