@@ -12,7 +12,7 @@ def get_mask(imgfile):
     return mask
 
 
-def histo_img(imgfile, outfile, mask=None):
+def histo_img(imgfile, outfile, mask=None, title=None):
     use('Agg')
     Path(outfile).unlink(missing_ok=True)
     img = Image.open(imgfile)
@@ -34,7 +34,9 @@ def histo_img(imgfile, outfile, mask=None):
     X=list(range(0,256))
     plt.clf()
     plt.bar(X, hist)
-    plt.title("Histogram "+imgfile.name)
+    if title is None:
+        title = imgfile.name
+    plt.title("Histogram " + title)
     plt.xlabel("Intensity")
     plt.ylabel("Numbers")
     plt.ylim(0,1000)

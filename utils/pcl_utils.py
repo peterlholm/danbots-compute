@@ -21,10 +21,10 @@ def mirror_pcl(infile, outfile):
 
 def filter_pcl(infile, outfile):
     "filter outer procent part of pcl"
-    procent = 0.15
+    procent = 0.2
     pcd = o3d.io.read_point_cloud(str(infile))
     arr = np.asarray(pcd.points)
-    print(arr.min(axis=0), arr.max(axis=0))
+    print("Filter rand", arr.min(axis=0), arr.max(axis=0))
     amin = arr.min(axis=0)
     amax = arr.max(axis=0)
     #xmin = amin[0] + procent*(amax[0]-amin[0])
@@ -73,18 +73,18 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
     # camera position
     diff = 10
     if cam=='n':
-        cam_position[0] -= diff
+        cam_position[0] += diff
     elif cam=='e':
         cam_position[1] -= diff
     elif cam=='w':
         cam_position[1] += diff
     elif cam=='s':
-        cam_position[0] += diff
+        cam_position[0] -= diff
     else:
         print("Error in pcl to jpg position")
         cam_position[0] += diff
     vis = o3d.visualization.Visualizer()
-    res = vis.create_window(visible = True, width=PICTURE_SIZE, height=PICTURE_SIZE)
+    res = vis.create_window(visible = False, width=PICTURE_SIZE, height=PICTURE_SIZE)
     if not res:
         print("create window result", res)
     vis.add_geometry(pcd)
