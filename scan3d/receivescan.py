@@ -5,13 +5,13 @@ from shutil import copy2
 #from matplotlib.pyplot import sca
 from compute.settings import DEVICE_PATH #, NN_ENABLE
 from device.device_proc import proc_device_data
-from scan3d.nn.inference.nn_util import make_grayscale
+#from scan3d.nn.inference.nn_util import make_grayscale
 from utils.img2img import img2img
-from utils.img_utils import change_contrast_brightness, change_brightness_contrast, change_brightness, change_contrast, convert_to_grey, make_grayscale2, convert_green_to_grey
+from utils.img_utils import  change_brightness_contrast, convert_green_to_grey #, change_contrast_brightness,change_brightness, change_contrast, convert_to_grey, make_grayscale2
 from utils.pcl_utils import ply2jpg, filter_pcl
 from utils.histoimg import histo_img
-from utils.np_utils import multiply
-from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
+#from utils.np_utils import multiply
+from .nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME #, FRINGE_FILENAME #, POINTCLOUD_JPG_FILENAME
 #from .test_set import general_postprocessing
 #from .filtering import radius_outliersremoval, scan_filter
 from .processing import process
@@ -19,7 +19,7 @@ from .processing import process
 # if NN_ENABLE:
 #     from .nn.inference.process_input import process_input_folder
 
-_DEBUG = True
+_DEBUG = False
 DEVICE_PROCESSING = False
 EXPOSURE_PROCESSING = True
 CONTRAST = 1.7
@@ -71,6 +71,9 @@ def process_scan(deviceid, folder):
 
     # filter
 
+    if _DEBUG:
+        print ("Filtering Scan")
+
     filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
     ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
 
@@ -80,12 +83,8 @@ def process_scan(deviceid, folder):
         copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
         copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
 
-    # filter image
-    print ("Filtering")
     #radius_outliersremoval(str(folder / 'pointcloud.ply'),str(folder / 'pointcloud_f1.ply'))
     #ply2jpg(folder / 'pointcloud_f1.ply', folder / 'pointcloud_f1.jpg')
-
-
 
     #scan_filter(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
 
@@ -93,7 +92,6 @@ def process_scan(deviceid, folder):
     #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
     #ply2jpg(folder / 'pointcloud1.ply', folder / 'pointcloud1.jpg')
     #ply2jpg(folder / 'nypointcloud.ply', folder / 'nypointcloud.jpg')
-
 
 def receive_scan(deviceid, folder):
     "Receive scan from device (api): color.jpg, dias.jpg, nolight.jpg"

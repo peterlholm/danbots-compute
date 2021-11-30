@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = True
+_DEBUG = False
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -24,7 +24,8 @@ def filter_pcl(infile, outfile):
     procent = 0.2
     pcd = o3d.io.read_point_cloud(str(infile))
     arr = np.asarray(pcd.points)
-    print("Filter rand", arr.min(axis=0), arr.max(axis=0))
+    if _DEBUG:
+        print("Filter rand", arr.min(axis=0), arr.max(axis=0))
     amin = arr.min(axis=0)
     amax = arr.max(axis=0)
     #xmin = amin[0] + procent*(amax[0]-amin[0])
