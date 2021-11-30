@@ -2,6 +2,7 @@
 api views
 """
 import os
+from datetime import datetime
 #from time import sleep
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
@@ -87,11 +88,13 @@ def stop2d(request):
 # *************** 3D *********************
 @csrf_exempt
 def start3d(request):
+    # remove last results
     return start(request)
 
 @csrf_exempt
 def scan3d(request):
-    if request.method in ['POST']:
+    if False and request.method in ['POST']:
+        print ("start 3d", datetime.now())
         #cmd = request.POST.get('cmd', None)
         deviceid = check_device(request)
         devicefolder = device_folder(request)
@@ -106,6 +109,7 @@ def scan3d(request):
                 # if j.name=="dias.jpg":
                 #     save_uploaded_file(j, devicefolder / 'input' / 'last_dias.jpg')
         receive_scan(deviceid, folder)
+        print ("slut 3d", datetime.now())
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "errortext":"request is not post"})
 

@@ -1,5 +1,6 @@
 """request from browsers"""
 from pathlib import Path
+from datetime import datetime
 from time import sleep
 from django.shortcuts import  HttpResponse #render,
 from django.http import  StreamingHttpResponse #JsonResponse,
@@ -21,6 +22,7 @@ def get_device_folder(deviceid):
 NOFILE = BASE_DIR / 'web/static/web' / 'afventer.jpg'
 
 def mjpeg_stream(file):
+    SLEEP_TIME = 3
     running = True
     with open(NOFILE, mode='rb') as fd:
         no_data = fd.read()
@@ -39,17 +41,20 @@ def mjpeg_stream(file):
             print("yield error")
             print (ex)
             running = False
-        sleep(1)
+        sleep(SLEEP_TIME)
     print ("slutter")
 
 @csrf_exempt
 def pic_stream(request):
+    return HttpResponse("ok")
+    print ("picstart picstream", datetime.now())
     deviceid = check_device(request)
     if not deviceid:
         return HttpResponse('pic_stream must include deviceid')
     devicefolder = get_device_folder(deviceid)
+    sleep(10)    
+    print ("picstart picstream sleep", datetime.now())
     file = devicefolder / 'input' / 'last_dias.jpg'
-    sleep(1)
     stream = mjpeg_stream(file)
     return StreamingHttpResponse(stream, content_type='multipart/x-mixed-replace;boundary=frame')
 
