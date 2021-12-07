@@ -13,6 +13,8 @@ COLOR_IMAGE = 'color.png'
 
 _DEBUG = False
 
+print("Import Lmodel")
+
 def load_L_model():
     model = tensorflow.keras.models.load_model(MODEL_PATH / L_MODELFILE)
     if _DEBUG:

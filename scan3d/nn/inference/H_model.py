@@ -13,6 +13,8 @@ H_MODELFILE = 'H_model.h5'
 #COLOR_IMAGE = 'color.png'
 PI = np.pi
 
+print("importing H_model")
+
 _DEBUG=False
 
 def load_h_model():
