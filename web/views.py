@@ -20,9 +20,9 @@ def get_device_folder(deviceid):
 # MJpeg streaming
 
 NOFILE = BASE_DIR / 'web/static/web' / 'afventer.jpg'
+SLEEP_TIME = 3
 
 def mjpeg_stream(file):
-    SLEEP_TIME = 3
     running = True
     with open(NOFILE, mode='rb') as fd:
         no_data = fd.read()
@@ -31,7 +31,7 @@ def mjpeg_stream(file):
         try:
             with open(file, mode='rb') as fd:
                 image_data = fd.read()
-        except IOError as ex:
+        except IOError: # as ex:
             #print("nodata", ex)
             image_data = no_data
         try:
@@ -46,13 +46,14 @@ def mjpeg_stream(file):
 
 @csrf_exempt
 def pic_stream(request):
-    return HttpResponse("ok")
+    #return HttpResponse("ok")
     print ("picstart picstream", datetime.now())
     deviceid = check_device(request)
     if not deviceid:
+        print('pic_stream must include deviceid')
         return HttpResponse('pic_stream must include deviceid')
     devicefolder = get_device_folder(deviceid)
-    sleep(10)    
+    sleep(10)
     print ("picstart picstream sleep", datetime.now())
     file = devicefolder / 'input' / 'last_dias.jpg'
     stream = mjpeg_stream(file)

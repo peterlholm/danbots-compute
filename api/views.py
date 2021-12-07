@@ -93,7 +93,7 @@ def start3d(request):
 
 @csrf_exempt
 def scan3d(request):
-    if False and request.method in ['POST']:
+    if request.method in ['POST']:
         print ("start 3d", datetime.now())
         #cmd = request.POST.get('cmd', None)
         deviceid = check_device(request)
