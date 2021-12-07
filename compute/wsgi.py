@@ -15,5 +15,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'compute.settings')
 
 os.environ['MPLCONFIGDIR'] = '/tmp/'
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+#os.environ["DISPLAY"] = "0.0"
 
 application = get_wsgi_application()
