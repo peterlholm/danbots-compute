@@ -2,7 +2,9 @@
 api views
 """
 import os
-from datetime import datetime
+import time
+import logging
+#from datetime import datetime
 #from time import sleep
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
@@ -14,6 +16,8 @@ from calibrate.functions import cal_camera
 from scan3d.receivescan import receive_scan # process_scan,
 
 _DEBUG = True
+
+log = logging.getLogger(__name__)
 
 def index(request):
     return render(request, 'api_index.html')
@@ -94,7 +98,8 @@ def start3d(request):
 @csrf_exempt
 def scan3d(request):
     if request.method in ['POST']:
-        print ("start 3d", datetime.now())
+        time_start = time.perf_counter()
+        #print ("start 3d", datetime.now())
         #cmd = request.POST.get('cmd', None)
         deviceid = check_device(request)
         devicefolder = device_folder(request)
@@ -109,7 +114,9 @@ def scan3d(request):
                 # if j.name=="dias.jpg":
                 #     save_uploaded_file(j, devicefolder / 'input' / 'last_dias.jpg')
         receive_scan(deviceid, folder)
-        print ("slut 3d", datetime.now())
+        #print ("slut 3d", datetime.now())
+        time_end = time.perf_counter()
+        log.info(f"Scan done in {time_end - time_start:.3f} seconds")
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "errortext":"request is not post"})
 

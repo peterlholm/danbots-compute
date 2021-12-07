@@ -6,13 +6,13 @@ import os
 from pathlib import Path
 from shutil import copytree, rmtree, move
 from datetime import datetime
-from compute.settings import BASE_DIR, DATA_PATH
+from compute.settings import  DATA_PATH #BASE_DIR,
 #import configparser
 #from api.device_config import read_config
 
 INPUT_FOLDER = 'input'
 ARCHIVE_FOLDER = 'archive'
-ARCHIVE_DATA = True
+ARCHIVE_DATA = False
 
 _DEBUG = False
 
@@ -42,20 +42,12 @@ def receive_pictures(device, set_number, color_picture, dias_picture, noligt_pic
     return True
 
 def start_scan(device, device_path):
-    # archive last input folder
+
     if _DEBUG:
         print("Start scan:", device, device_path)
     infolder = Path(device_path) / INPUT_FOLDER
-    print(infolder)
-    if infolder.exists():
-        datestr = datetime.now().strftime('%y%m%d-%H%M%S')
-        outfolder = Path(device_path) / 'mytest' / datestr
-        print("outfolder", outfolder)
-        infolder.replace(outfolder)
-        return
-    os.makedirs(infolder, exist_ok=True)
-    #(device_path / "test").replace(device_path /'dummy')
     if ARCHIVE_DATA:
+    # archive last input folder
         if os.path.exists(infolder):
             datestr = datetime.now().strftime('%y%m%d-%H%M%S')
             outfolder = device_path / ARCHIVE_FOLDER / datestr
@@ -73,4 +65,3 @@ def start_scan(device, device_path):
 def stop_scan(device, device_path):
     if _DEBUG:
         print("Stop scan:", device, device_path)
-

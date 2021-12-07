@@ -1,4 +1,6 @@
 "pointcload utils"
+from pathlib import Path
+from matplotlib.patches import Patch
 import open3d as o3d
 import numpy as np
 from matplotlib import use, pyplot as plt
@@ -22,7 +24,13 @@ def mirror_pcl(infile, outfile):
 def filter_pcl(infile, outfile):
     "filter outer procent part of pcl"
     procent = 0.2
+    if not Path(infile).exists():
+        print("filter_pcl: infile does not exist", infile)
+        return False
     pcd = o3d.io.read_point_cloud(str(infile))
+    print("pcd", pcd)
+    if pcd is None:
+        print("no point cloud")
     arr = np.asarray(pcd.points)
     if _DEBUG:
         print("Filter rand", arr.min(axis=0), arr.max(axis=0))

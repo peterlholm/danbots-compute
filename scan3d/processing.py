@@ -4,7 +4,7 @@ from shutil import copy2
 
 #from matplotlib.pyplot import sca
 from compute.settings import DEVICE_PATH, NN_ENABLE
-#from utils.pcl_utils import ply2jpg
+from utils.pcl_utils import ply2jpg
 from utils.histoimg import histo_img
 #from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
 #from .filtering import radius_outliersremoval, scan_filter
@@ -25,8 +25,11 @@ def nn_process(folder):
         process_input_folder(folder)
 
 def process(deviceid, folder):
-    nn_process(folder)
-    if NN_ENABLE:
+    if NN_ENABLE:   
+        nn_process(folder)
+
+        ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
+
         # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg',cam='n' )
         # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_e.jpg',cam='e' )
         # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_w.jpg',cam='w' )

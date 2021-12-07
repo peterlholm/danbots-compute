@@ -46,16 +46,16 @@ def mjpeg_stream(file):
 
 @csrf_exempt
 def pic_stream(request):
-    #return HttpResponse("ok")
+    start_delay = 5
     print ("picstart picstream", datetime.now())
     deviceid = check_device(request)
     if not deviceid:
         print('pic_stream must include deviceid')
         return HttpResponse('pic_stream must include deviceid')
     devicefolder = get_device_folder(deviceid)
-    sleep(10)
+    sleep(start_delay)
     print ("picstart picstream sleep", datetime.now())
-    file = devicefolder / 'input' / 'last_dias.jpg'
+    file = devicefolder / 'input' / 'last_picture.jpg'
     stream = mjpeg_stream(file)
     return StreamingHttpResponse(stream, content_type='multipart/x-mixed-replace;boundary=frame')
 

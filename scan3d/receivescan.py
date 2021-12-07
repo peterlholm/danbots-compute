@@ -3,7 +3,7 @@ from pathlib import Path
 from shutil import copy2
 
 #from matplotlib.pyplot import sca
-from compute.settings import DEVICE_PATH #, NN_ENABLE
+from compute.settings import DEVICE_PATH, NN_ENABLE #, NN_ENABLE
 from device.device_proc import proc_device_data
 #from scan3d.nn.inference.nn_util import make_grayscale
 from utils.img2img import img2img
@@ -21,7 +21,7 @@ from .processing import process
 
 _DEBUG = False
 DEVICE_PROCESSING = False
-EXPOSURE_PROCESSING = True
+EXPOSURE_PROCESSING = False
 CONTRAST = 1.7
 BRIGHTNESS = 0.7
 
@@ -70,28 +70,28 @@ def process_scan(deviceid, folder):
     process(deviceid, folder)
 
     # filter
+    if NN_ENABLE:
+        if _DEBUG:
+            print ("Filtering Scan")
 
-    if _DEBUG:
-        print ("Filtering Scan")
+        filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
+        ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
+        ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
+        if Path.exists(folder / 'pointcloud.jpg'):
+            copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
+            copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
 
-    filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
-    ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
+        #radius_outliersremoval(str(folder / 'pointcloud.ply'),str(folder / 'pointcloud_f1.ply'))
+        #ply2jpg(folder / 'pointcloud_f1.ply', folder / 'pointcloud_f1.jpg')
 
+        #scan_filter(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
 
-    ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
-    if Path.exists(folder / 'pointcloud.jpg'):
-        copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_dias.jpg' )
-        copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
-
-    #radius_outliersremoval(str(folder / 'pointcloud.ply'),str(folder / 'pointcloud_f1.ply'))
-    #ply2jpg(folder / 'pointcloud_f1.ply', folder / 'pointcloud_f1.jpg')
-
-    #scan_filter(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
-
-    #filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
-    #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
-    #ply2jpg(folder / 'pointcloud1.ply', folder / 'pointcloud1.jpg')
-    #ply2jpg(folder / 'nypointcloud.ply', folder / 'nypointcloud.jpg')
+        #filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
+        #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
+        #ply2jpg(folder / 'pointcloud1.ply', folder / 'pointcloud1.jpg')
+        #ply2jpg(folder / 'nypointcloud.ply', folder / 'nypointcloud.jpg')
+    else:
+        copy2(folder / 'dias.png', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
 
 def receive_scan(deviceid, folder):
     "Receive scan from device (api): color.jpg, dias.jpg, nolight.jpg"
