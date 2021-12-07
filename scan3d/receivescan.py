@@ -3,7 +3,7 @@ from pathlib import Path
 from shutil import copy2
 
 #from matplotlib.pyplot import sca
-from compute.settings import DEVICE_PATH, NN_ENABLE #, NN_ENABLE
+from compute.settings import DEVICE_PATH, NN_ENABLE, GEN_3D_PICTURES #, NN_ENABLE
 from device.device_proc import proc_device_data
 #from scan3d.nn.inference.nn_util import make_grayscale
 from utils.img2img import img2img
@@ -61,6 +61,8 @@ def process_scan(deviceid, folder):
         # histo_img(folder / 'fringe.png', folder / 'fringe_histo2.jpg', title="Fringe after change exposure")
         # convert_green_to_grey(folder / 'fringe.png', folder / 'green.png')
         # histo_img(folder / 'green.png', folder / 'green_histo.jpg', title="Green dias input")
+    else:
+        copy2(folder / 'dias.png', folder / 'fringe.png')
 
     #scan_preprocessing(folder)  # change contrast etc
     #general_postprocessing(folder)
@@ -75,8 +77,9 @@ def process_scan(deviceid, folder):
             print ("Filtering Scan")
 
         filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
-        ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
-        ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
+        if GEN_3D_PICTURES:
+            ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
+            ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
         if Path.exists(folder / 'pointcloud.jpg'):
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )

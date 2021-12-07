@@ -14,7 +14,7 @@ from .L_model import nnLprocess
 from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
-_DEBUG=False
+_DEBUG=True
 _NET2=True
 _MASK=False
 
@@ -55,7 +55,7 @@ def process_input_folder(folder):
         nngenerate_pointcloud(folder / COLOR_FILENAME, folder / MASK_FILENAME, folder / 'nndepth.npy', folder / 'pointcl-nndepth.ply')
 
         mirror_pcl(folder / POINTCLOUD_FILENAME, folder / 'pointcloud.ply')
-        ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
+        #ply2jpg(folder / 'pointcloud.ply', folder / 'pointcloud.jpg')
 
         #filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud1.ply')
         #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')

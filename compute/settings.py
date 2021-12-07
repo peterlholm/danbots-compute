@@ -123,6 +123,16 @@ USE_TZ = True
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
@@ -162,6 +172,7 @@ API_SERVER = 'http://api.danbots.com/api/'
 # enable NeuralNet processing
 NN_ENABLE = True
 MYDEVICE = "b827eb05abc2"
+GEN_3D_PICTURES = True
 try:
     from .settings_local import *   # pylint: disable=wildcard-import
 except ModuleNotFoundError:
