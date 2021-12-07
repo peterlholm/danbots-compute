@@ -18,3 +18,4 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 #os.environ["DISPLAY"] = "0.0"
 
 application = get_wsgi_application()
+
