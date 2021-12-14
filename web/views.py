@@ -5,11 +5,11 @@ from time import sleep
 from django.shortcuts import  HttpResponse #render,
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
+#from tensorflow.python.client import device_lib
 from compute.settings import BASE_DIR, DEVICE_PATH
 
-from tensorflow.python.client import device_lib
 
-print (device_lib.list_local_devices())
+#print (device_lib.list_local_devices())
 
 def check_device(request):
     deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
