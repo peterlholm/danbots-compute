@@ -2,7 +2,7 @@
 import numpy as np
 import os
 import cv2
-import pandas as pd
+#import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 import math
@@ -28,7 +28,7 @@ import argparse
 import sys
 import shutil
 # import myglobals
-from skimage import exposure
+#from skimage import exposure
 
 
 
