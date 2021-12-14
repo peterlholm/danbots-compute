@@ -4,7 +4,7 @@ utils for used in the api view
 
 import os
 from pathlib import Path
-from shutil import copytree, rmtree, move
+from shutil import copytree, rmtree #, move
 from datetime import datetime
 from compute.settings import  DATA_PATH #BASE_DIR,
 #import configparser
@@ -59,7 +59,7 @@ def start_scan(device, device_path):
             #Path(infolder).rename(outfolder)
             copytree(infolder, outfolder, dirs_exist_ok=True)
     # clean folder
-    rmtree(infolder)
+    rmtree(infolder, ignore_errors=True)
     os.makedirs(infolder, exist_ok=True)
 
 def stop_scan(device, device_path):

@@ -48,7 +48,7 @@ def process_input_folder(folder):
 
     if _NET2:
         nnLprocess(folder) # generate nnunwrap.png
-        show_npy(folder / 'nnunwrap.npy', folder / "test.png")
+        #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
 
         newDepth(folder, 30)
 

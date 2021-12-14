@@ -3,6 +3,8 @@ load-plugins=pylint_django
 
 django-settings-module=compute.settings
 
+logging-format-style=new
+
 [MESSAGES CONTROL]
 #enable=R,
 #        missing-function-docstring

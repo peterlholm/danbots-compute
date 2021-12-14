@@ -5,11 +5,11 @@ from time import sleep
 from django.shortcuts import  HttpResponse #render,
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import BASE_DIR, DEVICE_PATH
+from compute.settings import BASE_DIR, DEVICE_PATH, NN_ENABLE
 
-from tensorflow.python.client import device_lib
-
-print (device_lib.list_local_devices())
+if NN_ENABLE:
+    from tensorflow.python.client import device_lib
+    print (device_lib.list_local_devices())
 
 def check_device(request):
     deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
@@ -52,13 +52,14 @@ def mjpeg_stream(file):
 def pic_stream(request):
     start_delay = 5
     print ("picstart picstream", datetime.now())
+    sleep(start_delay)    
     deviceid = check_device(request)
+    print(deviceid)
     if not deviceid:
         print('pic_stream must include deviceid')
         return HttpResponse('pic_stream must include deviceid')
     devicefolder = get_device_folder(deviceid)
-    sleep(start_delay)
-    print ("picstart picstream sleep", datetime.now())
+    print ("picstart picstream sleep", datetime.now(), devicefolder)
     file = devicefolder / 'input' / 'last_picture.jpg'
     stream = mjpeg_stream(file)
     return StreamingHttpResponse(stream, content_type='multipart/x-mixed-replace;boundary=frame')
