@@ -9,7 +9,6 @@ from utils.pic_utils import convert_mask_to_color # include_pic_mask,
 #from utils.np_utils import add_0mask_file, add_mask, mask_file
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME # FRINGE_FILENAME
 from .create_mask import create_mask, create_0mask # create_nomask,
-from .nn_unwrap import unwrap_k
 from .H_model import nnHprocess
 from .L_model import nnLprocess
 from .depth import newDepth
@@ -49,10 +48,7 @@ def process_input_folder(folder):
 
     if _NET2:
         nnLprocess(folder) # generate nnunwrap.png
-        #show_npy(folder / 'nnunwrap.npy', folder / "test.png")
-        #show_npy(folder / 'nnwrap1.npy', folder / "test.png")
-
-        unwrap_k(folder)
+        show_npy(folder / 'nnunwrap.npy', folder / "test.png")
 
         newDepth(folder, 30)
 

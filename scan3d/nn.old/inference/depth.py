@@ -1,9 +1,9 @@
 "Convert phase to depth"
 import numpy as np
 import cv2
-from compute.settings import DATA_PATH, MODEL_PATH
+from compute.settings import DATA_PATH
 
-#MODEL_PATH = DATA_PATH / 'nnmodels/'
+MODEL_PATH = DATA_PATH / 'nnmodels/'
 DDBASE="DDbase.npy"
 DEPTH_DB = MODEL_PATH / DDBASE
 
@@ -15,8 +15,7 @@ _DEBUG = False
 def newDepth(folder, basecount):
     #basefile = '/home/samir/Desktop/blender/pycode/bldev2/calplanesL/DDbase.npy'
     DBase = np.load(str(DEPTH_DB))
-    #unwrap = np.load(str(folder / 'nnkunwrap.npy'))/2.5
-    unwrap = np.load(str(folder / 'nnkunwrap.npy'))/1
+    unwrap = np.load(str(folder / 'nnunwrap.npy'))/2.5
     mask = np.load(str(folder / 'mask.npy') )
     # print('DBase:', np.amax(DBase), np.amin(DBase))
     # print('unwrap:', np.amax(unwrap), np.amin(unwrap))

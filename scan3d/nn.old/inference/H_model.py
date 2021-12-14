@@ -1,18 +1,19 @@
-"H_model"
-import math
+#import math
 import cv2
 import numpy as np
 import tensorflow.keras
-from compute.settings import DATA_PATH, MODEL_PATH
+from compute.settings import DATA_PATH
 from .nn_util import normalize_image255, make_grayscale, db_predict
 from .config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME
 
-#MODEL_PATH = DATA_PATH / 'nnmodels' / 'model.dec'
-#H_MODELFILE = 'im0wr40.h5'
+MODEL_PATH = DATA_PATH / 'nnmodels/'
+H_MODELFILE = 'im0wr40.h5'
 H_MODELFILE = 'H_model.h5'
 
 #COLOR_IMAGE = 'color.png'
 PI = np.pi
+
+print("importing H_model")
 
 _DEBUG=False
 

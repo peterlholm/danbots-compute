@@ -78,8 +78,9 @@ def process_scan(deviceid, folder):
 
         filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
         if GEN_3D_PICTURES:
-            ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
-            ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
+            pass
+            #ply2jpg(folder / 'pointcloud_f.ply',folder / 'pointcloud_f.jpg' )
+            #ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg' )
         if Path.exists(folder / 'pointcloud.jpg'):
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )

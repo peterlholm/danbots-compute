@@ -12,7 +12,6 @@ def make_grayscale(img):
     return gray_img
 
 def create_mask(color_picture, nolight_picture, outfolder):
-    DIFF=55
     "Create a numpy array with 0: included, 1: excluded"
     if _DEBUG:
         print("creating mask", color_picture, nolight_picture)
@@ -33,7 +32,7 @@ def create_mask(color_picture, nolight_picture, outfolder):
     #cv2.imwrite( str(outfolder / 'test2.png'), 128*my_mask)
     for i in range(PICTURE_HEIGHT):
         for j in range(PICTURE_WIDTH):
-            if (diff1[i,j]<DIFF):
+            if (diff1[i,j]<50):
                 my_mask[i,j]= True
     # if alfa channel
 
