@@ -160,5 +160,3 @@ dmypy.json
 /data
 
 compute/settings_local.py
-
-/testdata
