@@ -11,6 +11,16 @@ from utils.pcl_utils import ply2jpg, mirror_pcl #, pcl2jpg
 
 _DEBUG=False
 
+CONTRAST_LOW = 0.7
+CONTRAST_HIGH = 1.3
+BRIGHTNESS_LOW = 0.7
+BRIGHTNESS_HIGH = 1.3
+
+def copy_scan_set(infolder, outfolder):
+    copy2(infolder / 'color.jpg', outfolder / 'color.jpg')
+    copy2(infolder / 'dias.jpg', outfolder / 'dias.jpg')
+    copy2(infolder / 'nolight.jpg', outfolder / 'nolight.jpg')
+
 def copy_jpg_test_set(folder):
     path1 = folder / '1'
     for i in range(2,6):
@@ -20,12 +30,13 @@ def copy_jpg_test_set(folder):
         copy2(path1 / 'color.jpg', newpath / 'color.jpg')
         #copy2(path1 / 'dias.jpg', newpath / 'dias.jpg')
         copy2(path1 / 'nolight.jpg', newpath / 'nolight.jpg')
-    change_contrast(folder / '1' / 'dias.jpg', folder / '2' / 'dias.jpg', 0.7)
-    change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', 1.3)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', 0.7)
-    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', 1.3)
+    change_contrast(folder / '1' / 'dias.jpg', folder / '2' / 'dias.jpg', CONTRAST_LOW)
+    change_contrast(folder / '1' / 'dias.jpg', folder / '3' / 'dias.jpg', CONTRAST_HIGH)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '4' / 'dias.jpg', BRIGHTNESS_LOW)
+    change_brightness(folder / '1' / 'dias.jpg', folder / '5' / 'dias.jpg', BRIGHTNESS_HIGH)
 
 def copy_test_set(folder):
+    """Copy png /1 to 4 new folders"""
     path1 = folder / '1'
     for i in range(2,6):
         newpath = folder / str(i)
@@ -34,10 +45,10 @@ def copy_test_set(folder):
         copy2(path1 / 'fringe.png', newpath / 'fringe.png')
         copy2(path1 / 'color.png', newpath / 'color.png')
         copy2(path1 / 'nolight.png', newpath / 'nolight.png')
-    change_contrast(folder / '1' / 'fringe.png', folder / '2' / 'fringe.png', 0.7)
-    change_contrast(folder / '1' / 'fringe.png', folder / '3' / 'fringe.png', 1.5)
-    change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', 0.7)
-    change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', 1.3)
+    change_contrast(folder / '1' / 'fringe.png', folder / '2' / 'fringe.png', CONTRAST_LOW)
+    change_contrast(folder / '1' / 'fringe.png', folder / '3' / 'fringe.png', CONTRAST_HIGH)
+    change_brightness(folder / '1' / 'fringe.png', folder / '4' / 'fringe.png', BRIGHTNESS_LOW)
+    change_brightness(folder / '1' / 'fringe.png', folder / '5' / 'fringe.png', BRIGHTNESS_HIGH)
 
 def copy_stitch_test_set(from_folder, to_folder):
     #STITCH_SET = BASE_DIR / "testdata" / "renders211105" / "render14"
@@ -56,10 +67,3 @@ def copy_stitch_test_set(from_folder, to_folder):
             #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
             ply2jpg(ofold / 'pointcloud.ply', ofold / 'pointcloud.jpg')
             #ply2jpg(ofold / 'pointcloud1.ply', ofold / 'pointcloud1.jpg')
-
-# def general_postprocessing(folder):
-#     "preproccsing for scan and blender"
-#     if _DEBUG:
-#         histo_img(folder / 'color.png', folder / 'color_histo.png')
-#         histo_img(folder / 'fringe.png', folder / 'fringe_histo.png')
-#         #histo_img(folder / 'nolight.png', folder / 'nolight_histo.png')

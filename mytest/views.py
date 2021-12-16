@@ -6,7 +6,7 @@ test funtion til servere
 #from datetime import datetime
 import subprocess
 from os import name
-from shutil import rmtree, copy2
+from shutil import rmtree #, copy2
 from pathlib import Path
 from time import sleep
 from django.http import FileResponse #, StreamingHttpResponse
@@ -19,7 +19,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
-from scan3d.test_set import copy_test_set, copy_jpg_test_set, copy_stitch_test_set # copy_blender_test_set
+from scan3d.test_set import copy_test_set, copy_jpg_test_set, copy_stitch_test_set, copy_scan_set # copy_blender_test_set
 from stitching.stitch import stitch_run
 
 def index(request):
@@ -115,26 +115,54 @@ def proc_scan(request):
     return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/1/")
 
 ####### receive folder
-
+IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'Beige_Toothset' / 'piZ2_210907'
 def rec_folder(request):
+    data = DEVICE_PATH / 'folder' / 'input'
+    data_path = data / '1'
+    print("Output to", data_path)
+    if Path.exists(data):
+        rmtree(data, ignore_errors=True)
+    Path.mkdir(data, parents=True)
+    #infolder = Path(data)
+    infolder = IN_FOLDER / '1'
+    copy_scan_set(infolder, data_path)
+    receive_scan('folder', data_path)
+    return redirect("/test/show_pictures?folder=device/folder/input/&number=1")
+
+def rec_folder5(request):
     data = DEVICE_PATH / 'folder'
     data_path = DEVICE_PATH / 'folder' / 'input'
-    print(data_path)
+    print("Output to", data_path)
     if Path.exists(data_path):
         rmtree(data_path, ignore_errors=True)
     Path.mkdir(data_path, parents=True)
     infolder = Path(data)
-    copy2(infolder / 'color.png', data_path / 'color.png')
-    copy2(infolder / 'fringe.png', data_path / 'fringe.png')
-    copy2(infolder / 'nolight.png', data_path / 'nolight.png')
+    infolder = IN_FOLDER / '1'
+    out_path = data_path / '1'
+    copy_scan_set(infolder, data_path)
+
+    # copy2(infolder / 'color.jpg', out_path / 'color.jpg')
+    # copy2(infolder / 'dias.jpg', out_path / 'dias.jpg')
+    # copy2(infolder / 'nolight.jpg', out_path / 'nolight.jpg')
     #prepare_blender_input(infolder, data_path)
     receive_scan('folder', data_path)
-    return redirect("/test/show_pictures?folder=device/folder/input/")
 
+    copy_jpg_test_set(data_path)
+    for i in range(2,6):
+        folder = data_path / str(i)
+        print( folder )
+        receive_scan('folder', data_path)
+        #process_blender(folder)
+    # wait for processing
+    return redirect("/test/show_pictures?folder=device/blender/input/&number=1")
+
+    #return redirect("/test/show_pictures?folder=device/folder/input/")
 ####### receive blender   ##################
 
-TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "model.dec" / "render9673"
+TESTDATAFOLDER = BASE_DIR / "testdata" / "device"
 
 def receive_blender(request):
     print("Start receive blender")
@@ -155,6 +183,7 @@ def receive_blender5(request):
     data_path =input_path / '1'
     Path.mkdir(data_path, parents=True)
     infolder = Path(TESTDATAFOLDER)
+
     receive_blender_set(infolder, data_path)
 
     # folder_path = DEVICE_PATH / 'blender' / 'input'

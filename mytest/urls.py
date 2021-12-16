@@ -12,6 +12,8 @@ urlpatterns = [
     path("showblender5", views.showblender5),
 
     path("folder", views.rec_folder),
+    path("folder5", views.rec_folder5),
+    
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),
     path("calc_scan/", views.calc_scan),
