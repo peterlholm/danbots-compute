@@ -14,8 +14,8 @@
             "request": "launch",
             "env": {
                 "PETER": "test2",
-                "CUDA_VISIBLE_DEVICESum": "-1",
-                "TF_CPP_MIN_LOG_LEVEL": "1"
+                "CUDA_VISIBLE_DEVICES": "-1",
+                "TF_CPP_MIN_LOG_LEVEL": "0"
             },
             "program": "${workspaceFolder}/manage.py",
             "args": [

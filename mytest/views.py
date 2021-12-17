@@ -19,7 +19,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
-from scan3d.test_set import copy_test_set, copy_jpg_test_set, copy_stitch_test_set, copy_scan_set # copy_blender_test_set
+from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set
 from stitching.stitch import stitch_run
 
 def index(request):
@@ -69,7 +69,7 @@ def show_pictures(request):
 def show5(request):
     datapath = 'device/' + MYDEVICE +'/input/'
     data_path = request.GET.get('folder', datapath)
-    number = request.GET.get('folder', 5) + 1
+    number = request.GET.get('number', 5) + 1
     abs_path = DATA_PATH / data_path
     pic_list = []
     for i in range(1,number):
@@ -102,6 +102,26 @@ def show5sequense(request, data_path, dias=True):
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
 
+def show_set(request, data_path='device/folder/input/', number = 20):
+    #datapath = 'device/folder/input/'
+    #data_path = request.GET.get('folder', datapath)
+    #number = request.GET.get('folder', 5) + 1
+
+    abs_path = DATA_PATH / data_path
+    pic_list = []
+
+    for i in range(1,number):
+        if True:
+            pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/fringe.png')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/nnwrap1.png')
+    for i in range(1,number):
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
+    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
+    return render (request, 'showresult.html', context=mycontext)
+
 def showblender5(request):
     datapath = 'device/blender/input/'
     return show5sequense(request, datapath, dias=False)
@@ -114,50 +134,49 @@ def proc_scan(request):
     receive_scan(MYDEVICE, data_path)
     return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/1/")
 
+####### receive folder set #######
+
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
+def process_folder_set(request):
+    outpath = DEVICE_PATH / 'folder' / 'input'
+    #data_path = data / '1'
+    if Path.exists(outpath):
+        rmtree(outpath, ignore_errors=True)
+    Path.mkdir(outpath, parents=True)
+    infolder = IN_FOLDER
+    copy_folder_set(infolder, outpath)
+    i = 1
+    while i<100:
+        folder = outpath / str(i)
+        if folder.exists():
+            receive_scan('folder', folder)
+        else:
+            break
+        i = i+1
+    return redirect("/test/show_pictures?folder=device/folder/input/&number=1")
+
 ####### receive folder
-IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'Beige_Toothset' / 'piZ2_210907'
-def rec_folder(request):
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'Beige_Toothset' / 'piZ2_210907'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+def rec_folder(request, testset=False):
     data = DEVICE_PATH / 'folder' / 'input'
     data_path = data / '1'
-    print("Output to", data_path)
     if Path.exists(data):
         rmtree(data, ignore_errors=True)
     Path.mkdir(data, parents=True)
-    #infolder = Path(data)
     infolder = IN_FOLDER / '1'
     copy_scan_set(infolder, data_path)
+    if testset:
+        copy_jpg_test_set(data)
+        for i in range(2,6):
+            folder = data / str(i)
+            receive_scan('folder', folder)
     receive_scan('folder', data_path)
     return redirect("/test/show_pictures?folder=device/folder/input/&number=1")
 
 def rec_folder5(request):
-    data = DEVICE_PATH / 'folder'
-    data_path = DEVICE_PATH / 'folder' / 'input'
-    print("Output to", data_path)
-    if Path.exists(data_path):
-        rmtree(data_path, ignore_errors=True)
-    Path.mkdir(data_path, parents=True)
-    infolder = Path(data)
-    infolder = IN_FOLDER / '1'
-    out_path = data_path / '1'
-    copy_scan_set(infolder, data_path)
-
-    # copy2(infolder / 'color.jpg', out_path / 'color.jpg')
-    # copy2(infolder / 'dias.jpg', out_path / 'dias.jpg')
-    # copy2(infolder / 'nolight.jpg', out_path / 'nolight.jpg')
-    #prepare_blender_input(infolder, data_path)
-    receive_scan('folder', data_path)
-
-    copy_jpg_test_set(data_path)
-    for i in range(2,6):
-        folder = data_path / str(i)
-        print( folder )
-        receive_scan('folder', data_path)
-        #process_blender(folder)
-    # wait for processing
-    return redirect("/test/show_pictures?folder=device/blender/input/&number=1")
-
-    #return redirect("/test/show_pictures?folder=device/folder/input/")
-####### receive blender   ##################
+    return rec_folder(request, testset=True)
 
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"

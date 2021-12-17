@@ -28,7 +28,7 @@ def filter_pcl(infile, outfile):
         print("filter_pcl: infile does not exist", infile)
         return False
     pcd = o3d.io.read_point_cloud(str(infile))
-    print("pcd", pcd)
+    #print("pcd", pcd)
     if pcd is None:
         print("no point cloud")
     arr = np.asarray(pcd.points)

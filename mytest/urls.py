@@ -7,20 +7,28 @@ from mytest import views
 
 urlpatterns = [
     path("", views.debug),
+    path("show5/", views.show5),
+    path("showset/", views.show_set),
+
+    path("folder", views.rec_folder),
+    path("folder5", views.rec_folder5),
+
+    path('processfolder', views.process_folder_set),
+
+
+
     path("receiveblender", views.receive_blender),
     path("receiveblender5", views.receive_blender5),
     path("showblender5", views.showblender5),
 
-    path("folder", views.rec_folder),
-    path("folder5", views.rec_folder5),
-    
+
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),
     path("calc_scan/", views.calc_scan),
 
     path("start_scan5/", views.start_scan5),
     path("calc5/", views.calc5),
-    path("show5/", views.show5),
+
 
     path("genstitch/", views.gen_stitch),
     path("stitchfolder/", views.stitch_folder),

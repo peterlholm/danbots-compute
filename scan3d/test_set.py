@@ -11,15 +11,27 @@ from utils.pcl_utils import ply2jpg, mirror_pcl #, pcl2jpg
 
 _DEBUG=False
 
-CONTRAST_LOW = 0.7
-CONTRAST_HIGH = 1.3
-BRIGHTNESS_LOW = 0.7
-BRIGHTNESS_HIGH = 1.3
+CONTRAST_LOW = 0.5
+CONTRAST_HIGH = 1.5
+BRIGHTNESS_LOW = 0.5
+BRIGHTNESS_HIGH = 1.5
 
 def copy_scan_set(infolder, outfolder):
+    if not outfolder.exists():
+        Path(outfolder).mkdir(exist_ok=True)
     copy2(infolder / 'color.jpg', outfolder / 'color.jpg')
     copy2(infolder / 'dias.jpg', outfolder / 'dias.jpg')
     copy2(infolder / 'nolight.jpg', outfolder / 'nolight.jpg')
+
+def copy_folder_set(infolder, outfolder):
+    i = 1
+    while i<100:
+        inpath = infolder / str(i)
+        if not inpath.exists():
+            break
+        outpath = outfolder / str(i)
+        copy_scan_set(inpath,outpath)
+        i = i+1
 
 def copy_jpg_test_set(folder):
     path1 = folder / '1'

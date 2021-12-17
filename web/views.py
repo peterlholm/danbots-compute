@@ -5,11 +5,11 @@ from time import sleep
 from django.shortcuts import  HttpResponse #render,
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import BASE_DIR, DEVICE_PATH, NN_ENABLE
+from compute.settings import BASE_DIR, DEVICE_PATH #, NN_ENABLE
 
-if NN_ENABLE:
-    from tensorflow.python.client import device_lib
-    print (device_lib.list_local_devices())
+# if NN_ENABLE:
+#     from tensorflow.python.client import device_lib
+#     print (device_lib.list_local_devices())
 
 def check_device(request):
     deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
@@ -52,7 +52,7 @@ def mjpeg_stream(file):
 def pic_stream(request):
     start_delay = 5
     print ("picstart picstream", datetime.now())
-    sleep(start_delay)    
+    sleep(start_delay)
     deviceid = check_device(request)
     print(deviceid)
     if not deviceid:
