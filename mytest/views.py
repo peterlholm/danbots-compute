@@ -14,7 +14,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
 from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE, NN_ENABLE #, API_SERVER, TEMP_PATH
-from calibrate.flash import flash_led_test
+from calibrate.flash import gen_flash_correction
 from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
@@ -136,8 +136,8 @@ def proc_scan(request):
 
 ####### receive folder set #######
 
-#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
-IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
+IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
     #data_path = data / '1'
@@ -313,5 +313,6 @@ def upgrade(request):
 
 def flash_led(request):
     device = "b827eb05abc2"
-    flash_led_test(device)
+    gen_flash_correction(device)
+    #flash_led_test(device)
     return HttpResponse("OK")

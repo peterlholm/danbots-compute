@@ -20,8 +20,8 @@ from .processing import process
 #     from .nn.inference.process_input import process_input_folder
 
 _DEBUG = False
-DEVICE_PROCESSING = False
-EXPOSURE_PROCESSING = False
+DEVICE_PROCESSING = True
+EXPOSURE_PROCESSING = True
 CONTRAST = 1.7
 BRIGHTNESS = 0.7
 
@@ -39,7 +39,7 @@ def change_exposure(infile, outfile, contrast=CONTRAST, brightness=BRIGHTNESS):
     #multiply(outfile, outfile, 1.2)
 
 def process_scan(deviceid, folder):
-    "receive png files"
+    "receive png files  dias, color, nolight"
     if _DEBUG:
         #print(f"Receiveing scan from {deviceid} in {folder}")
         histo_img(folder / 'color.png', folder / 'color_histo.jpg', title="Org color input")
@@ -66,9 +66,8 @@ def process_scan(deviceid, folder):
 
     #scan_preprocessing(folder)  # change contrast etc
     #general_postprocessing(folder)
-    # here the color.png, fringe.png, nolight.png is expected
 
-    #process_input_folder(folder)
+    # here the color.png, fringe.png, nolight.png is expected
     process(deviceid, folder)
 
     # filter

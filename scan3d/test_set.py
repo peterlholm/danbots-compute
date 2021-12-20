@@ -24,6 +24,8 @@ def copy_scan_set(infolder, outfolder):
     copy2(infolder / 'nolight.jpg', outfolder / 'nolight.jpg')
 
 def copy_folder_set(infolder, outfolder):
+    if Path(infolder / 'device_config.conf').exists():
+        copy2(infolder / 'device_config.conf', outfolder.parent / 'device_config.conf')
     i = 1
     while i<100:
         inpath = infolder / str(i)

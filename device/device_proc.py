@@ -11,10 +11,11 @@ from utils.histoimg import histo_img, get_mask
 _DEBUG=True
 
 def rotation(config, infile, outfile):
+    print(infile, outfile)
     #config = read_device_config(device)
     slope = float(config['calibrate']['slope'])
     print("slope", slope)
-    rotate_img(infile, -slope*30.0, outfile)
+    rotate_img(infile, -slope, outfile)
 
 def mask(mask, infile, outfile):
     insert_mask(infile, mask, outfile)
@@ -49,23 +50,21 @@ def proc_device_data(device, folder):
     config = read_device_config(device)
     if config.has_section('calibrate'):
         #print("calibrate section exist")
-        if False:
-            rotation(config,folder / 'dias.jpg', folder / 'fringe.png')
-            # slope = float(config['calibrate']['slope'])
-            # print("slope", slope)
-            # rotate_img(folder / 'dias.jpg', -slope*30.0, folder / 'fringe.png')
+        # rotation
         if True:
             if _DEBUG:
-                print("create device masks")
+                print("apply rotation")
+                rotation(config,folder / 'dias.png', folder / 'dias.png')
+        # masks
+        if True:
+            if _DEBUG:
+                print("Apply device masks")
             picture_mask(config, folder / 'color.png', folder / 'color.png')
             picture_mask(config, folder / 'nolight.png', folder / 'nolight.png')
-            dias_mask(config, folder / 'fringe.png', folder / 'fringe.png')
-            #mymask = get_mask(folder / 'fringe.png')  
-            #mymask.show()
+            dias_mask(config, folder / 'dias.png', folder / 'dias.png')
             #histo_img(folder / 'color.jpg', folder / 'mycolor_histo.png')
             if _DEBUG:
-                histo_img(folder / 'fringe.png', folder / 'device_fringe_histo.png')
-            #histo_img(folder / 'dias.png', folder / 'mydias_histo2.png', mask=mymask)
+                histo_img(folder / 'dias.png', folder / 'device_fringe_histo.png')
     if _DEBUG:
         print("finish proc_device_data")
     return True
