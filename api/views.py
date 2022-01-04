@@ -4,8 +4,6 @@ api views
 import os
 import time
 import logging
-#from datetime import datetime
-#from time import sleep
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse #, StreamingHttpResponse
@@ -68,11 +66,9 @@ def save2d(request):
     datafolder = devicefolder / 'input'
     os.makedirs(datafolder, exist_ok=True)
     set_number = request.POST['pictureno']
-    #print ("set", set_number)
     for i in request.FILES:
         flist = request.FILES.getlist(i)
         for j in flist:
-            #print(j)
             newname = filename_number(j.name, int(set_number))
             filepath = datafolder / newname
             save_uploaded_file(j, filepath)
@@ -99,8 +95,6 @@ def start3d(request):
 def scan3d(request):
     if request.method in ['POST']:
         time_start = time.perf_counter()
-        #print ("start 3d", datetime.now())
-        #cmd = request.POST.get('cmd', None)
         deviceid = check_device(request)
         devicefolder = device_folder(request)
         set_number = request.POST['pictureno']
@@ -111,10 +105,7 @@ def scan3d(request):
             for j in flist:
                 filepath = folder / j.name
                 save_uploaded_file(j, filepath)
-                # if j.name=="dias.jpg":
-                #     save_uploaded_file(j, devicefolder / 'input' / 'last_dias.jpg')
         receive_scan(deviceid, folder)
-        #print ("slut 3d", datetime.now())
         time_end = time.perf_counter()
         log.info(f"Scan done in {time_end - time_start:.3f} seconds")
         return JsonResponse({'result':"OK"})

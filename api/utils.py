@@ -42,7 +42,6 @@ def receive_pictures(device, set_number, color_picture, dias_picture, noligt_pic
     return True
 
 def start_scan(device, device_path):
-
     if _DEBUG:
         print("Start scan:", device, device_path)
     infolder = Path(device_path) / INPUT_FOLDER
@@ -52,8 +51,6 @@ def start_scan(device, device_path):
             datestr = datetime.now().strftime('%y%m%d-%H%M%S')
             outfolder = device_path / ARCHIVE_FOLDER / datestr
             # infolder  = device_path /'dummy'
-            # print("infolder", infolder)
-            # print("outfolder", outfolder)
             # move(infolder,outfolder)
             #os.rename(str(infolder),str(outfolder))
             #Path(infolder).rename(outfolder)
