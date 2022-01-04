@@ -5,7 +5,7 @@
 from pathlib import Path
 from utils.pcl_utils import ply2jpg, mirror_pcl, filter_pcl #, mask_pcl
 from utils.show_npy import show_npy
-from utils.pic_utils import convert_mask_to_color # include_pic_mask,
+from utils.mask_utils import convert_mask_to_color # include_pic_mask,
 #from utils.np_utils import add_0mask_file, add_mask, mask_file
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME # FRINGE_FILENAME
 from .create_mask import create_mask, create_0mask, create_nomask

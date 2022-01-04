@@ -140,10 +140,10 @@ def proc_scan(request):
 
 ####### receive folder set #######
 
-#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan_zoom'
-IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan'
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
     #data_path = data / '1'

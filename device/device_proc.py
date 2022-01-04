@@ -5,7 +5,7 @@ from os import read
 from api.device_config import read_device_config, save_device_config
 from scan3d.nn.inference.config import FRINGE_FILENAME
 from utils.img_utils import rotate_img
-from utils.pic_utils import convert_mask_to_color, insert_mask
+from utils.mask_utils import convert_mask_to_color, insert_mask
 from utils.histoimg import histo_img, get_mask
 
 _DEBUG=True
