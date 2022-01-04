@@ -33,6 +33,7 @@ urlpatterns = [
     path("genstitch/", views.gen_stitch),
     path("stitchfolder/", views.stitch_folder),
     path("debug", views.debug),
+    path("mytest", views.mytest),
     path("calibrate_camera", views.calibrate_camera),
     #path('showresult', views.showresult),
     path('show_pictures', views.show_pictures),

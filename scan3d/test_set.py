@@ -7,6 +7,7 @@ from shutil import copy2, rmtree
 #from utils.histoimg import histo_img
 from utils.img_utils import change_contrast, change_brightness
 from utils.pcl_utils import ply2jpg, mirror_pcl #, pcl2jpg
+from utils.img2img import img2img, img2jpg
 #from PIL import Image
 
 _DEBUG=False
@@ -81,3 +82,14 @@ def copy_stitch_test_set(from_folder, to_folder):
             #mask_pcl(folder / 'pointcloud.ply', folder / 'mask.npy', folder / 'nypointcloud.ply')
             ply2jpg(ofold / 'pointcloud.ply', ofold / 'pointcloud.jpg')
             #ply2jpg(ofold / 'pointcloud1.ply', ofold / 'pointcloud1.jpg')
+
+def rename_blender_files_set(from_folder):
+    for i in range(1,20):
+        #ifold = from_folder / ('render'+str(i-1))
+        ifold = from_folder / (str(i))
+        #ofold = to_folder / str(i)
+        #print(ifold)
+        if Path(ifold).exists():
+            img2jpg(ifold / "image8.png", ifold / "color.jpg")
+            img2jpg(ifold / "image0.png", ifold / "dias.jpg")
+            img2jpg(ifold / "image9.png", ifold / "nolight.jpg")

@@ -33,6 +33,10 @@ def nnLprocess(folder):
 
     #start = time.time()
     predicted_img = db_predict(Lmodel, inp_1)
+
+    print ("predicted image", predicted_img.shape)
+    #cv2.imwrite( str(folder / 'predicted_img.png'),10*predicted_img)
+
     #end = time.time()
     #print('elapsed low:', end-start)
     #print (predicted_img.shape)
@@ -45,7 +49,7 @@ def nnLprocess(folder):
     #print('kdata:', nnkdata[::40, ::40])
     np.save(str(folder / 'nnkdata.npy'), 1*nnkdata, allow_pickle=False)
     # prdicted_img = np.round(predicted_img*17/(np.max(predicted_img)))
-    cv2.imwrite( str(folder / 'nnkdata.png'),1*nnkdata)
+    cv2.imwrite( str(folder / 'nnkdata.png'),10*nnkdata)
     # print('255*kdata:', 255*kdata[::40, ::40])
 
 

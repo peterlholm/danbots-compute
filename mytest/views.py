@@ -19,7 +19,7 @@ from calibrate.functions import cal_camera
 #from api.pic_utils import include_all_masks
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
-from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set
+from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
 from stitching.stitch import stitch_run
 
 def index(request):
@@ -109,15 +109,19 @@ def show_set(request, data_path='device/folder/input/', number = 20):
 
     abs_path = DATA_PATH / data_path
     pic_list = []
+    maxnumber = 1
+    while Path(abs_path / str(maxnumber)).exists():
+        maxnumber += 1
+    print ("maxnumber", maxnumber)
 
-    for i in range(1,number):
+    for i in range(1,maxnumber):
         if True:
             pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
-    for i in range(1,number):
+    for i in range(1,maxnumber):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/fringe.png')
-    for i in range(1,number):
+    for i in range(1,maxnumber):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/nnwrap1.png')
-    for i in range(1,number):
+    for i in range(1,maxnumber):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
@@ -136,8 +140,10 @@ def proc_scan(request):
 
 ####### receive folder set #######
 
-IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan_zoom'
+IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan'
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
     #data_path = data / '1'
@@ -315,4 +321,10 @@ def flash_led(request):
     device = "b827eb05abc2"
     gen_flash_correction(device)
     #flash_led_test(device)
+    return HttpResponse("OK")
+
+def mytest(request):
+    FOLDER = BASE_DIR / 'testdata' / 'wand' / 'plan'
+    print(FOLDER)
+    rename_blender_files_set(FOLDER )
     return HttpResponse("OK")

@@ -8,7 +8,7 @@ from utils.show_npy import show_npy
 from utils.pic_utils import convert_mask_to_color # include_pic_mask,
 #from utils.np_utils import add_0mask_file, add_mask, mask_file
 from .config import COLOR_FILENAME, MASK_FILENAME, NOLIGHT_FILENAME, POINTCLOUD_FILENAME # FRINGE_FILENAME
-from .create_mask import create_mask, create_0mask # create_nomask,
+from .create_mask import create_mask, create_0mask, create_nomask
 from .nn_unwrap import unwrap_k
 from .H_model import nnHprocess
 from .L_model import nnLprocess
@@ -30,7 +30,8 @@ def process_input_folder(folder):
     create_mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
     if _MASK:
         create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
-    #create_nomask(folder)
+    
+    create_nomask(folder)
 
     #include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
 

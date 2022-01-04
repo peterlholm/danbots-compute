@@ -22,8 +22,8 @@ from .processing import process
 _DEBUG = False
 DEVICE_PROCESSING = True
 EXPOSURE_PROCESSING = True
-CONTRAST = 1.7
-BRIGHTNESS = 0.7
+CONTRAST = 1.1
+BRIGHTNESS = 1.3
 
 def copy2png(folder):
     img2img(folder / 'color.jpg', folder / COLOR_FILENAME)
