@@ -28,6 +28,9 @@ def index(request):
 def debug(request):
     return render (request, 'debug.html')
 
+def inference(request):
+    data_path = request.GET.get('folder', datapath)
+
 def calibrate_camera(request):
     deviceid = MYDEVICE
     folder = DATA_PATH / 'device' / deviceid / 'calibrate/calcamera'
