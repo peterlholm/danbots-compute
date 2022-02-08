@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = False
+_DEBUG = True
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -74,6 +74,7 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
     obj_center = pcd.get_center()
     if _DEBUG:
         arr = np.asarray(pcd.points)
+        #print ("shape", arr.shape)
         amin = np.min(arr, axis=0)
         amax = np.max(arr, axis=0)
         print("Object limits min, max, center", amin, amax, obj_center)
@@ -93,13 +94,16 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
         print("Error in pcl to jpg position")
         cam_position[0] += diff
     vis = o3d.visualization.Visualizer()
-    res = vis.create_window(visible = False, width=PICTURE_SIZE, height=PICTURE_SIZE)
+    res = vis.create_window(visible = True, width=PICTURE_SIZE, height=PICTURE_SIZE)
     if not res:
         print("create window result", res)
     vis.add_geometry(pcd)
     ctr = vis.get_view_control()
     if ctr is None:
         print("pcl2jpg cant get view_control", vis)
+    # fix position
+    obj_center =OBJ_CENTER
+    cam_position=CAM_POSITION
     if _DEBUG:
         print('object center', obj_center, "cam position:", cam_position, "zoom", zoom)
     ctr.set_zoom(zoom)
@@ -109,7 +113,7 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
     opt = vis.get_render_option()
     opt.point_size = 2.0
     #opt.point_color_option.Color = 1
-    #vis.run()
+    vis.run()
     # if _DEBUG:
     #     img = vis.capture_screen_float_buffer(True)
     #     plt.imshow(np.asarray(img))

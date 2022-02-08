@@ -1,14 +1,9 @@
 "Common processing"
-#from os import path
 from pathlib import Path
 from shutil import copy2, rmtree
-#from compute.settings import BASE_DIR
-#from scan3d.nn.inference.config import FRINGE_FILENAME
-#from utils.histoimg import histo_img
 from utils.img_utils import change_contrast, change_brightness
 from utils.pcl_utils import ply2jpg, mirror_pcl #, pcl2jpg
-from utils.img2img import img2img, img2jpg
-#from PIL import Image
+from utils.img2img import img2jpg
 
 _DEBUG=False
 
@@ -25,6 +20,7 @@ def copy_scan_set(infolder, outfolder):
     copy2(infolder / 'nolight.jpg', outfolder / 'nolight.jpg')
 
 def copy_folder_set(infolder, outfolder):
+    Path(outfolder.parent / 'device_config.conf').unlink(missing_ok=True)
     if Path(infolder / 'device_config.conf').exists():
         copy2(infolder / 'device_config.conf', outfolder.parent / 'device_config.conf')
     i = 1

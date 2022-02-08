@@ -112,11 +112,10 @@ def show_set(request, data_path='device/folder/input/', number = 20):
     maxnumber = 1
     while Path(abs_path / str(maxnumber)).exists():
         maxnumber += 1
-    print ("maxnumber", maxnumber)
+    maxnumber = min(maxnumber, number)
 
     for i in range(1,maxnumber):
-        if True:
-            pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
+        pic_list.append("/data/"+data_path+'/'+str(i)+'/dias.jpg')
     for i in range(1,maxnumber):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/fringe.png')
     for i in range(1,maxnumber):
@@ -140,10 +139,11 @@ def proc_scan(request):
 
 ####### receive folder set #######
 
-IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+#IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan_zoom'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan'
+IN_FOLDER = BASE_DIR / "testdata" / "blender" / 'plan'
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
     #data_path = data / '1'
@@ -324,7 +324,7 @@ def flash_led(request):
     return HttpResponse("OK")
 
 def mytest(request):
-    FOLDER = BASE_DIR / 'testdata' / 'wand' / 'plan'
-    print(FOLDER)
-    rename_blender_files_set(FOLDER )
+    folder = BASE_DIR / 'testdata' / 'blender' / 'plan'
+    print(folder)
+    rename_blender_files_set(folder)
     return HttpResponse("OK")
