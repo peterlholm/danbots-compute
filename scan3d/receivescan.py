@@ -68,7 +68,7 @@ def process_scan(deviceid, folder):
     #general_postprocessing(folder)
 
     # here the color.png, fringe.png, nolight.png is expected
-    process(deviceid, folder)
+    process(folder)
 
     # filter
     if NN_ENABLE:

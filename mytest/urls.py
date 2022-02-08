@@ -6,7 +6,20 @@ from django.urls import path
 from mytest import views
 
 urlpatterns = [
+    # indexes
     path("", views.debug),
+    # common
+
+    # test steps
+    path("inference/", views.inference),
+
+
+    # server debug
+
+    #old
+
+    path('show_folder_pictures', views.show_folder_pictures),
+
     path("show5/", views.show5),
     path("showset/", views.show_set),
 

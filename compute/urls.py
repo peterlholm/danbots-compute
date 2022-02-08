@@ -22,9 +22,9 @@ from compute import settings
 urlpatterns = [
     path("api/", include('api.urls')),
     path("web/", include('web.urls')),
-    #path("nn/", include('nn.urls')),
     path("test/", include('mytest.urls')),
-    #path("train/", include('train.urls')),
+    path("t/", views.test),
     path("", views.index),
+    path("debug", views.index),
     re_path(r'^data/(?P<path>.*)$', serve,{'document_root': settings.DATA_PATH}),
 ]

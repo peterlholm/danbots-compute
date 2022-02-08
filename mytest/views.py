@@ -9,7 +9,7 @@ from os import name
 from shutil import rmtree #, copy2
 from pathlib import Path
 from time import sleep
-from django.http import FileResponse #, StreamingHttpResponse
+from django.http import FileResponse, HttpResponseRedirect #, StreamingHttpResponse
 from django.shortcuts import render, HttpResponse, redirect
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
@@ -21,15 +21,54 @@ from scan3d.receiveblender import receive_blender_set, process_blender #prepare_
 from scan3d.receivescan import receive_scan #, process_scan
 from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
 from stitching.stitch import stitch_run
+from utils.img2img import img2img
+from .forms import UploadScanSetFileForm
+
+def save_uploaded_file(handle, filepath):
+    with open(filepath, 'wb+') as destination:
+        for chunk in handle.chunks():
+            destination.write(chunk)
+
+# index
 
 def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
 
+def test(request):
+    return render (request, 'test.html')
+
 def debug(request):
     return render (request, 'debug.html')
 
+# show
+
+
+# test steps
+
 def inference(request):
-    data_path = request.GET.get('folder', datapath)
+    if request.method == 'POST':
+        form = UploadScanSetFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            folder = DATA_PATH / 'device' / 'inferencetest' / 'input'
+            rmtree(folder, ignore_errors=True)
+            Path(folder).mkdir(parents=True, exist_ok=True)
+            format_ok = True
+            formats = ['.png', 'jpg']
+            for file in ['picture', 'fringe', 'nolight']:
+                if Path(request.FILES[file].name).suffix not in formats:
+                    format_ok=False
+                else:
+                    save_uploaded_file(request.FILES[file], folder / request.FILES[file].name)
+                    img2img(folder / request.FILES[file].name, Path(folder / (file +'.png')))
+            if format_ok:
+                return HttpResponseRedirect('/test/show_folder_pictures')
+            form.add_error(None,'Illegal file formats')
+    else:
+        form = UploadScanSetFileForm()
+    return render (request, 'inference.html', {'form': form})
+
+
+# callibrations
 
 def calibrate_camera(request):
     deviceid = MYDEVICE
@@ -38,6 +77,37 @@ def calibrate_camera(request):
     return HttpResponse("Calibration finish")
 
 ############### show pictures #################
+
+def show_folder_pictures(request):
+    """
+    Show all jpg and png pictures in folder
+    """
+    def_datapath = 'device/inferencetest/input/'
+    folder_path = request.GET.get('folder', def_datapath)
+    #number = request.GET.get('number',None)
+    # if number:
+    #     sdata_path = data_path + str(number) + '/'
+    # else:
+    #     sdata_path = data_path
+    abs_path = DATA_PATH / folder_path
+    #print(abs_path)
+    pic_list = []
+    #print ("abs", abs_path)
+    for pic in Path.glob(abs_path,"*.jpg"):
+        pic_list.append("/data/"+folder_path+pic.name)
+    for pic in Path.glob(abs_path,"*.png"):
+        pic_list.append("/data/"+folder_path+pic.name)
+    # nextfolder = ''
+    # prevfolder=''
+    # if number:
+    #     nextfolder = data_path + '&number=' + str(int(number)+1)
+    #     prevfolder = data_path + '&number=' + str(int(number)-1)
+    # link = "http:/test/show_pictures?folder=" + nextfolder
+    # linkprev = "http:/test/show_pictures?folder=" + prevfolder
+    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ""}
+    #print (mycontext)
+    return render (request, 'show_pictures.html', context=mycontext)
+
 def show_pictures(request):
     """
     Show all jpg and png pictures in folder

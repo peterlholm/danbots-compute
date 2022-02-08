@@ -1,23 +1,15 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<h1>System Debug</h1>
-<br>
-Selected device is {{device}}
-<br>
-<br>
-<h2>Test inferirence</h2>
-<div class="row">
-    <div class="col">Image</div>
-    <div><input type="text" name="image"></div>
-</div>
-<div class="row">
-    <div class="col">Nolight</div>
-    <div><input type="text" name="nolight"></div>
-</div>
+<h2>Test inference</h2>
 
 
-    <br><br>
+{% crispy form %}
 
-    {% endblock %}
+
+
+<br><br>
+
+{% endblock %}

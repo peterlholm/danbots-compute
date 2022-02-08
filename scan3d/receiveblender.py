@@ -48,4 +48,4 @@ BRIGHTNESS = 0.9
 def process_blender(folder):
     #Path(folder / FRINGE_FILENAME ).replace(folder / 'fringe_org.png')
     #change_contrast_brightness(folder / 'fringe_org.png', folder / FRINGE_FILENAME, contrast=CONTRAST, brightness=BRIGHTNESS)
-    process('blender', folder)
+    process( folder)
