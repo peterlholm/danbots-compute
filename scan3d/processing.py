@@ -26,6 +26,7 @@ def _nn_process(folder):
         process_input_folder(folder)
 
 def process(folder):
+    "require: color.png, fringe.png, nolight.png"
     if NN_ENABLE:
         _nn_process(folder)
         if GEN_3D_PICTURES:
@@ -33,3 +34,5 @@ def process(folder):
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg',cam='n' )
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_e.jpg',cam='e' )
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_w.jpg',cam='w' )
+    else:
+        print("NN Processing disabled", folder)

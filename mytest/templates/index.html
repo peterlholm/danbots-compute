@@ -7,38 +7,18 @@
 Selected device is {{device}}
 <br>
 <br>
-<a href="test/start_scan" class="btn btn-lg btn-primary">Start Scan</a>&nbsp;
-<a href="test/calc_scan" class="btn btn-lg btn-primary">Calc Scan</a>&nbsp;
-<a href="test/show_pictures?folder=device/{{device}}/input/1/" class="btn btn-lg btn-primary">Last results</a>&nbsp;
-<a href="test/show_pictures" class="btn btn-lg btn-primary">Display results</a>
-<br><br>
-<a href="test/start_scan5" class="btn btn-lg btn-primary">Start Scan5</a>&nbsp;
-<a href="test/calc5" class="btn btn-lg btn-primary">Calc5</a>&nbsp;
-<a href="test/show5" class="btn btn-lg btn-primary">Show5</a>&nbsp;
-<a href="test/proc_scan" class="btn btn-lg btn-primary">Proc Scan</a>
-<br><br>
-<a href="test/folder" class="btn btn-lg btn-primary">Receive Folder</a>&nbsp;
-<a href="test/folder5" class="btn btn-lg btn-primary">Receive Folder 5</a>&nbsp;
-<a href="test/show5?folder=device/folder/input" class="btn btn-lg btn-primary">Show5</a>&nbsp;
-<br><br>
-<a href="test/processfolder" class="btn btn-lg btn-primary">Process Folder</a><input name="folder>" value="folder">&nbsp;
-<a href="test/showset" class="btn btn-lg btn-primary">Show set</a>&nbsp;
 
+<a href="/test/test" class="btn btn-lg btn-primary">Test</a>&nbsp;
 <br><br>
-<a href="test/receiveblender" class="btn btn-lg btn-primary">Receive Blender</a>&nbsp;
-<a href="/test/show_pictures?folder=device/blender/input/&number=1" class="btn btn-lg btn-primary">Show Blender</a>&nbsp;
-<a href="test/receiveblender5" class="btn btn-lg btn-primary">Receive5</a>&nbsp;
-<a href="test/showblender5" class="btn btn-lg btn-primary">Show5 blender</a>&nbsp;
+<a href="/test/debug" class="btn btn-lg btn-primary">Debug</a>&nbsp;
 <br><br>
-<a href="test/genstitch" class="btn btn-lg btn-primary">generate Stitch</a>&nbsp;
-<a href="test/stitchfolder" class="btn btn-lg btn-primary">Stitch Folder</a>
+<a href="/test/inference" class="btn btn-lg btn-primary">Inference</a>&nbsp;
 <br><br>
-<h3>Debug</h3>
-<br>
-<a href="test/debug" class="btn btn-lg btn-secondary">Debug</a>
+
+
 <br><br>
 <h3>Documentation</h3>
 <br>
-<a href="test/install_models" class="btn btn-lg btn-primary">Install Models</a>
+<a href="/test/install_models" class="btn btn-lg btn-primary">Install Models</a>
 
 {% endblock %}

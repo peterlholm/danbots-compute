@@ -2,7 +2,7 @@
 from pathlib import Path
 from shutil import copy2
 from PIL import Image
-from utils.img_utils import change_contrast_brightness
+#from utils.img_utils import change_contrast_brightness
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
 from .processing import process
 

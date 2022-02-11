@@ -7,18 +7,26 @@ from mytest import views
 
 urlpatterns = [
     # indexes
-    path("", views.debug),
-    # common
+    path("", views.index),
+    path("debug", views.debug),
+    path("test", views.test),
 
     # test steps
     path("inference/", views.inference),
+    #path('show_folder_pictures', views.show_folder_pictures),
+    path('show_pictures', views.show_pictures, name="show_pictures"),
 
+
+    # blender
+
+    path("receiveblender", views.receive_blender, name="receiveblender"),
+    path("receiveblender5", views.receive_blender5, name="receiveblender5"),
+    path("showblender5", views.showblender5, name="showblender5"),
 
     # server debug
 
     #old
 
-    path('show_folder_pictures', views.show_folder_pictures),
 
     path("show5/", views.show5),
     path("showset/", views.show_set),
@@ -28,11 +36,6 @@ urlpatterns = [
 
     path('processfolder', views.process_folder_set),
 
-
-
-    path("receiveblender", views.receive_blender),
-    path("receiveblender5", views.receive_blender5),
-    path("showblender5", views.showblender5),
 
 
     path("proc_scan", views.proc_scan),
@@ -49,7 +52,6 @@ urlpatterns = [
     path("mytest", views.mytest),
     path("calibrate_camera", views.calibrate_camera),
     #path('showresult', views.showresult),
-    path('show_pictures', views.show_pictures),
 
     path("sendply/", views.sendply),
     path("start_scan/", views.start_scan),

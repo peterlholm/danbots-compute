@@ -2,8 +2,6 @@
 mytest views.py
 test funtion til servere
 """
-
-#from datetime import datetime
 import subprocess
 from os import name
 from shutil import rmtree #, copy2
@@ -11,12 +9,13 @@ from pathlib import Path
 from time import sleep
 from django.http import FileResponse, HttpResponseRedirect #, StreamingHttpResponse
 from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse
 from send2live.send2live import send_picture, send_ply_picture
 from mytest.send2device import send_start_scan
 from compute.settings import BASE_DIR, DATA_PATH, DEVICE_PATH, MYDEVICE, NN_ENABLE #, API_SERVER, TEMP_PATH
 from calibrate.flash import gen_flash_correction
 from calibrate.functions import cal_camera
-#from api.pic_utils import include_all_masks
+from scan3d.processing import process as process_3d
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
 from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
@@ -40,8 +39,34 @@ def test(request):
 def debug(request):
     return render (request, 'debug.html')
 
-# show
+############### show pictures #################
 
+def show_pictures(request):
+    """
+    Show all jpg and png pictures in folder
+    """
+    datapath = 'testdata/process/'
+    data_path = request.GET.get('folder', datapath)
+    number = request.GET.get('number',None)
+    if number:
+        sdata_path = data_path + str(number) + '/'
+    else:
+        sdata_path = data_path
+    abs_path = DATA_PATH / sdata_path
+    pic_list = []
+    for pic in Path.glob(abs_path,"*.jpg"):
+        pic_list.append("/data/"+sdata_path+pic.name)
+    for pic in Path.glob(abs_path,"*.png"):
+        pic_list.append("/data/"+sdata_path+pic.name)
+    link = linkprev = None
+    if number:
+        nextfolder = data_path + '&number=' + str(int(number)+1)
+        prevfolder = data_path + '&number=' + str(int(number)-1)
+        link = "http:/test/show_pictures?folder=" + nextfolder
+        linkprev = "http:/test/show_pictures?folder=" + prevfolder
+    mycontext={"path": abs_path, "pictures": pic_list, "link": link, "linkprev": linkprev}
+    #print (mycontext)
+    return render (request, 'show_pictures.html', context=mycontext)
 
 # test steps
 
@@ -54,14 +79,15 @@ def inference(request):
             Path(folder).mkdir(parents=True, exist_ok=True)
             format_ok = True
             formats = ['.png', 'jpg']
-            for file in ['picture', 'fringe', 'nolight']:
+            for file in ['color', 'fringe', 'nolight']:
                 if Path(request.FILES[file].name).suffix not in formats:
                     format_ok=False
                 else:
                     save_uploaded_file(request.FILES[file], folder / request.FILES[file].name)
                     img2img(folder / request.FILES[file].name, Path(folder / (file +'.png')))
             if format_ok:
-                return HttpResponseRedirect('/test/show_folder_pictures')
+                process_3d(folder)
+                return HttpResponseRedirect(reverse('show_pictures') +'?folder=device/inferencetest/input/')
             form.add_error(None,'Illegal file formats')
     else:
         form = UploadScanSetFileForm()
@@ -76,68 +102,6 @@ def calibrate_camera(request):
     cal_camera(deviceid, Path(folder))
     return HttpResponse("Calibration finish")
 
-############### show pictures #################
-
-def show_folder_pictures(request):
-    """
-    Show all jpg and png pictures in folder
-    """
-    def_datapath = 'device/inferencetest/input/'
-    folder_path = request.GET.get('folder', def_datapath)
-    #number = request.GET.get('number',None)
-    # if number:
-    #     sdata_path = data_path + str(number) + '/'
-    # else:
-    #     sdata_path = data_path
-    abs_path = DATA_PATH / folder_path
-    #print(abs_path)
-    pic_list = []
-    #print ("abs", abs_path)
-    for pic in Path.glob(abs_path,"*.jpg"):
-        pic_list.append("/data/"+folder_path+pic.name)
-    for pic in Path.glob(abs_path,"*.png"):
-        pic_list.append("/data/"+folder_path+pic.name)
-    # nextfolder = ''
-    # prevfolder=''
-    # if number:
-    #     nextfolder = data_path + '&number=' + str(int(number)+1)
-    #     prevfolder = data_path + '&number=' + str(int(number)-1)
-    # link = "http:/test/show_pictures?folder=" + nextfolder
-    # linkprev = "http:/test/show_pictures?folder=" + prevfolder
-    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ""}
-    #print (mycontext)
-    return render (request, 'show_pictures.html', context=mycontext)
-
-def show_pictures(request):
-    """
-    Show all jpg and png pictures in folder
-    """
-    datapath = 'testdata/process/'
-    #datapath = 'testdata/'
-    data_path = request.GET.get('folder', datapath)
-    number = request.GET.get('number',None)
-    if number:
-        sdata_path = data_path + str(number) + '/'
-    else:
-        sdata_path = data_path
-    abs_path = DATA_PATH / sdata_path
-    #print(abs_path)
-    pic_list = []
-    #print ("abs", abs_path)
-    for pic in Path.glob(abs_path,"*.jpg"):
-        pic_list.append("/data/"+sdata_path+pic.name)
-    for pic in Path.glob(abs_path,"*.png"):
-        pic_list.append("/data/"+sdata_path+pic.name)
-    nextfolder = ''
-    prevfolder=''
-    if number:
-        nextfolder = data_path + '&number=' + str(int(number)+1)
-        prevfolder = data_path + '&number=' + str(int(number)-1)
-    link = "http:/test/show_pictures?folder=" + nextfolder
-    linkprev = "http:/test/show_pictures?folder=" + prevfolder
-    mycontext={"path": abs_path, "pictures": pic_list, "link": link, "linkprev": linkprev}
-    #print (mycontext)
-    return render (request, 'showresult.html', context=mycontext)
 
 def show5(request):
     datapath = 'device/' + MYDEVICE +'/input/'
@@ -154,7 +118,7 @@ def show5(request):
     for i in range(1,number):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
-    return render (request, 'showresult.html', context=mycontext)
+    return render (request, 'show_pictures.html', context=mycontext)
 
 def show5sequense(request, data_path, dias=True):
     #datapath = 'device/' + MYDEVICE +'/input/'
@@ -173,7 +137,7 @@ def show5sequense(request, data_path, dias=True):
     for i in range(1,number):
         pic_list.append("/data/"+data_path+'/'+str(i)+'/pointcloud.jpg')
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
-    return render (request, 'showresult.html', context=mycontext)
+    return render (request, 'show_pictures.html', context=mycontext)
 
 def show_set(request, data_path='device/folder/input/', number = 20):
     #datapath = 'device/folder/input/'
@@ -198,9 +162,6 @@ def show_set(request, data_path='device/folder/input/', number = 20):
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'showresult.html', context=mycontext)
 
-def showblender5(request):
-    datapath = 'device/blender/input/'
-    return show5sequense(request, datapath, dias=False)
 
 ####### process scan #######
 def proc_scan(request):
@@ -238,6 +199,7 @@ def process_folder_set(request):
 ####### receive folder
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'Beige_Toothset' / 'piZ2_210907'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
+
 def rec_folder(request, testset=False):
     data = DEVICE_PATH / 'folder' / 'input'
     data_path = data / '1'
@@ -257,13 +219,15 @@ def rec_folder(request, testset=False):
 def rec_folder5(request):
     return rec_folder(request, testset=True)
 
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "renders211105" / "render14"
-#TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
+
+########### blender #################
+
+TESTDATAFOLDER = BASE_DIR / "testdata" / "render12"
 #TESTDATAFOLDER = BASE_DIR / "testdata" / "model.dec" / "render9673"
-TESTDATAFOLDER = BASE_DIR / "testdata" / "device"
+#TESTDATAFOLDER = BASE_DIR / "testdata" / "device"
 
 def receive_blender(request):
-    print("Start receive blender")
+    #print("Start receive blender")
     input_path = DEVICE_PATH / 'blender' / 'input'
     if Path.exists(input_path):
         rmtree(input_path, ignore_errors=True)
@@ -272,7 +236,7 @@ def receive_blender(request):
     infolder = Path(TESTDATAFOLDER)
     #prepare_blender_input(infolder, data_path)
     receive_blender_set(infolder, data_path)
-    return redirect("/test/show_pictures?folder=device/blender/input/1/")
+    return redirect(reverse('show_pictures')+"?folder=device/blender/input/1/")
 
 def receive_blender5(request):
     input_path = DEVICE_PATH / 'blender' / 'input'
@@ -299,7 +263,11 @@ def receive_blender5(request):
         print( folder )
         process_blender(folder)
     # wait for processing
-    return redirect("/test/show_pictures?folder=device/blender/input/&number=1")
+    return redirect(reverse('show_pictures')+"?folder=device/blender/input/&number=1")
+
+def showblender5(request):
+    datapath = 'device/blender/input/'
+    return show5sequense(request, datapath, dias=False)
 
 #################### SCAN ################################
 

@@ -8,6 +8,8 @@ _DEBUG=False
 
 def make_grayscale(img):
     # Transform color image to grayscale
+    # if len(img.shape)==2:
+    #     return img
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return gray_img
 
