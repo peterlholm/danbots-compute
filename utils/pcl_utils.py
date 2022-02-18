@@ -6,7 +6,8 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = True
+_DEBUG = False
+_O3DVISIBLE = False
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -94,7 +95,7 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
         print("Error in pcl to jpg position")
         cam_position[0] += diff
     vis = o3d.visualization.Visualizer()
-    res = vis.create_window(visible = True, width=PICTURE_SIZE, height=PICTURE_SIZE)
+    res = vis.create_window(visible = _O3DVISIBLE, width=PICTURE_SIZE, height=PICTURE_SIZE)
     if not res:
         print("create window result", res)
     vis.add_geometry(pcd)
@@ -113,7 +114,8 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
     opt = vis.get_render_option()
     opt.point_size = 2.0
     #opt.point_color_option.Color = 1
-    vis.run()
+    if _O3DVISIBLE:
+        vis.run()
     # if _DEBUG:
     #     img = vis.capture_screen_float_buffer(True)
     #     plt.imshow(np.asarray(img))

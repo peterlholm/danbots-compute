@@ -97,6 +97,7 @@ def create_0mask(color_picture, nolight_picture, outfolder):
     return my_mask
 
 def create_nomask(outfolder):
+    "Create a maskfile with no mask, full picture"
     my_mask =  np.zeros((PICTURE_HEIGHT, PICTURE_WIDTH), dtype=np.float)
     # for i in range(PICTURE_HEIGHT):
     #     for j in range(PICTURE_WIDTH):

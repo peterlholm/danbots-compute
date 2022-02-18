@@ -34,7 +34,7 @@ def nnLprocess(folder):
     #start = time.time()
     predicted_img = db_predict(Lmodel, inp_1)
 
-    print ("predicted image", predicted_img.shape)
+    #print ("predicted image", predicted_img.shape)
     #cv2.imwrite( str(folder / 'predicted_img.png'),10*predicted_img)
 
     #end = time.time()

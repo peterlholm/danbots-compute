@@ -20,8 +20,8 @@ from .processing import process
 #     from .nn.inference.process_input import process_input_folder
 
 _DEBUG = False
-DEVICE_PROCESSING = True
-EXPOSURE_PROCESSING = True
+DEVICE_PROCESSING = False
+EXPOSURE_PROCESSING = False
 CONTRAST = 1.1
 BRIGHTNESS = 1.3
 

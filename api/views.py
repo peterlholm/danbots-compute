@@ -14,6 +14,7 @@ from calibrate.functions import cal_camera
 from scan3d.receivescan import receive_scan # process_scan,
 
 _DEBUG = True
+_TIMING = False
 
 log = logging.getLogger(__name__)
 
@@ -107,7 +108,8 @@ def scan3d(request):
                 save_uploaded_file(j, filepath)
         receive_scan(deviceid, folder)
         time_end = time.perf_counter()
-        log.info(f"Scan done in {time_end - time_start:.3f} seconds")
+        if _TIMING:
+            log.info(f"Scan API done in {time_end - time_start:.3f} seconds")
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "errortext":"request is not post"})
 

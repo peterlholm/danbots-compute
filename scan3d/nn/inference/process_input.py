@@ -31,7 +31,7 @@ def process_input_folder(folder):
     if _MASK:
         create_0mask(folder / COLOR_FILENAME, folder / NOLIGHT_FILENAME, folder)
     
-    create_nomask(folder)
+    #create_nomask(folder)
 
     #include_pic_mask(folder / FRINGE_FILENAME, folder / 'mask0.png', folder / 'fringe22.png')
 
