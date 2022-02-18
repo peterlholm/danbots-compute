@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = True
+_DEBUG = False
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -94,7 +94,7 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
         print("Error in pcl to jpg position")
         cam_position[0] += diff
     vis = o3d.visualization.Visualizer()
-    res = vis.create_window(visible = True, width=PICTURE_SIZE, height=PICTURE_SIZE)
+    res = vis.create_window(visible = _DEBUG, width=PICTURE_SIZE, height=PICTURE_SIZE)
     if not res:
         print("create window result", res)
     vis.add_geometry(pcd)

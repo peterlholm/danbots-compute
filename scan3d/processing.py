@@ -1,8 +1,8 @@
 "Common NN processing"
 # this module is the entrance to the nn processing
 
-from pathlib import Path
-from shutil import copy2
+#from pathlib import Path
+#from shutil import copy2
 
 #from matplotlib.pyplot import sca
 from compute.settings import DEVICE_PATH, GEN_3D_PICTURES, NN_ENABLE

@@ -34,7 +34,7 @@ def index(request):
     return render (request, 'index.html', context={ 'device': MYDEVICE })
 
 def test(request):
-    return render (request, 'test.html')
+    return render (request, 'test.html', context={'blenderset': TESTDATAFOLDER })
 
 def debug(request):
     return render (request, 'debug.html')
@@ -263,7 +263,7 @@ def receive_blender5(request):
         print( folder )
         process_blender(folder)
     # wait for processing
-    return redirect(reverse('show_pictures')+"?folder=device/blender/input/&number=1")
+    return redirect(reverse('showblender5')+"?folder=device/blender/input/&number=1")
 
 def showblender5(request):
     datapath = 'device/blender/input/'

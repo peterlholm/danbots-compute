@@ -15,9 +15,9 @@ from .L_model import nnLprocess
 from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
-_DEBUG=False
+_DEBUG=True
 _NET2=True
-_MASK=False
+_MASK=True
 
 def process_input_folder(folder):
     "Process folder through normal nn processing. require: color.png, fringe.png, nolight.png"
@@ -68,4 +68,4 @@ def process_input_folder(folder):
         #ply2jpg(folder / 'nypointcloud.ply', folder / 'nypointcloud.jpg')
 
         if _DEBUG:
-            print ("Processing endet")
+            print ("Proces_input_folder end")

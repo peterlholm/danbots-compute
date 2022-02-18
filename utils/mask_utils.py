@@ -49,7 +49,7 @@ def include_all_masks(folder):
 
 def convert_mask_to_color(picture_filename, out_filename, color=0):
     _img = Image.open(picture_filename)
-    print("Mode", _img.mode)
+    #print("Mode", _img.mode)
     for x in range(0, _img.width):
         for y in range(0, _img.height):
             pixcel = _img.getpixel((x,y))
