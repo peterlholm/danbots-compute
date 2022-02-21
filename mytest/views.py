@@ -4,7 +4,7 @@ test funtion til servere
 """
 import subprocess
 from os import name
-from shutil import rmtree #, copy2
+from shutil import rmtree, copy2
 from pathlib import Path
 from time import sleep
 from django.http import FileResponse, HttpResponseRedirect #, StreamingHttpResponse
@@ -20,6 +20,7 @@ from scan3d.receiveblender import receive_blender_set, process_blender #prepare_
 from scan3d.receivescan import receive_scan #, process_scan
 from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
 from stitching.stitch import stitch_run
+from stitching.meshing import mesh_run
 from utils.img2img import img2img
 from .forms import UploadScanSetFileForm
 
@@ -328,6 +329,16 @@ def stitch_folder(request):
     stitch_run(folder)
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/")
 
+################## Meshing ################
+def mesh(request):
+    MESH_DATA = BASE_DIR / "testdata" / "mesh" / "chess.ply"
+    device = 'mesh'
+    folder = DEVICE_PATH / device / 'mesh'
+    rmtree(folder, ignore_errors=True)
+    Path.mkdir(folder, parents=True)
+    copy2(MESH_DATA, folder)
+    mesh_run(folder)
+    return redirect("/test/show_pictures?folder=device/"+device+"/mesh/")
 
 ############# DOC ########################
 

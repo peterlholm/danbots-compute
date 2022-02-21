@@ -113,7 +113,8 @@ def pcl2jpg(pcd, outfile, cam='s', zoom=ZOOM):
     opt = vis.get_render_option()
     opt.point_size = 2.0
     #opt.point_color_option.Color = 1
-    vis.run()
+    if _DEBUG:
+        vis.run()
     # if _DEBUG:
     #     img = vis.capture_screen_float_buffer(True)
     #     plt.imshow(np.asarray(img))

@@ -16,7 +16,9 @@ urlpatterns = [
     #path('show_folder_pictures', views.show_folder_pictures),
     path('show_pictures', views.show_pictures, name="show_pictures"),
 
-
+    # mesh
+    path("mesh/", views.mesh),
+ 
     # blender
 
     path("receiveblender", views.receive_blender, name="receiveblender"),
