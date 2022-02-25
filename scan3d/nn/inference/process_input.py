@@ -17,7 +17,7 @@ from .pointcloud import nngenerate_pointcloud
 
 _DEBUG=True
 _NET2=True
-_MASK=True
+_MASK=False
 
 def process_input_folder(folder):
     "Process folder through normal nn processing. require: color.png, fringe.png, nolight.png"

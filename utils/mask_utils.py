@@ -49,10 +49,13 @@ def include_all_masks(folder):
 
 def convert_mask_to_color(picture_filename, out_filename, color=0):
     _img = Image.open(picture_filename)
-    #print("Mode", _img.mode)
+    col=3
+    print("Mode", _img.mode)
+    if _img.mode=="x":
+        col = 0
     for x in range(0, _img.width):
         for y in range(0, _img.height):
             pixcel = _img.getpixel((x,y))
-            if pixcel[3]==0:
+            if pixcel==0:
                 _img.putpixel((x,y),(color,color,color,0))
     _img.save(out_filename)

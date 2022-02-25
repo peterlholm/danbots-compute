@@ -55,6 +55,16 @@ def new_read_pointclouds(folder, filename='pointcloud.ply'):
         i += 1
     return pcls
 
+def read_model_pcl(folder, model):
+    "Copy pcl to folder and read"
+    folderfiles = sorted(Path(model).glob("*.ply"))
+    pcls = []
+    for file in folderfiles:
+        pcls.append(o3d.io.read_point_cloud(str(file)))
+ 
+    print (pcls)
+
+
 def write_pointcloud(pcl, outfile):
     pcl2jpg(pcl, outfile)
 
@@ -81,12 +91,15 @@ def transform(components_with_transformations):
 def stitch_run(folder):
     "stitching a folder tree"
     print("stitching folder:", folder)
-
     # Start timer, parse config and run pipeline.
     overall_time_start = time.perf_counter()
     print("Loading data.")
     components = new_read_pointclouds(folder)
+    stitch_pcl(components, folder)
+    overall_timer_stop = time.perf_counter()
+    print ("Time consumed", overall_timer_stop-overall_time_start)
 
+def stitch_pcl(components, folder):
     pcls = []
     no_pointclouds = len(components)
     #no_pointclouds = 30

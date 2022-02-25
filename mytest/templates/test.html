@@ -3,14 +3,24 @@
 {% block content %}
 
 <h1>Test & Demonstrations</h1>
-<h2>Simulations</h2>
+<h2>Process scan set</h2>
 <br>
+<a href="{% url 'process_folder_set' %}" class="btn btn-lg btn-primary">Process Scan Set</a>&nbsp;
+<br>
+<h2>Simulations</h2>
 Folder: {{blenderset}} <br>
 <a href="{% url 'receiveblender' %}" class="btn btn-lg btn-primary">Process Blender</a>&nbsp;<br>
 <br>
 <a href="{% url 'show_pictures' %}?folder=device/blender/input/&number=1" class="btn btn-lg btn-primary">Show Blender</a>&nbsp;
 <a href="{% url 'receiveblender5' %}" class="btn btn-lg btn-primary">Receive5</a>&nbsp;
 <a href="{% url 'showblender5' %}" class="btn btn-lg btn-primary">Show5 blender</a>&nbsp;
+<br>
+<h3>Stitching</h3>
+<br>
+<a href="/test/stitch_model?folder=testdata/bunny/data" class="btn btn-lg btn-primary">Stich Model</a>&nbsp;
+<a href="/test/stitchfolder" class="btn btn-lg btn-primary">Stitch Folder</a>
+
+
 <br><br>
 <h2>Device scan</h2>
 <br>
@@ -35,6 +45,7 @@ Selected device is {{device}}
 <a href="/test/showset" class="btn btn-lg btn-primary">Show set</a>&nbsp;
 
 <br><br>
+<a href="/test/stitch_model" class="btn btn-lg btn-primary">Stich Model</a>&nbsp;
 <a href="/test/genstitch" class="btn btn-lg btn-primary">generate Stitch</a>&nbsp;
 <a href="/test/stitchfolder" class="btn btn-lg btn-primary">Stitch Folder</a>
 <br><br>

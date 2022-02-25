@@ -35,7 +35,7 @@ def mesh_run(folder):
     print("Number of downsampled points: ", len(downpcd.points))
 
     o3d.io.write_point_cloud(str(outfile), downpcd)
-    bpa(downpcd)
-
+    #bpa(downpcd)
+    stlimg = poisson_reconstruction(downpcd)
     return
     

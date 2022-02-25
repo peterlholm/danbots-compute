@@ -19,7 +19,7 @@ from scan3d.processing import process as process_3d
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
 from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
-from stitching.stitch import stitch_run
+from stitching.stitch import stitch_run, read_model_pcl
 from stitching.meshing import mesh_run
 from utils.img2img import img2img
 from .forms import UploadScanSetFileForm
@@ -173,19 +173,23 @@ def proc_scan(request):
     return redirect("/test/show_pictures?folder=device/" + MYDEVICE + "/input/1/")
 
 ####### receive folder set #######
+# copy a folder set and process it with receivescan
+#
 
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'exposure'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'zoom'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan_zoom'
 #IN_FOLDER = BASE_DIR / "testdata" / "wand" / 'plan'
 IN_FOLDER = BASE_DIR / "testdata" / "blender" / 'plan'
+
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
-    #data_path = data / '1'
+    folder = request.GET.get('folder',"testdata/device/serie1/input")
+    infolder = BASE_DIR / folder
     if Path.exists(outpath):
         rmtree(outpath, ignore_errors=True)
     Path.mkdir(outpath, parents=True)
-    infolder = IN_FOLDER
+    #infolder = IN_FOLDER
     copy_folder_set(infolder, outpath)
     i = 1
     while i<100:
@@ -328,6 +332,15 @@ def stitch_folder(request):
     folder = DEVICE_PATH / device / 'stitch'
     stitch_run(folder)
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/")
+
+def stitch_model(request):
+    device = 'stitch'
+    folder = DEVICE_PATH / device / device
+    modelf = request.GET.get('folder', 'testdata/bunny/data' )
+    modelfolder = BASE_DIR /  modelf
+    read_model_pcl(folder, modelfolder)
+    #stitch_run(folder)
+    return redirect("/test/show_pictures?folder=device/"+device+"/s")
 
 ################## Meshing ################
 def mesh(request):

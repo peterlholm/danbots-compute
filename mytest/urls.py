@@ -16,6 +16,8 @@ urlpatterns = [
     #path('show_folder_pictures', views.show_folder_pictures),
     path('show_pictures', views.show_pictures, name="show_pictures"),
 
+    path("stitch_model/", views.stitch_model),
+
     # mesh
     path("mesh/", views.mesh),
  
@@ -36,8 +38,7 @@ urlpatterns = [
     path("folder", views.rec_folder),
     path("folder5", views.rec_folder5),
 
-    path('processfolder', views.process_folder_set),
-
+    path('processfolder', views.process_folder_set, name="process_folder_set"),
 
 
     path("proc_scan", views.proc_scan),
