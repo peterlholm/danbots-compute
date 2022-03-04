@@ -11,16 +11,20 @@ urlpatterns = [
     path("debug", views.debug),
     path("test", views.test),
 
+    # show
+    path('show_pictures', views.show_pictures, name="show_pictures"),
+    path("showset/", views.show_set, name="show_set"),
+
+
     # test steps
     path("inference/", views.inference),
     #path('show_folder_pictures', views.show_folder_pictures),
-    path('show_pictures', views.show_pictures, name="show_pictures"),
-
+    
     path("stitch_model/", views.stitch_model),
 
     # mesh
     path("mesh/", views.mesh),
- 
+
     # blender
 
     path("receiveblender", views.receive_blender, name="receiveblender"),
@@ -30,10 +34,6 @@ urlpatterns = [
     # server debug
 
     #old
-
-
-    path("show5/", views.show5),
-    path("showset/", views.show_set),
 
     path("folder", views.rec_folder),
     path("folder5", views.rec_folder5),
