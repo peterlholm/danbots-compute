@@ -15,11 +15,13 @@ urlpatterns = [
     path('show_pictures', views.show_pictures, name="show_pictures"),
     path("showset/", views.show_set, name="show_set"),
 
+    #process set
+    path('processfolder', views.process_folder_set, name="process_folder_set"),
 
     # test steps
     path("inference/", views.inference),
     #path('show_folder_pictures', views.show_folder_pictures),
-    
+
     path("stitch_model/", views.stitch_model),
 
     # mesh
@@ -29,7 +31,6 @@ urlpatterns = [
 
     path("receiveblender", views.receive_blender, name="receiveblender"),
     path("receiveblender5", views.receive_blender5, name="receiveblender5"),
-    path("showblender5", views.showblender5, name="showblender5"),
 
     # server debug
 
@@ -38,8 +39,7 @@ urlpatterns = [
     path("folder", views.rec_folder),
     path("folder5", views.rec_folder5),
 
-    path('processfolder', views.process_folder_set, name="process_folder_set"),
-
+    
 
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),

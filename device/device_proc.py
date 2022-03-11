@@ -51,7 +51,7 @@ def proc_device_data(device, folder):
     if config.has_section('calibrate'):
         #print("calibrate section exist")
         # rotation
-        if True:
+        if False:
             if _DEBUG:
                 print("apply rotation")
                 rotation(config,folder / 'dias.png', folder / 'dias.png')

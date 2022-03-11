@@ -21,7 +21,7 @@ from .processing import process
 
 _DEBUG = False
 DEVICE_PROCESSING = True
-EXPOSURE_PROCESSING = True
+EXPOSURE_PROCESSING = False
 CONTRAST = 1.1
 BRIGHTNESS = 0.9
 
