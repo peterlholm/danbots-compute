@@ -1,5 +1,4 @@
 "Common processing"
-from distutils.log import info
 from pathlib import Path
 from shutil import copy2, rmtree
 from utils.img_utils import change_contrast, change_brightness
@@ -21,8 +20,9 @@ def copy_scan_set(infolder, outfolder):
     copy2(infolder / 'nolight.jpg', outfolder / 'nolight.jpg')
 
 def copy_folder_set(infolder, outfolder):
-    ""
-    print("copy_folder_set ",infolder, outfolder)
+    "Copy org picture from folder set"
+    if _DEBUG:
+        print("copy_folder_set ",infolder, outfolder)
     Path(outfolder.parent / 'device_config.conf').unlink(missing_ok=True)
     if Path(infolder / 'device_config.conf').exists():
         copy2(infolder / 'device_config.conf', outfolder.parent / 'device_config.conf')

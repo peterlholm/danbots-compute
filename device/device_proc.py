@@ -8,7 +8,7 @@ from utils.img_utils import rotate_img
 from utils.mask_utils import convert_mask_to_color, insert_mask
 from utils.histoimg import histo_img, get_mask
 
-_DEBUG=True
+_DEBUG=False
 
 def rotation(config, infile, outfile):
     print(infile, outfile)
@@ -45,7 +45,7 @@ def dias_mask(config, infile, outfile):
 
 def proc_device_data(device, folder):
     if _DEBUG:
-        print(f"Device specifix processing, device: {device} folder: {folder}")
+        print(f"Device specifik processing, device: {device} folder: {folder}")
         print("Overwriting color.png and fringe.png")
     config = read_device_config(device)
     if config.has_section('calibrate'):

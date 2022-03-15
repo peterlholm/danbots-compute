@@ -1,7 +1,7 @@
 "Common NN processing"
 # this module is the entrance to the nn processing
 
-from compute.settings import DEVICE_PATH, GEN_3D_PICTURES, NN_ENABLE
+from compute.settings import GEN_3D_PICTURES, NN_ENABLE #DEVICE_PATH,
 from utils.pcl_utils import ply2jpg
 from utils.histoimg import histo_img
 #from .nn.inference.config import COLOR_FILENAME, FRINGE_FILENAME, NOLIGHT_FILENAME #, POINTCLOUD_JPG_FILENAME
@@ -30,5 +30,5 @@ def process(folder):
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_n.jpg',cam='n' )
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_e.jpg',cam='e' )
             # ply2jpg(folder / 'pointcloud.ply',folder / 'pointcloud_w.jpg',cam='w' )
-    else:
-        print("NN Processing disabled", folder)
+    # else:
+    #     print("NN Processing disabled", folder)
