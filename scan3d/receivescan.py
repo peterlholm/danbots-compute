@@ -83,6 +83,8 @@ def process_scan(deviceid, folder):
         if Path.exists(folder / 'pointcloud.jpg'):
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
             copy2(folder / 'pointcloud.jpg', DEVICE_PATH / deviceid / 'input' / 'last_pointcloud.jpg' )
+        else:
+            copy2(folder / 'dias.png', DEVICE_PATH / deviceid / 'input' / 'last_picture.jpg' )
 
         #radius_outliersremoval(str(folder / 'pointcloud.ply'),str(folder / 'pointcloud_f1.ply'))
         #ply2jpg(folder / 'pointcloud_f1.ply', folder / 'pointcloud_f1.jpg')

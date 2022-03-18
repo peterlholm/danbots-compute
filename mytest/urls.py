@@ -32,6 +32,8 @@ urlpatterns = [
     path("receiveblender", views.receive_blender, name="receiveblender"),
     path("receiveblender5", views.receive_blender5, name="receiveblender5"),
 
+    # convert to samir
+    path("convert2samir", views.convert_to_samir, name="convert2samir"),
     # server debug
 
     #old
@@ -39,7 +41,7 @@ urlpatterns = [
     path("folder", views.rec_folder),
     path("folder5", views.rec_folder5),
 
-    
+
 
     path("proc_scan", views.proc_scan),
     path("start_scan/", views.start_scan),

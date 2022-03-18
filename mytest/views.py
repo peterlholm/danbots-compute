@@ -22,6 +22,7 @@ from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, co
 from stitching.stitch import stitch_run, read_model_pcl
 from stitching.meshing import mesh_run
 from utils.img2img import img2img
+from .convert_testset import convert2samir
 from .forms import UploadScanSetFileForm
 
 def save_uploaded_file(handle, filepath):
@@ -82,7 +83,7 @@ def add_pic_list(pic_list, rel_data_path, file_name, maxnumber):
 def show_set(request, data_path='device/folder/input/'):
     # show dedicate picture in folder set 1,2,3
     abs_path = DATA_PATH / data_path
-    rel_path = "/data/" + data_path
+    #rel_path = "/data/" + data_path
     pic_list = []
     number = int(request.GET.get('number', "100")) + 1
     maxnumber = 1
@@ -125,7 +126,18 @@ def process_folder_set(request):
         i = i+1
     return(redirect(reverse('show_set')+"?folder=device/folder/input"))
 
+# testing
 
+# convert to samir
+
+def convert_to_samir(request):
+    #deviceid = MYDEVICE
+    #infold = BASE_DIR / 'testdata/device/serie1/input'
+    infold = DEVICE_PATH / MYDEVICE / 'input'
+    outfold = DATA_PATH / 'testout'
+    print("Convert from " + str(infold) + " to " + str(outfold))
+    convert2samir(infold, outfold)
+    return HttpResponse("Conversion OK")
 
 
 
@@ -321,12 +333,12 @@ def stitch_model(request):
 
 ################## Meshing ################
 def mesh(request):
-    MESH_DATA = BASE_DIR / "testdata" / "mesh" / "chess.ply"
+    mesh_data = BASE_DIR / "testdata" / "mesh" / "chess.ply"
     device = 'mesh'
     folder = DEVICE_PATH / device / 'mesh'
     rmtree(folder, ignore_errors=True)
     Path.mkdir(folder, parents=True)
-    copy2(MESH_DATA, folder)
+    copy2(mesh_data, folder)
     mesh_run(folder)
     return redirect("/test/show_pictures?folder=device/"+device+"/mesh/")
 
