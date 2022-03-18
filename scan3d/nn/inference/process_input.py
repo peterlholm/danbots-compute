@@ -15,7 +15,7 @@ from .L_model import nnLprocess
 from .depth import newDepth
 from .pointcloud import nngenerate_pointcloud
 
-_DEBUG=True
+_DEBUG=False
 _NET2=True
 _MASK=False
 
