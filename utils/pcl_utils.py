@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = False
+_DEBUG = True
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
@@ -21,9 +21,8 @@ def mirror_pcl(infile, outfile):
     opcd.points = o3d.utility.Vector3dVector(arr)
     o3d.io.write_point_cloud(str(outfile), opcd)
 
-def filter_pcl(infile, outfile):
+def filter_pcl(infile, outfile, procent=0.2):
     "filter outer procent part of pcl"
-    procent = 0.2
     if not Path(infile).exists():
         print("filter_pcl: infile does not exist", infile)
         return False
@@ -63,6 +62,7 @@ def filter_pcl(infile, outfile):
     #pcd_clean = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(arr[mask])
     o3d.io.write_point_cloud(str(outfile), pcd)
+    return True
 
 PICTURE_SIZE = 1000
 OBJ_CENTER = [0.0,0.0,22.0]

@@ -3,6 +3,7 @@ from pathlib import Path
 from shutil import copy2
 from PIL import Image
 #from utils.img_utils import change_contrast_brightness
+from utils.pcl_utils import filter_pcl
 from scan3d.nn.inference.config import COLOR_FILENAME,FRINGE_FILENAME,NOLIGHT_FILENAME
 from .processing import process
 
@@ -41,6 +42,10 @@ def receive_blender_set(infolder, folder):
         print("Receive Blender Scan_set", folder)
     prepare_blender_input(infolder, folder)
     process_blender(folder)
+
+def after_blender_process(folder):
+    filter_pcl(folder / 'pointcloud.pcl', folder / 'filterpointcloud.pcl')
+    return
 
 CONTRAST = 2.1
 BRIGHTNESS = 0.9
