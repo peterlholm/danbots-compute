@@ -317,10 +317,12 @@ def gen_stitch(request):
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/&number=1")
 
 def stitch_folder(request):
-    device = 'stitch'
-    folder = DEVICE_PATH / device / 'stitch'
+    gfolder = request.GET.get('folder', 'device/folder/input' )
+    #device = 'stitch'
+    folder = DATA_PATH / gfolder
+    print (folder)
     stitch_run(folder)
-    return redirect("/test/show_pictures?folder=device/"+device+"/stitch/")
+    return redirect("/test/show_pictures?folder="+folder)
 
 def stitch_model(request):
     device = 'stitch'

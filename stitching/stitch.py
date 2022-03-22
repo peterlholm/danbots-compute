@@ -42,7 +42,7 @@ def read_pointclouds(folder, filename='pointcloud.ply'):
     pcls = [o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(1,ANTAL+1)]
     return pcls
 
-def new_read_pointclouds(folder, filename='pointcloud.ply'):
+def read_pointcloud_tree(folder, filename='pointcloud.ply'):
     pcls = []
     i = 1
     OK = True
@@ -94,7 +94,7 @@ def stitch_run(folder):
     # Start timer, parse config and run pipeline.
     overall_time_start = time.perf_counter()
     print("Loading data.")
-    components = new_read_pointclouds(folder)
+    components = read_pointcloud_tree(folder)
     stitch_pcl(components, folder)
     overall_timer_stop = time.perf_counter()
     print ("Time consumed", overall_timer_stop-overall_time_start)
