@@ -13,8 +13,11 @@ from api.utils import filename_number, start_scan,  stop_scan #, test_nn
 from calibrate.functions import cal_camera
 from scan3d.receivescan import receive_scan # process_scan,
 
+# pylint:disable=logging-fstring-interpolation
+
 _DEBUG = True
-_TIMING = False
+_TIMING = True
+_PROCESS_BACKGROUND = True
 
 log = logging.getLogger(__name__)
 
@@ -89,8 +92,13 @@ def stop2d(request):
 # *************** 3D *********************
 @csrf_exempt
 def start3d(request):
+    time_start = time.perf_counter()
     # remove last results
-    return start(request)
+    res = start(request)
+    time_stop = time.perf_counter()
+    if _TIMING:
+        log.info(f"Start Scan API done in {time_stop - time_start:.3f} seconds")
+    return res
 
 @csrf_exempt
 def scan3d(request):
@@ -106,10 +114,13 @@ def scan3d(request):
             for j in flist:
                 filepath = folder / j.name
                 save_uploaded_file(j, filepath)
-        receive_scan(deviceid, folder)
+        if _PROCESS_BACKGROUND:
+            pass
+        else:
+            receive_scan(deviceid, folder)
         time_end = time.perf_counter()
         if _TIMING:
-            log.info(f"Scan API done in {time_end - time_start:.3f} seconds")
+            log.info(f"Scan3d API done in {time_end - time_start:.3f} seconds")
         return JsonResponse({'result':"OK"})
     return JsonResponse({'result':"False", "errortext":"request is not post"})
 

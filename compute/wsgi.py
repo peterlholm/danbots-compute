@@ -21,9 +21,10 @@ TF_CPP_MIN_LOG_LEVEL - which has 3 or 4 basic levels - low numbers = more messag
     1 outputs Warning, and above
     2 outputs Errors and above.
 """
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2"
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "0"
+
+#os.environ['LD_LIBRARY_PATH'] = "/usr/local/cuda-11.6/lib64"
 #os.environ["DISPLAY"] = "0.0"
 
 application = get_wsgi_application()
-
