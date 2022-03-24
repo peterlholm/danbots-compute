@@ -110,6 +110,7 @@ IN_FOLDER = BASE_DIR / "testdata" / "blender" / 'plan'
 def process_folder_set(request):
     outpath = DEVICE_PATH / 'folder' / 'input'
     folder = request.GET.get('folder',"testdata/device/serie1/input")
+    print("process folder:", folder)
     infolder = BASE_DIR / folder
     if Path.exists(outpath):
         rmtree(outpath, ignore_errors=True)

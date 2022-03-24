@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
-_DEBUG = True
+_DEBUG = False
 
 def mirror_pcl(infile, outfile):
     "Mirror pcl about X axis"
