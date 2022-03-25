@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Device operations</h1>
+<br>
+Selected device is {{device}}
+<br>
+<br>
+
+<form method="post" class="">
+    {% crispy form %}
+    <br><br>
+    <button type="button" onclick="location.href='/'" class="btn btn-sm btn-primary">Back</button>
+    <a href="{% url 'show_pictures' %}?folder=device/folder/input/&number=1" class="btn btn-lg btn-primary">Show 1</a>&nbsp;
+    <button type="submit" name="function" value="show">Show</button>
+</form>
+<br><br>
+<button type="button" onclick="location.href='/'" class="btn btn-sm btn-primary">Back</button>
+
+{% endblock %}

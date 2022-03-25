@@ -1,4 +1,7 @@
 "Convert testset formats"
+from os import system
+import platform
+
 from pathlib import Path
 from shutil import rmtree
 from PIL import Image
@@ -26,9 +29,19 @@ def convert2samir(infolder, outfolder):
         img2img(Path(folder) /'nolight.jpg',  Path(ofold) /'image9.png')
         i +=1
 
+def zipfolder(infolder, outfolder):
+    if platform.system() == "Windows":
+        cmd = "tar -c -f " + str(Path(outfolder)) + " -C " + str(infolder) + " . "
+    else:
+        cmd ="tar -cf " + str(Path(outfolder)) + " -C " + str(infolder) + " . "
+    res = system(cmd)
+    return res
+
 if __name__ == "__main__":
     _BASE = Path(__file__).parent.parent
-    infold = _BASE / 'testdata/device/serie1/input'
-    outfold = _BASE / 'data/testout'
+    infold = Path('../testdata/device/serie1/input')
+    outfold = _BASE / '../data/testout'
     print("Convert from " + str(infold) + " to " + str(outfold))
     convert2samir(infold, outfold)
+    outfil = Path('./out.tar')
+    zipfolder(infold, outfil)

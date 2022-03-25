@@ -18,18 +18,17 @@ from calibrate.functions import cal_camera
 from scan3d.processing import process as process_3d
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
-from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set, rename_blender_files_set
+from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set #, rename_blender_files_set
 from stitching.stitch import stitch_run, read_model_pcl
 from stitching.meshing import mesh_run
 from utils.img2img import img2img
-from .convert_testset import convert2samir
-from .forms import UploadScanSetFileForm
+from .convert_testset import convert2samir, zipfolder
+from .forms import UploadScanSetFileForm, DeviceForm
 
 def save_uploaded_file(handle, filepath):
     with open(filepath, 'wb+') as destination:
         for chunk in handle.chunks():
             destination.write(chunk)
-
 # index
 
 def index(request):
@@ -49,6 +48,8 @@ def show_pictures(request):
     """
     datapath = 'testdata/process/'
     data_path = request.GET.get('folder', datapath)
+    if data_path[-1] != '/':
+        data_path += '/'
     number = request.GET.get('number',None)
     if number:
         sdata_path = data_path + str(number) + '/'
@@ -69,7 +70,6 @@ def show_pictures(request):
     mycontext={"path": abs_path, "pictures": pic_list, "link": link, "linkprev": linkprev}
     return render (request, 'show_pictures.html', context=mycontext)
 
-
 def add_pic_list(pic_list, rel_data_path, file_name, maxnumber):
     # rel_data_path without /data
     r_path = "/data/" + rel_data_path
@@ -80,7 +80,8 @@ def add_pic_list(pic_list, rel_data_path, file_name, maxnumber):
         if apath.exists():
             pic_list.append(rpath)
 
-def show_set(request, data_path='device/folder/input/'):
+def show_set(request):
+    data_path = request.GET.get('folder', 'device/folder/input/')
     # show dedicate picture in folder set 1,2,3
     abs_path = DATA_PATH / data_path
     #rel_path = "/data/" + data_path
@@ -92,12 +93,39 @@ def show_set(request, data_path='device/folder/input/'):
     maxnumber = min(maxnumber, number)
     for i in range(1,maxnumber):
         pic_list.append("/data/"+data_path+str(i)+'/dias.jpg')
-    for i in range(1,maxnumber):
-        pic_list.append("/data/"+data_path+str(i)+'/fringe.png')
+    # for i in range(1,maxnumber):
+    #     pic_list.append("/data/"+data_path+str(i)+'/fringe.png')
+    add_pic_list(pic_list, data_path, 'fringe.png', maxnumber)
     add_pic_list(pic_list, data_path, 'nnwrap1.png', maxnumber)
     add_pic_list(pic_list, data_path, 'pointcloud.jpg', maxnumber)
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'show_pictures.html', context=mycontext)
+
+# device operations
+
+def device_op(request):
+    "do different operation on device folder"
+    if request.method == 'POST':
+        form = DeviceForm(request.POST)
+        if form.is_valid():
+            if request.POST.get('submit') == 'show':
+                folder = "device/" + form.cleaned_data['device'] + "/input/"
+                return(redirect(reverse('show_set')+"?folder="+folder))
+            if request.POST.get('submit') == 'GetFolderSet':
+                folder = DATA_PATH / "device" / form.cleaned_data['device'] / "input/"
+                outfold = DATA_PATH / 'tmp'
+                Path(outfold).mkdir(exist_ok=True)
+                convert2samir(folder, outfold)
+                zipfolder(outfold, outfold / "pictset.tar")
+                response = FileResponse(open(DATA_PATH / "tmp" / "pictset.tar", 'rb'))
+                return response
+        mycontext = {'form': form}
+        return render (request, 'device_op.html', context=mycontext)
+    deviceform = DeviceForm()
+    mycontext = {'form': deviceform}
+    print(mycontext)
+    return render (request, 'device_op.html', context=mycontext)
+
 
 # process testdata folder set
 
@@ -129,21 +157,6 @@ def process_folder_set(request):
 
 # testing
 
-# convert to samir
-
-def convert_to_samir(request):
-    #deviceid = MYDEVICE
-    #infold = BASE_DIR / 'testdata/device/serie1/input'
-    infold = DEVICE_PATH / MYDEVICE / 'input'
-    outfold = DATA_PATH / 'testout'
-    print("Convert from " + str(infold) + " to " + str(outfold))
-    convert2samir(infold, outfold)
-    return HttpResponse("Conversion OK")
-
-
-
-# test steps
-
 def inference(request):
     if request.method == 'POST':
         form = UploadScanSetFileForm(request.POST, request.FILES)
@@ -166,7 +179,6 @@ def inference(request):
     else:
         form = UploadScanSetFileForm()
     return render (request, 'inference.html', {'form': form})
-
 
 # callibrations
 
@@ -318,12 +330,13 @@ def gen_stitch(request):
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/&number=1")
 
 def stitch_folder(request):
+    "stitche standard folder set"
     gfolder = request.GET.get('folder', 'device/folder/input' )
     #device = 'stitch'
     folder = DATA_PATH / gfolder
-    print (folder)
+    print ("Stitch input folder", folder)
     stitch_run(folder)
-    return redirect("/test/show_pictures?folder="+folder)
+    return redirect("/test/show_pictures?folder="+gfolder)
 
 def stitch_model(request):
     device = 'stitch'
@@ -345,12 +358,7 @@ def mesh(request):
     mesh_run(folder)
     return redirect("/test/show_pictures?folder=device/"+device+"/mesh/")
 
-############# DOC ########################
-
-def install_models(request):
-    return render (request, 'install_models.html')
-
-#############  send to live #################
+#############  send to live test #################
 def sendply(request):
     path = DATA_PATH / "temp/faar.jpg"
     result = send_ply_picture("123", path)
@@ -378,10 +386,4 @@ def flash_led(request):
     device = "b827eb05abc2"
     gen_flash_correction(device)
     #flash_led_test(device)
-    return HttpResponse("OK")
-
-def mytest(request):
-    folder = BASE_DIR / 'testdata' / 'blender' / 'plan'
-    print(folder)
-    rename_blender_files_set(folder)
     return HttpResponse("OK")

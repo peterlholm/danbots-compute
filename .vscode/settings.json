@@ -3,4 +3,6 @@
     "python.linting.pylintEnabled": true,
 
     "python.linting.pylintCategorySeverity.refactor": "Information",
+    "python.linting.flake8Enabled": false,
+    "python.linting.banditEnabled": false
 }

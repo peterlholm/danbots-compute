@@ -1,20 +1,20 @@
 "Stiching module"
 from pathlib import Path
-
-from os.path import isfile, abspath
-from sys import stderr
+#from os.path import isfile, abspath
+#from sys import stderr
 import open3d as o3d
 import time
 
 from utils.pcl_utils import pcl2jpg
-
 from . import util
 from . import registration as reg
 from . import noise_removal as nr
 # import meshing as mesh
 # import evaluate as ev
 
-_DEBUG = False
+_DEBUG = True
+_SHOW = False
+_TIMING = True
 
 ANTAL = 40
 
@@ -32,17 +32,17 @@ components = []
 def xread_pointclouds(folder, filename='pointcloud.ply'):
     "return list of pointclouds"
     component_ranges = [[10, 20], [20, 30], [1, 10]]
-    components = [[o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(*cr)]
-                      for cr in component_ranges]
-    print ("length",len(components))
-    print ("length0", len(components[0]), type(components[0]))
+    components = [[o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(*cr)] for cr in component_ranges]
+    print("length", len(components))
+    print("length0", len(components[0]), type(components[0]))
     return components
 
 def read_pointclouds(folder, filename='pointcloud.ply'):
-    pcls = [o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(1,ANTAL+1)]
+    pcls = [o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(1, ANTAL+1)]
     return pcls
 
 def read_pointcloud_tree(folder, filename='pointcloud.ply'):
+    "Read a standard tree of pointclouds. Returns pcl list"
     pcls = []
     i = 1
     OK = True
@@ -61,9 +61,8 @@ def read_model_pcl(folder, model):
     pcls = []
     for file in folderfiles:
         pcls.append(o3d.io.read_point_cloud(str(file)))
- 
-    print (pcls)
 
+    print (pcls)
 
 def write_pointcloud(pcl, outfile):
     pcl2jpg(pcl, outfile)
@@ -95,11 +94,14 @@ def stitch_run(folder):
     overall_time_start = time.perf_counter()
     print("Loading data.")
     components = read_pointcloud_tree(folder)
+    if _TIMING:
+        print ("Loading pointclouds time:", time.perf_counter()-overall_time_start)
     stitch_pcl(components, folder)
     overall_timer_stop = time.perf_counter()
     print ("Time consumed", overall_timer_stop-overall_time_start)
 
-def stitch_pcl(components, folder):
+def stitch_pcl(components, outfolder):
+    time_start = time.perf_counter()
     pcls = []
     no_pointclouds = len(components)
     #no_pointclouds = 30
@@ -110,15 +112,19 @@ def stitch_pcl(components, folder):
         cpcl = clean_point_cloud(components[i])
         pcls.append(cpcl)
         if _DEBUG:
-            write_pointcloud(components[i], folder / ("in"+str(i)+".jpg"))
-            o3d.io.write_point_cloud(str(folder / ("clean"+str(i)+".ply")), cpcl)
-            pcl2jpg(cpcl, folder / ("clean"+str(i)+".jpg"))
+            write_pointcloud(components[i], outfolder / ("in"+str(i)+".jpg"))
+            o3d.io.write_point_cloud(str(outfolder / ("clean"+str(i)+".ply")), cpcl)
+            pcl2jpg(cpcl, outfolder / ("clean"+str(i)+".jpg"))
+    if _TIMING:
+        print("Cleaning finish", time.perf_counter()-time_start)
+    # print(pcls)
+    # print(len(pcls))
 
-    #print(pcls)
-    #print(len(pcls))
     if _DEBUG:
         print("Register pointclouds")
     comp_with_trans = reg_point_clouds(pcls)
+    if _TIMING:
+        print("Registering finish", time.perf_counter()-time_start)
     #print(registrations)
 
     if _DEBUG:
@@ -135,10 +141,11 @@ def stitch_pcl(components, folder):
         for pc in component:
             merged += pc
         merged_components.append(merged)
-        if _DEBUG:
+        if _SHOW:
             o3d.visualization.draw(merged, name)
-        stitchfile = Path(folder) / 'stitch.ply'
+        stitchfile = Path(outfolder) / 'stitch.ply'
         o3d.io.write_point_cloud(str(stitchfile), merged)
 
-        pcl2jpg(merged, str(Path(folder) / 'stitch.jpg'))
+        pcl2jpg(merged, str(Path(outfolder) / 'stitch.jpg'))
+
 
