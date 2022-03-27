@@ -81,8 +81,10 @@ def add_pic_list(pic_list, rel_data_path, file_name, maxnumber):
             pic_list.append(rpath)
 
 def show_set(request):
+    # show dedicate picture in folder set 1,2,3    
     data_path = request.GET.get('folder', 'device/folder/input/')
-    # show dedicate picture in folder set 1,2,3
+    if data_path[-1] != '/':
+        data_path += '/'
     abs_path = DATA_PATH / data_path
     #rel_path = "/data/" + data_path
     pic_list = []
@@ -98,6 +100,38 @@ def show_set(request):
     add_pic_list(pic_list, data_path, 'fringe.png', maxnumber)
     add_pic_list(pic_list, data_path, 'nnwrap1.png', maxnumber)
     add_pic_list(pic_list, data_path, 'pointcloud.jpg', maxnumber)
+    mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
+    return render (request, 'show_pictures.html', context=mycontext)
+
+def show_stitch_set(request):
+    # show stitch debug picture in folder set 1,2,3    
+    data_path = request.GET.get('folder', 'device/folder/input/')
+    if data_path[-1] != '/':
+        data_path += '/'
+    abs_path = DATA_PATH / data_path
+    #rel_path = "/data/" + data_path
+    pic_list = []
+    number = int(request.GET.get('number', "100")) + 1
+    maxnumber = 1
+    while Path(abs_path / str(maxnumber)).exists():
+        maxnumber += 1
+    maxnumber = min(maxnumber, number)
+    for i in range(1,maxnumber):
+        pic_list.append("/data/"+data_path+str(i)+'/dias.jpg')
+    # for i in range(1,maxnumber):
+    #     pic_list.append("/data/"+data_path+str(i)+'/fringe.png')
+    #add_pic_list(pic_list, data_path, 'fringe.png', maxnumber)
+    #(pic_list, data_path, 'nnwrap1.png', maxnumber)
+    add_pic_list(pic_list, data_path, 'pointcloud.jpg', maxnumber)
+    r_path = "/data/" + data_path
+    #a_path = DATA_PATH / rel_data_path
+    for i in range(1,maxnumber):
+        rpath =  f"{r_path}in{i:02}.jpg"
+        pic_list.append(rpath)
+    for i in range(1,maxnumber):
+        rpath2 =  f"{r_path}clean{i:02}.jpg"
+        pic_list.append(rpath2)
+
     mycontext={"path": abs_path, "pictures": pic_list, "link": "", "linkprev": ''}
     return render (request, 'show_pictures.html', context=mycontext)
 
@@ -329,22 +363,24 @@ def gen_stitch(request):
 
     return redirect("/test/show_pictures?folder=device/"+device+"/stitch/&number=1")
 
-def stitch_folder(request):
-    "stitche standard folder set"
+def stitch_folder_set(request):
+    "stitche standard folder tree"
     gfolder = request.GET.get('folder', 'device/folder/input' )
-    #device = 'stitch'
     folder = DATA_PATH / gfolder
     print ("Stitch input folder", folder)
-    stitch_run(folder)
-    return redirect("/test/show_pictures?folder="+gfolder)
+    number = int(request.GET.get('number', '100') )
+    if stitch_run(folder, maxnumber=number):
+        return redirect("/test/show_pictures?folder="+gfolder)
+    return HttpResponse("No point clouds")
 
 def stitch_model(request):
+    "Stitch folder with pointclouds"
     device = 'stitch'
     folder = DEVICE_PATH / device / device
     modelf = request.GET.get('folder', 'testdata/bunny/data' )
     modelfolder = BASE_DIR /  modelf
     read_model_pcl(folder, modelfolder)
-    #stitch_run(folder)
+    stitch_run(folder)
     return redirect("/test/show_pictures?folder=device/"+device+"/s")
 
 ################## Meshing ################

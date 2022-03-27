@@ -41,7 +41,7 @@ def read_pointclouds(folder, filename='pointcloud.ply'):
     pcls = [o3d.io.read_point_cloud(str(Path(folder) / str(i) / filename)) for i in range(1, ANTAL+1)]
     return pcls
 
-def read_pointcloud_tree(folder, filename='pointcloud.ply'):
+def read_pointcloud_tree(folder, filename='pointcloud.ply', maxnumber=100):
     "Read a standard tree of pointclouds. Returns pcl list"
     pcls = []
     i = 1
@@ -53,6 +53,8 @@ def read_pointcloud_tree(folder, filename='pointcloud.ply'):
         else:
             OK = False
         i += 1
+        if i > maxnumber:
+            OK = False
     return pcls
 
 def read_model_pcl(folder, model):
@@ -87,18 +89,20 @@ def transform(components_with_transformations):
     for component, transformations in components_with_transformations:
         util.transform(component, transformations)
 
-def stitch_run(folder):
+def stitch_run(folder, maxnumber = 100):
     "stitching a folder tree"
-    print("stitching folder:", folder)
+    print("Stitching folder:", folder)
     # Start timer, parse config and run pipeline.
     overall_time_start = time.perf_counter()
     print("Loading data.")
-    components = read_pointcloud_tree(folder)
-    if _TIMING:
-        print ("Loading pointclouds time:", time.perf_counter()-overall_time_start)
+    components = read_pointcloud_tree(folder, maxnumber=maxnumber)
+    if len(components) == 0:
+        print("No pointclouds")
+        return False
     stitch_pcl(components, folder)
     overall_timer_stop = time.perf_counter()
     print ("Time consumed", overall_timer_stop-overall_time_start)
+    return True
 
 def stitch_pcl(components, outfolder):
     time_start = time.perf_counter()
@@ -112,9 +116,9 @@ def stitch_pcl(components, outfolder):
         cpcl = clean_point_cloud(components[i])
         pcls.append(cpcl)
         if _DEBUG:
-            write_pointcloud(components[i], outfolder / ("in"+str(i)+".jpg"))
-            o3d.io.write_point_cloud(str(outfolder / ("clean"+str(i)+".ply")), cpcl)
-            pcl2jpg(cpcl, outfolder / ("clean"+str(i)+".jpg"))
+            write_pointcloud(components[i], outfolder / (f"in{(i+1):02}.jpg"))
+            o3d.io.write_point_cloud(str(outfolder / (f"clean{(i+1):02}.ply")), cpcl)
+            pcl2jpg(cpcl, outfolder / (f"clean{(i+1):02}.jpg"))
     if _TIMING:
         print("Cleaning finish", time.perf_counter()-time_start)
     # print(pcls)

@@ -13,6 +13,7 @@ urlpatterns = [
     # show
     path('show_pictures', views.show_pictures, name="show_pictures"),
     path("showset/", views.show_set, name="show_set"),
+    path("showstitchset/", views.show_stitch_set, name="show_stitch_set"),
     # device
     path("device", views.device_op),
 
@@ -34,9 +35,9 @@ urlpatterns = [
     #old
 
     #stitch
+    path("stitchfolder_set/", views.stitch_folder_set),
     path("stitch_model/", views.stitch_model),
     path("genstitch/", views.gen_stitch),
-    path("stitchfolder/", views.stitch_folder),
 
 
     path("folder", views.rec_folder),
