@@ -1,3 +1,4 @@
+pip>=20.3
 django
 django-crispy-forms
 requests
