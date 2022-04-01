@@ -8,7 +8,7 @@ from device.device_proc import proc_device_data
 #from scan3d.nn.inference.nn_util import make_grayscale
 from utils.img2img import img2img
 from utils.img_utils import  change_brightness_contrast, convert_green_to_grey #, change_contrast_brightness,change_brightness, change_contrast, convert_to_grey, make_grayscale2
-from utils.pcl_utils import ply2jpg, filter_pcl
+from utils.pcl_utils import ply2jpg, filter_pcl, filter_f_area
 from utils.histoimg import histo_img
 #from utils.np_utils import multiply
 from .nn.inference.config import COLOR_FILENAME, NOLIGHT_FILENAME #, FRINGE_FILENAME #, POINTCLOUD_JPG_FILENAME
@@ -74,7 +74,7 @@ def process_scan(deviceid, folder):
     if NN_ENABLE:
         if _DEBUG:
             print ("Filtering Scan")
-
+        filter_f_area(folder / 'pointcloud.ply', folder / 'pointcloud_filter.ply')
         filter_pcl(folder / 'pointcloud.ply', folder / 'pointcloud_f.ply')
         if GEN_3D_PICTURES:
             pass

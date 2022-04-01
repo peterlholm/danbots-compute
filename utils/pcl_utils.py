@@ -21,6 +21,26 @@ def mirror_pcl(infile, outfile):
     opcd.points = o3d.utility.Vector3dVector(arr)
     o3d.io.write_point_cloud(str(outfile), opcd)
 
+def filter_area(inpcd):
+    "remove noise in rand"
+    out = []
+    for p in inpcd.points:
+        if p[0]>-3:
+            out.append(p)
+    outpcd = o3d.geometry.PointCloud()
+    outpcd.points = o3d.utility.Vector3dVector(out)
+    return outpcd
+
+def filter_f_area(infile, outfile):
+    if not Path(infile).exists():
+        print("filter_pcl: infile does not exist", infile)
+        return False
+    pcd = o3d.io.read_point_cloud(str(infile))
+    opcd = filter_area(pcd)
+    o3d.io.write_point_cloud(str(outfile), opcd)
+
+
+
 def filter_pcl(infile, outfile, procent=0.2):
     "filter outer procent part of pcl"
     if not Path(infile).exists():

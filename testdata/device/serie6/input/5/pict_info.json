@@ -1,0 +1,20 @@
+{
+    "color": {
+        "ExposureSpeed": 0.003541,
+        "AnalogGain": 1.0,
+        "DigitalGain": 1.203125,
+        "TotalGain": 1.203125
+    },
+    "dias": {
+        "ExposureSpeed": 0.007998,
+        "AnalogGain": 1.0,
+        "DigitalGain": 1.09765625,
+        "TotalGain": 1.09765625
+    },
+    "nolight": {
+        "ExposureSpeed": 0.007998,
+        "AnalogGain": 1.0,
+        "DigitalGain": 1.09765625,
+        "TotalGain": 1.09765625
+    }
+}

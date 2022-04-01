@@ -95,7 +95,7 @@ def stitch_run(folder, maxnumber = 100):
     # Start timer, parse config and run pipeline.
     overall_time_start = time.perf_counter()
     print("Loading data.")
-    components = read_pointcloud_tree(folder, maxnumber=maxnumber)
+    components = read_pointcloud_tree(folder, filename='pointcloud_filter.ply', maxnumber=maxnumber)
     if len(components) == 0:
         print("No pointclouds")
         return False
@@ -113,6 +113,8 @@ def stitch_pcl(components, outfolder):
     if _DEBUG:
         print("cleaning pointclouds")
     for i in range(no_pointclouds):
+        if _DEBUG:
+            print("cleaning pointcloud", i)
         cpcl = clean_point_cloud(components[i])
         pcls.append(cpcl)
         if _DEBUG:
