@@ -5,7 +5,6 @@ requests
 pillow
 numpy
 scikit-learn
-open3d
 matplotlib
 
 opencv-python-headless
@@ -13,3 +12,5 @@ opencv-python-headless
 
 pylint
 pylint-django
+
+#open3d

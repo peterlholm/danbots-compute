@@ -19,8 +19,8 @@ from scan3d.processing import process as process_3d
 from scan3d.receiveblender import receive_blender_set, process_blender #prepare_blender_input
 from scan3d.receivescan import receive_scan #, process_scan
 from scan3d.test_set import copy_scan_set,copy_folder_set, copy_jpg_test_set, copy_test_set, copy_stitch_test_set #, rename_blender_files_set
-from stitching.stitch import stitch_run, read_model_pcl
-from stitching.meshing import mesh_run
+#from stitching.stitch import stitch_run, read_model_pcl
+#from stitching.meshing import mesh_run
 from utils.img2img import img2img
 from .convert_testset import convert2samir, zipfolder
 from .forms import UploadScanSetFileForm, DeviceForm

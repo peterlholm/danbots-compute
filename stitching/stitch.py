@@ -2,7 +2,7 @@
 from pathlib import Path
 #from os.path import isfile, abspath
 #from sys import stderr
-import open3d as o3d
+
 import time
 
 from utils.pcl_utils import pcl2jpg
@@ -12,6 +12,10 @@ from . import noise_removal as nr
 # import meshing as mesh
 # import evaluate as ev
 
+O3D=False
+if O3D:
+    import open3d as o3d
+    
 _DEBUG = True
 _SHOW = False
 _TIMING = True

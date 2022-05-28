@@ -1,9 +1,12 @@
 from pathlib import Path
-import open3d as o3d
 import numpy as np
 import json
 import sys
 import copy
+
+O3D=False
+if O3D:
+    import open3d as o3d
 
 def parse_config():
     config_file = Path(__file__).resolve().parent / "config.json"

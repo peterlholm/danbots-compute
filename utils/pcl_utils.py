@@ -1,11 +1,14 @@
 "pointcload utils"
 from pathlib import Path
 from matplotlib.patches import Patch
-import open3d as o3d
 import numpy as np
 from matplotlib import use, pyplot as plt
 #from matplotlib import use
 
+O3D = False
+if O3D:
+    import open3d as o3d
+    
 _DEBUG = False
 
 def mirror_pcl(infile, outfile):
