@@ -4,11 +4,13 @@ api views
 import os
 import time
 import logging
+from pathlib import Path
+from shutil import copy
 #from threading import Thread
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse #, StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import DEVICE_PATH #, NN_ENABLE #, TEMP_PATH
+from compute.settings import DEVICE_PATH, SCAN_3D_PICTURE #, NN_ENABLE #, TEMP_PATH
 from api.utils import filename_number, start_scan,  stop_scan #, test_nn
 from calibrate.functions import cal_camera
 from scan3d.receivescan import receive_scan # process_scan,
@@ -114,6 +116,9 @@ def scan3d(request):
             for j in flist:
                 filepath = folder / j.name
                 save_uploaded_file(j, filepath)
+        if SCAN_3D_PICTURE == 1:
+            # copy fringe picture to last_picture to show in UI
+            copy(folder / 'dias.jpg', devicefolder / 'input' / 'last_picture.jpg')
         if _PROCESS_BACKGROUND:
             pass
         else:

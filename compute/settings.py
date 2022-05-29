@@ -173,7 +173,10 @@ API_SERVER = 'http://api.danbots.com/api/'
 NN_ENABLE = True
 MYDEVICE = "b827eb05abc2"
 MODELPATH = MODEL_PATH = DATA_PATH / 'nnmodels' / 'model.dec'
-GEN_3D_PICTURES = True
+GEN_3D_PICTURES = False
+
+SCAN_3D_PICTURE = 1 #   show fringe
+
 try:
     from .settings_local import *   # pylint: disable=wildcard-import
 except ModuleNotFoundError:
