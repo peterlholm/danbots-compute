@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'api',
     'mytest',
+    'web'
     #'train'
 ]
 

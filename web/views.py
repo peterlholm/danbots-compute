@@ -1,11 +1,12 @@
 """request from browsers"""
 from pathlib import Path
-from datetime import datetime
+#from datetime import datetime
 from time import sleep
-from django.shortcuts import  HttpResponse #render,
+from django.shortcuts import  HttpResponse, render
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import BASE_DIR, DEVICE_PATH #, NN_ENABLE
+from calibrate.camera.callibration import calibrate_camera
 
 # if NN_ENABLE:
 #     from tensorflow.python.client import device_lib
@@ -26,7 +27,18 @@ def get_device_folder(deviceid):
 NOFILE = BASE_DIR / 'web/static/web' / 'afventer.jpg'
 SLEEP_TIME = 3
 
+def index(request):
+    "index for prod web site"
+    return render (request, 'web/index.html')
+
+def calibratecamera(request):
+    "calibrate camera based on folder with pictures"
+    mtx, dist = calibrate_camera()
+    print("calibration result", mtx)
+    return HttpResponse("Camera callibrated "+ str(mtx))
+
 def mjpeg_stream(file):
+
     running = True
     with open(NOFILE, mode='rb') as fd:
         no_data = fd.read()
