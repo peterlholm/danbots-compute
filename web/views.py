@@ -40,7 +40,7 @@ def calibratecamera(request):
 
 def distance(request):
     "get distance from picture with square"
-    imagefile = BASE_DIR / 'calibrate/camera/testimages/dist/picture4ss.jpeg' 
+    imagefile = BASE_DIR / 'calibrate/camera/testimages/distance/picture6a.jpeg' 
     dist = calc_dist(imagefile)
     print("Distance (mm):", dist)
     return HttpResponse("Distance to picture(mm): " + dist)
