@@ -7,6 +7,7 @@ from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import BASE_DIR, DEVICE_PATH #, NN_ENABLE
 from calibrate.camera.callibration import calibrate_camera
+from calibrate.camera.distance import calc_dist
 
 # if NN_ENABLE:
 #     from tensorflow.python.client import device_lib
@@ -36,6 +37,14 @@ def calibratecamera(request):
     mtx, dist = calibrate_camera()
     print("calibration result", mtx)
     return HttpResponse("Camera callibrated "+ str(mtx))
+
+def distance(request):
+    "get distance from picture with square"
+    imagefile = BASE_DIR / 'calibrate/camera/testimages/dist/picture4ss.jpeg' 
+    dist = calc_dist(imagefile)
+    print("Distance (mm):", dist)
+    return HttpResponse("Distance to picture(mm): " + dist)
+
 
 def mjpeg_stream(file):
 
