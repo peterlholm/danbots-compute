@@ -40,14 +40,13 @@ def calibratecamera(request):
 
 def distance(request):
     "get distance from picture with square"
-    imagefile = BASE_DIR / 'calibrate/camera/testimages/distance/picture6a.jpeg' 
+    fimagefile = BASE_DIR / 'calibrate/camera/testimages/distance/picture6a.jpeg'
+    imagefile = request.GET.get('image',fimagefile)
     dist = calc_dist(imagefile)
     print("Distance (mm):", dist)
     return HttpResponse("Distance to picture(mm): " + dist)
 
-
 def mjpeg_stream(file):
-
     running = True
     with open(NOFILE, mode='rb') as fd:
         no_data = fd.read()
