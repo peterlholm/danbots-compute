@@ -14,10 +14,13 @@ from calibrate.camera.distance import calc_dist
 #     print (device_lib.list_local_devices())
 
 def check_device(request):
+    "get the device id"
+    # todo check is valid
     deviceid = request.POST.get('deviceid', request.GET.get('deviceid'))
     return deviceid
 
 def get_device_folder(deviceid):
+    "get the folder for the device"
     device_path = DEVICE_PATH / deviceid
     if Path.exists(device_path):
         return device_path
@@ -34,8 +37,18 @@ def index(request):
 
 def calibratecamera(request):
     "calibrate camera based on folder with pictures"
-    mtx, dist = calibrate_camera()
-    print("calibration result", mtx)
+    chessboard = (6,8)
+    #folder = BASE_DIR / 'calibrate/camera/testimages/cv2test/'
+    chessboard = (9,7)
+    chessboard = (7,9)
+    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/'
+    #pizero
+    folder = BASE_DIR / 'data/device/b827eb841738/input/'
+
+    #folder = BASE_DIR / 'calibrate/camera/testimages/device/e45f013a21c7/input/'
+    #folder = BASE_DIR / 'data/device/e45f013a21c7/input/'
+    mtx, dist = calibrate_camera(folder, chessboard)
+    print("calibration result", mtx, "dist", dist)
     return HttpResponse("Camera callibrated "+ str(mtx))
 
 def distance(request):
@@ -47,6 +60,7 @@ def distance(request):
     return HttpResponse("Distance to picture(mm): " + dist)
 
 def mjpeg_stream(file):
+    "stream the file to the browser"
     running = True
     with open(NOFILE, mode='rb') as fd:
         no_data = fd.read()
@@ -70,6 +84,7 @@ def mjpeg_stream(file):
 
 @csrf_exempt
 def pic_stream(request):
+    "get the standard picture stream for device"
     start_delay = 5
     #print ("picstart picstream", datetime.now())
     sleep(start_delay)
