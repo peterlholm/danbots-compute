@@ -37,13 +37,15 @@ def index(request):
 
 def calibratecamera(request):
     "calibrate camera based on folder with pictures"
-    chessboard = (6,8)
+    #cv2
+    #chessboard = (9,6)
     #folder = BASE_DIR / 'calibrate/camera/testimages/cv2test/'
-    chessboard = (9,7)
-    chessboard = (7,9)
-    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/'
     #pizero
-    folder = BASE_DIR / 'data/device/b827eb841738/input/'
+    chessboard = (7,9)
+    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie1/'
+    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie2/'
+    #danwand
+    folder = BASE_DIR / 'calibrate/camera/testimages/danwand/serie1/'
 
     #folder = BASE_DIR / 'calibrate/camera/testimages/device/e45f013a21c7/input/'
     #folder = BASE_DIR / 'data/device/e45f013a21c7/input/'

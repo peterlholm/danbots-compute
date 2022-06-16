@@ -77,12 +77,12 @@ def calibrate_camera(folder=FOLDER, chessboard=(6,8)):
             imgpoints.append(corners)
             if _DEBUG:            
                 # Draw and display the corners
-                cv.drawChessboardCorners(img, (7,6), corners2, ret)
+                cv.drawChessboardCorners(img, (gridx,gridy), corners2, ret)
                 #cv.drawChessboardCorners(img, (7,7), corners2, ret)
                 cv.imshow(str(fname.name), img)
                 pic1 = fname
                 #print(pic1)
-                cv.waitKey(2500)
+                cv.waitKey(4500)
                 cv.destroyWindow(str(fname.name))
         else:
             print("der er noget galt med ", str(fname.name))
