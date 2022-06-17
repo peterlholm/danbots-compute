@@ -50,7 +50,7 @@ def calibratecamera(request):
     mtx, dist = calibrate_camera(folder, chessboard)
     print("calibration result", mtx, "dist", dist)
     save_device_camera_matrix("123", mtx, dist)
-    return HttpResponse("Camera callibrated "+ str(mtx))
+    return HttpResponse("Camera callibrated "+ str(mtx) + "<br>Matrix: "+ str(mtx)+ "<br>Dist: "+ str(dist))
 
 def distance(request):
     "get distance from picture with square"
