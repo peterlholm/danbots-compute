@@ -6,12 +6,8 @@ from django.shortcuts import  HttpResponse, render
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
 from compute.settings import BASE_DIR, DEVICE_PATH #, NN_ENABLE
-from calibrate.camera.callibration import calibrate_camera
+from calibrate.camera.calibration import calibrate_camera, save_device_camera_matrix
 from calibrate.camera.distance import calc_dist
-
-# if NN_ENABLE:
-#     from tensorflow.python.client import device_lib
-#     print (device_lib.list_local_devices())
 
 def check_device(request):
     "get the device id"
@@ -38,19 +34,22 @@ def index(request):
 def calibratecamera(request):
     "calibrate camera based on folder with pictures"
     #cv2
-    #chessboard = (9,6)
+    #chessboard = (9,6) ok
     #folder = BASE_DIR / 'calibrate/camera/testimages/cv2test/'
     #pizero
-    chessboard = (7,9)
-    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie1/'
-    folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie2/'
+    # chessboard = (7,9)
+    # folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie1/'
+    # folder = BASE_DIR / 'calibrate/camera/testimages/pizero/serie2/'
     #danwand
+    chessboard = (7,7)
     folder = BASE_DIR / 'calibrate/camera/testimages/danwand/serie1/'
 
-    #folder = BASE_DIR / 'calibrate/camera/testimages/device/e45f013a21c7/input/'
     #folder = BASE_DIR / 'data/device/e45f013a21c7/input/'
+    #folder = BASE_DIR / 'data/device/e45f013a21c7/input/'
+
     mtx, dist = calibrate_camera(folder, chessboard)
     print("calibration result", mtx, "dist", dist)
+    save_device_camera_matrix("123", mtx, dist)
     return HttpResponse("Camera callibrated "+ str(mtx))
 
 def distance(request):

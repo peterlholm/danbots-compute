@@ -2,6 +2,7 @@
 get device config information
 """
 from os.path import exists
+from pathlib import Path
 import configparser
 from compute.settings import DATA_PATH
 
@@ -38,4 +39,5 @@ def read_device_config(device):
 def save_device_config(config, device):
     "save config for device"
     config_folder = DATA_PATH / "device" / device
+    Path(config_folder).mkdir(parents=True, exist_ok=True)
     return _save_config(config, config_folder)
