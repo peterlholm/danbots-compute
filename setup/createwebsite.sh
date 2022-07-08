@@ -7,6 +7,9 @@
 
 sudo apt install libapache2-mod-wsgi-py3
 
+# nessesary on azure
+sudo apt-get install libgomp1 libgl1
+
 sudo ln -s /var/www/compute/apache/danbots-compute.conf /etc/apache2/sites-available/danbots-compute.conf
 sudo a2ensite danbots-compute.conf
 
