@@ -5,7 +5,7 @@ from time import sleep
 from django.shortcuts import  HttpResponse, render
 from django.http import  StreamingHttpResponse #JsonResponse,
 from django.views.decorators.csrf import csrf_exempt
-from compute.settings import BASE_DIR, DEVICE_PATH #, NN_ENABLE
+from compute.settings import BASE_DIR, DEVICE_PATH, DATA_PATH #, NN_ENABLE
 from calibrate.camera.calibration import calibrate_camera, save_device_camera_matrix
 from calibrate.camera.distance import calc_dist
 
@@ -26,6 +26,41 @@ def get_device_folder(deviceid):
 
 NOFILE = BASE_DIR / 'web/static/web' / 'afventer.jpg'
 SLEEP_TIME = 3
+
+def add_pic_list(pic_list, rel_data_path, file_name, maxnumber):
+    "append pictures with file_name to list"
+    # rel_data_path without /data
+    r_path = "/data/" + rel_data_path
+    a_path = DATA_PATH / rel_data_path
+    for i in range(1,maxnumber):
+        rpath =  r_path + str(i) + '/' + file_name
+        apath = a_path / str(i) / file_name
+        if apath.exists():
+            pic_list.append(rpath)
+
+def show_set(request):
+    "Show capturede pictures in set folder= relative data path witout data"
+    picturenames = ['color.jpg', 'dias.jpg', 'nolight.jpg']
+    data_path = request.GET.get('folder', 'folder/input/')
+    if data_path[-1] != '/':
+        data_path += '/'
+    abs_path = DATA_PATH / data_path
+    #print("abspath", abs_path)
+    number = int(request.GET.get('number', "100")) + 1
+    pic_list = []
+    maxnumber = 1
+    #print(abs_path / str(maxnumber))
+    while Path(abs_path / str(maxnumber)).exists():
+        maxnumber += 1
+    #print("number, max", number, maxnumber)
+    maxnumber = min(maxnumber, number)
+    for i in range(1,maxnumber):
+        path="/data/"+data_path+str(i)+'/'
+        for filename in picturenames:
+            pic_list.append(path + filename)
+    mycontext={"path": abs_path, "data_path": data_path, "pictures": pic_list, "link": "", "linkprev": ''}
+    #print(mycontext)
+    return render (request, 'web/show_pictures.html', context=mycontext)
 
 def index(request):
     "index for prod web site"
